@@ -1,0 +1,33 @@
+{
+    "name": "scandio/lmvc-modules",
+    "type": "library",
+    "description": "LMVC-Modules are easy-to-use extensions to the 'scandio/lmvc'-framework",
+    "keywords": ["php", "library", "mvc", "scandio", "lmvc"],
+    "homepage": "https://github.com/scandio/lmvc-modules",
+    "license": "MIT",
+
+    "authors": [
+        {
+            "name": "Scandio GmbH",
+            "homepage": "http://www.scandio.de/"
+        }
+    ],
+
+    "require": {
+        "php": ">=5.3",
+        "scandio/lmvc":"dev-lmvc-composer",
+        "leafo/lessphp": "v0.3.9",
+        "mustache/mustache": "v2.1.0"
+    },
+    "repositories":[
+        {
+            "type":"git",
+            "url":"https://github.com/scandio/lmvc"
+        }
+    ],
+    "autoload": {
+        "psr-0": {
+            "Scandio\\lmvc\\modules": "lib/"
+        }
+    }
+}
