@@ -90,7 +90,7 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/scandio/lmvc",
-                "reference": "c90167d984e4394be3be80bbcc1d9b61ae771961"
+                "reference": "2840b65cab1e6df398b18c8b0146f53de4d24867"
             },
             "require": {
                 "php": ">=5.3"
@@ -118,7 +118,7 @@
                 "php",
                 "scandio"
             ],
-            "time": "2013-03-20 23:27:18"
+            "time": "2013-03-20 23:44:52"
         }
     ],
     "packages-dev": [
