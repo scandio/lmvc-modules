@@ -55,6 +55,7 @@ abstract class SnippetHandler {
      * searches for the snippet in the registered directories
      *
      * @static
+     * @param $snippet the snippet to search for
      * @return string|bool either the snippet's full path or false
      */
     private static function searchSnippet($snippet) {
