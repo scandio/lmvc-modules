@@ -10,6 +10,14 @@ abstract class SnippetHandler {
     protected static $prefix='';
     protected static $snippetPath = array();
 
+    /**
+     * used to include the snippets - behaviour may be overridden by private or public static functions
+     *
+     * @static
+     * @param string $name camelCasedName of the snippet
+     * @param array $params parameters passed to the snippet
+     * @return mixed|string the result of your private static function, an ErrorMessage or just an empty string
+     */
     public static function __callStatic($name, $params) {
         $result = "";
         if (method_exists(get_called_class(), $name)) {
@@ -29,6 +37,7 @@ abstract class SnippetHandler {
     /**
      * registers a new snippet directory to search for the snippets
      *
+     * @static
      * @param array|string $path specifies the directory to register
      */
     public static function registerSnippetDirectory($path) {
