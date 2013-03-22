@@ -5,7 +5,7 @@ namespace Scandio\lmvc\modules\mustache;
 class Mustache {
 
     public static function renderString($templateString, $data=array()) {
-        $mustache = new Mustache_Engine();
+        $mustache = new \Mustache_Engine();
         return $mustache->render($templateString, $data);
     }
 
