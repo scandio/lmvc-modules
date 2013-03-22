@@ -6,6 +6,6 @@ use \Scandio\lmvc\LVC;
 
 class Bootstrap extends \Scandio\lmvc\Bootstrap {
     public function initialize() {
-        LVC::registerControllerNamespace(new controllers\MustacheRest);
+        LVC::registerControllerNamespace(new controllers\Mustache);
     }
 }

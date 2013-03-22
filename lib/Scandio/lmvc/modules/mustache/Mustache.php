@@ -2,11 +2,6 @@
 
 namespace Scandio\lmvc\modules\mustache;
 
-use \Scandio\lmvc\LVC;
-
-include(LVC::get()->config->modulePath . 'mustache/Mustache/Autoloader.php');
-Mustache_Autoloader::register();
-
 class Mustache {
 
     public static function renderString($templateString, $data=array()) {
