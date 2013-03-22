@@ -7,7 +7,7 @@ use \Scandio\lmvc\Controller;
 
 class Less extends Controller {
 
-    public static function compile() {
+    public static function index() {
         $cacheFile = implode('-', LVC::get()->params);
         $file = LVC::get()->config->appPath . implode('/', LVC::get()->params);
         if (file_exists($file)) {
