@@ -1,5 +1,5 @@
 {
-    "hash": "dfd41b1ac9016a20f2c6da9055b1c001",
+    "hash": "706e061cbf7c7b308b617fdf4e0f9d12",
     "packages": [
         {
             "name": "leafo/lessphp",
@@ -86,11 +86,11 @@
         },
         {
             "name": "scandio/lmvc",
-            "version": "dev-lmvc-composer",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/scandio/lmvc",
-                "reference": "2840b65cab1e6df398b18c8b0146f53de4d24867"
+                "reference": "fecb6a9395c1052f491080c0d8804022c93fe1bd"
             },
             "require": {
                 "php": ">=5.3"
@@ -118,7 +118,7 @@
                 "php",
                 "scandio"
             ],
-            "time": "2013-03-20 23:44:52"
+            "time": "2013-03-27 18:15:03"
         }
     ],
     "packages-dev": [

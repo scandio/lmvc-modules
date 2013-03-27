@@ -15,7 +15,7 @@
 
     "require": {
         "php": ">=5.3",
-        "scandio/lmvc":"dev-lmvc-composer",
+        "scandio/lmvc":"dev-master",
         "leafo/lessphp": "v0.3.9",
         "mustache/mustache": "v2.1.0"
     },
