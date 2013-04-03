@@ -4,10 +4,11 @@ namespace Scandio\lmvc\modules\snippets;
 
 use \Scandio\lmvc\LVC;
 
-abstract class SnippetHandler {
+abstract class SnippetHandler
+{
 
     protected static $snippetFile;
-    protected static $prefix='';
+    protected static $prefix = '';
     protected static $snippetPath = array();
 
     /**
@@ -18,7 +19,8 @@ abstract class SnippetHandler {
      * @param array $params parameters passed to the snippet
      * @return mixed|string the result of your private static function, an ErrorMessage or just an empty string
      */
-    public static function __callStatic($name, $params) {
+    public static function __callStatic($name, $params)
+    {
         $result = "";
         if (method_exists(get_called_class(), $name)) {
             $result = call_user_func_array('static::' . $name, $params);
@@ -40,7 +42,8 @@ abstract class SnippetHandler {
      * @static
      * @param array|string $path specifies the directory to register
      */
-    public static function registerSnippetDirectory($path) {
+    public static function registerSnippetDirectory($path)
+    {
         if (is_array($path)) {
             $snippetPath = implode(DIRECTORY_SEPARATOR, $path);
         } elseif (is_string($path)) {
@@ -64,10 +67,11 @@ abstract class SnippetHandler {
      * searches for the snippet in the registered directories
      *
      * @static
-     * @param $snippet the snippet to search for
+     * @param string $snippet the snippet to search for
      * @return string|bool either the snippet's full path or false
      */
-    private static function searchSnippet($snippet) {
+    private static function searchSnippet($snippet)
+    {
         $class = get_called_class();
         if (!isset(self::$snippetPath[$class])) {
             return false;

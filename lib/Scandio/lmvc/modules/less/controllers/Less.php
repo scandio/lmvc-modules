@@ -5,9 +5,10 @@ namespace Scandio\lmvc\modules\less\controllers;
 use \Scandio\lmvc\LVC;
 use \Scandio\lmvc\Controller;
 
-class Less extends Controller {
-
-    public static function index() {
+class Less extends Controller
+{
+    public static function index()
+    {
         $cacheFile = implode('-', LVC::get()->params);
         $file = LVC::get()->config->appPath . implode('/', LVC::get()->params);
         if (file_exists($file)) {
@@ -25,5 +26,4 @@ class Less extends Controller {
         header('Content-Type: text/css');
         echo $cssStream;
     }
-
 }
