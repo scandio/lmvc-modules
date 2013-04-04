@@ -7,6 +7,9 @@ use \Scandio\lmvc\modules\mustache\Mustache as Mustache_Engine;
 
 class Mustache extends Controller
 {
+    /**
+     * @param string $template
+     */
     public static function index($template)
     {
         echo Mustache_Engine::render($template, self::request());

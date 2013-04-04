@@ -31,7 +31,7 @@ abstract class AbstractForm
 {
 
     /**
-     * @var null|stdClass hidden member for internal use
+     * @var null|\stdClass hidden member for internal use
      */
     private $__formdata = null;
 
@@ -49,7 +49,7 @@ abstract class AbstractForm
     /**
      * validates the whole form from the request array
      *
-     * @param $request the form request from LVC
+     * @param array $request the form request from LVC
      * @param array $params optional additional parameters
      */
     public function validate($request, $params = array())

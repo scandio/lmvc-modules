@@ -7,6 +7,10 @@ use \Scandio\lmvc\Controller;
 
 class Less extends Controller
 {
+    /**
+     * Controller for a cached LESS compiled style sheet
+     * The cached compiled file will be saved in app root
+     */
     public static function index()
     {
         $cacheFile = implode('-', LVC::get()->params);

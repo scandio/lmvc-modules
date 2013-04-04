@@ -1,5 +1,5 @@
 {
-    "hash": "706e061cbf7c7b308b617fdf4e0f9d12",
+    "hash": "107f63b747f7fb16865ad5790c2023ea",
     "packages": [
         {
             "name": "leafo/lessphp",
@@ -86,11 +86,17 @@
         },
         {
             "name": "scandio/lmvc",
-            "version": "dev-master",
+            "version": "0.3",
             "source": {
                 "type": "git",
-                "url": "https://github.com/scandio/lmvc",
-                "reference": "fecb6a9395c1052f491080c0d8804022c93fe1bd"
+                "url": "https://github.com/scandio/lmvc.git",
+                "reference": "0.3"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/scandio/lmvc/zipball/0.3",
+                "reference": "0.3",
+                "shasum": ""
             },
             "require": {
                 "php": ">=5.3"
@@ -101,6 +107,7 @@
                     "Scandio\\lmvc": "lib/"
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -118,7 +125,7 @@
                 "php",
                 "scandio"
             ],
-            "time": "2013-03-27 18:15:03"
+            "time": "2013-04-04 16:29:47"
         }
     ],
     "packages-dev": [
@@ -128,9 +135,9 @@
 
     ],
     "minimum-stability": "stable",
-    "stability-flags": {
-        "scandio/lmvc": 20
-    },
+    "stability-flags": [
+
+    ],
     "platform": {
         "php": ">=5.3"
     },
