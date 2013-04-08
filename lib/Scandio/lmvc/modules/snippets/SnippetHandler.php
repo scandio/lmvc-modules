@@ -31,7 +31,7 @@ abstract class SnippetHandler
                 include(self::$snippetFile);
             } elseif (preg_match('/^get[A-Z]/', $name)) {
                 ob_start();
-                echo __callStatic(lcfirst(substr($name, 3)));
+                echo static::__callStatic(lcfirst(substr($name, 3)), $params);
                 $result = ob_get_contents();
                 ob_clean();
             } else {
