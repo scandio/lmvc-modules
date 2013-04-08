@@ -29,6 +29,11 @@ abstract class SnippetHandler
             if (self::$snippetFile) {
                 $app = LVC::get(); // should be available in the snippet's scope as in views for convenience
                 include(self::$snippetFile);
+            } elseif (preg_match('/^get[A-Z]/', $name)) {
+                ob_start();
+                echo __callStatic(lcfirst(substr($name, 3)));
+                $result = ob_get_contents();
+                ob_clean();
             } else {
                 $result = PHP_EOL . "<!-- No snippet file for " . get_called_class() . "::" . $name . "() exists. -->" . PHP_EOL;
             }
