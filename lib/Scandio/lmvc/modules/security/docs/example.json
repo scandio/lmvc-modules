@@ -1,0 +1,64 @@
+/* This is a commented part of the config.json */
+{
+    "security": {
+        /* MUST namespace and classname of the principal that follows PrincipalInterface */
+        "principal": "\\Scandio\\lmvc\\modules\\security\\JsonPrincipal",
+        /* OPTIONAL Controller::action after logout defaults to Application::index */
+        "logoutAction": "Security::login",
+        /* users, groups and roles for JsonPrincipal */
+        "users": {
+            "ckoch": {
+                "fullname": "Christian Koch",
+                "email": "christian.koch@scandio.de",
+                "phone": "+49 89 244 124-44",
+                "mobile": "+49 172 852 22 25",
+                "password": "pass"
+            },
+            "ckoeberle": {
+                "fullname": "Christoph Köberle",
+                "email": "christian.koeberle@scandio.de",
+                "phone": "+49 89 244 124-41",
+                "mobile": "",
+                "password": "pass"
+            },
+            "gschmidl": {
+                "fullname": "Georg Schmidl",
+                "email": "georg.schmidl@scandio.de",
+                "phone": "+49 89 244 124-0",
+                "mobile": "",
+                "password": "pass"
+            },
+            "admin": {
+                "fullname": "Administrator",
+                "email": "info@scandio.de",
+                "phone": "+49 89 244 124-0",
+                "mobile": "",
+                "password": "admin"
+            },
+            "test": {
+                "fullname": "Test Benutzer",
+                "email": "info@scandio.de",
+                "phone": "+49 89 244 124-0",
+                "mobile": "",
+                "password": "test"
+            }
+        },
+        "groups": {
+            "all": ["ckoch", "admin", "ckoeberle", "gschmidl"],
+            "users": ["ckoch", "ckoeberle", "gschmidl", "admin"],
+            "admins": ["admin"]
+        },
+        "roles": {
+            "read": {
+                "groups": ["users"]
+            },
+            "edit": {
+                "groups": ["admins"],
+                "users": ["ckoch"]
+            },
+            "delete": {
+                "users": ["ckoeberle", "admin"]
+            }
+        }
+    }
+}

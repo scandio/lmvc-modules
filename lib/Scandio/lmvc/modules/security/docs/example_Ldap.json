@@ -1,0 +1,29 @@
+/* This is a commented part of the config.json for using the LdapPrincipal */
+{
+    "security": {
+        /* MUST */
+        "principal": "\\Scandio\\lmvc\\modules\\security\\LdapPrincipal",
+        /* OPTIONAL Controller::action after logout defaults to Application::index */
+        "logoutAction": "Security::login",
+        /* MUST */
+        "host": "scandio.ldap.server.hostname",
+        "port": 1337,
+        "user_base_dn": "CN=Users,DC=scandio,DC=de",
+        "username_attribute": "samaccountname",
+        "groupname_attribute": "samaccountname",
+
+        /* roles for LdapPrincipal (= JsonPrincipal) */
+        "roles": {
+            "read": {
+                "groups": ["users"]
+            },
+            "edit": {
+                "groups": ["admins"],
+                "users": ["ckoch"]
+            },
+            "delete": {
+                "users": ["ckoeberle", "admin"]
+            }
+        }
+    }
+}

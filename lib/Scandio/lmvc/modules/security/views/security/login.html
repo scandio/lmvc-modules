@@ -1,0 +1,21 @@
+<form method="POST" action="<?= $app->url('Security::login') ?>">
+    <fieldset>
+        <legend>Login</legend>
+        <div class="control-group">
+            <label class="control-label" for="username">Username</label>
+            <div class="controls">
+                <input type="text" name="username" id="username"/>
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label" for="password">Password</label>
+            <div class="controls">
+                <input type="password" name="password" id="password"/>
+            </div>
+        </div>
+        <div class="control-group">
+            <input class="btn btn-primary" type="submit" id="login" name="login" value="Login"/>
+            <a class="btn" href="<?= $app->url('Application::index') ?>">Cancel</a>
+        </div>
+    </fieldset>
+</form>
