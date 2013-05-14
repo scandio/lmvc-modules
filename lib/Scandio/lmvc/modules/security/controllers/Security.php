@@ -48,9 +48,6 @@ class Security extends AnonymousController
      */
     public static function logout()
     {
-        if (isset($_SESSION['called_before_login'])) {
-            unset($_SESSION['called_before_login']);
-        }
         session_unset();
         session_destroy();
         $logoutAction = (isset(LVC::get()->config->security->logoutAction)) ? LVC::get()->config->security->logoutAction : 'Application::index';
