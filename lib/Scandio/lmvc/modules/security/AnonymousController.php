@@ -25,8 +25,13 @@ class AnonymousController extends Controller
             return false;
         }
         static::$currentUser = Security::get()->currentUser();
-        static::setRenderArg('currentUser', static::$currentUser);
         return true;
+    }
+
+    public static function render($renderArgs = array(), $template = null, $masterTemplate = null)
+    {
+        static::setRenderArg('currentUser', static::$currentUser);
+        return parent::render($renderArgs, $template, $masterTemplate);
     }
 
     /**
