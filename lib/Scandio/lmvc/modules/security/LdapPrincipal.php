@@ -34,7 +34,7 @@ class LdapPrincipal extends JsonPrincipal {
     }
 
     /**
-     * @return UserInterface[]
+     * @return AbstractUser[]
      */
     public function getUsers() {
         $security = LVCConfig::get()->security;

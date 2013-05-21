@@ -7,7 +7,7 @@ use Scandio\lmvc\Controller;
 class AnonymousController extends Controller
 {
     /**
-     * @var UserInterface
+     * @var AbstractUser
      */
     protected static $currentUser;
 

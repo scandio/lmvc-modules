@@ -4,7 +4,7 @@ namespace Scandio\lmvc\modules\security;
 
 use Scandio\lmvc\modules\security\Security;
 
-class User implements UserInterface
+class User extends AbstractUser
 {
     /**
      * @var string

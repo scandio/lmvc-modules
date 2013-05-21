@@ -14,7 +14,7 @@ abstract class AbstractPrincipal implements PrincipalInterface
      */
     public function __construct($userClass)
     {
-        if ($userClass && is_subclass_of($userClass, '\\Scandio\\lmvc\\modules\\security\\UserInterface')) {
+        if ($userClass && is_subclass_of($userClass, '\\Scandio\\lmvc\\modules\\security\\AbstractUser')) {
             $this->userClass = $userClass;
         } else {
             $this->userClass = Bootstrap::getNamespace() . '\\User';

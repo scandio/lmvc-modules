@@ -26,7 +26,7 @@ class JsonPrincipal extends AbstractPrincipal
     }
 
     /**
-     * @return UserInterface
+     * @return AbstractUser
      */
     public function currentUser()
     {
@@ -37,7 +37,7 @@ class JsonPrincipal extends AbstractPrincipal
 
     /**
      * @param string $username
-     * @return UserInterface
+     * @return AbstractUser
      */
     public function getUser($username)
     {
@@ -45,7 +45,7 @@ class JsonPrincipal extends AbstractPrincipal
     }
 
     /**
-     * @return UserInterface[]
+     * @return AbstractUser[]
      */
     public function getUsers()
     {

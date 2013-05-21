@@ -22,18 +22,18 @@ interface PrincipalInterface
     public function isAuthenticated();
 
     /**
-     * @return UserInterface
+     * @return AbstractUser
      */
     public function currentUser();
 
     /**
      * @param string $username
-     * @return UserInterface
+     * @return AbstractUser
      */
     public function getUser($username);
 
     /**
-     * @return UserInterface[]
+     * @return AbstractUser[]
      */
     public function getUsers();
 
