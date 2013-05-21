@@ -2,8 +2,8 @@
 
 namespace Scandio\lmvc\modules\less\controllers;
 
-use \Scandio\lmvc\LVC;
-use \Scandio\lmvc\Controller;
+use Scandio\lmvc\LVC;
+use Scandio\lmvc\Controller;
 
 class Less extends Controller
 {

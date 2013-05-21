@@ -2,7 +2,7 @@
 
 namespace Scandio\lmvc\modules\security;
 
-use \Scandio\lmvc\LVCConfig;
+use Scandio\lmvc\LVCConfig;
 
 class LdapPrincipal extends JsonPrincipal {
     protected $conn;

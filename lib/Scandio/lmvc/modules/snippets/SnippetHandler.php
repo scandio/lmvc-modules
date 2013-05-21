@@ -2,7 +2,8 @@
 
 namespace Scandio\lmvc\modules\snippets;
 
-use \Scandio\lmvc\LVC;
+use Scandio\lmvc\LVC;
+use Scandio\lmvc\modules\security\Security;
 
 abstract class SnippetHandler
 {
