@@ -40,27 +40,26 @@ class LdapPrincipal extends JsonPrincipal {
      * @return AbstractUser[]
      */
     public function getUsers() {
-        if (isset($this->users)) {
-            return $this->users;
-        }
-        $security = LVCConfig::get()->security;
-        $list = ldap_search($this->conn, $security->user_base_dn, '(&(objectclass=user)(memberof=CN=DB-User,CN=Users,DC=scandio,DC=de))');
-        $entries = ldap_get_entries($this->conn, $list);
-        unset($entries['count']);
+        if (!isset($this->users)) {
+            $security = LVCConfig::get()->security;
+            $list = ldap_search($this->conn, $security->user_base_dn, '(&(objectclass=user)(memberof=CN=DB-User,CN=Users,DC=scandio,DC=de))');
+            $entries = ldap_get_entries($this->conn, $list);
+            unset($entries['count']);
 
-        $this->users = array();
-        foreach ($entries as $entry) {
-            $userId = $entry[$security->username_attribute][0];
-            $userMail = "not available";
-            if (isset($entry['mail'])) {
-                $userMail = $entry["mail"][0];
+            $this->users = array();
+            foreach ($entries as $entry) {
+                $userId = $entry[$security->username_attribute][0];
+                $userMail = "not available";
+                if (isset($entry['mail'])) {
+                    $userMail = $entry["mail"][0];
+                }
+                $user = (object)array(
+                    'dn' => $entry["distinguishedname"][0],
+                    'fullname' => $entry["displayname"][0],
+                    'email' => $userMail
+                );
+                $this->users[$userId] = new $this->userClass($userId, $user);
             }
-            $user = (object)array(
-                'dn' => $entry["distinguishedname"][0],
-                'fullname' => $entry["displayname"][0],
-                'email' => $userMail
-            );
-            $this->users[$userId] = new $this->userClass($userId, $user);
         }
         return $this->users;
     }
@@ -69,21 +68,20 @@ class LdapPrincipal extends JsonPrincipal {
      * @return array[]
      */
     public function getGroups() {
-        if (isset($this->groups)) {
-            return $this->groups;
-        }
-        $security = LVCConfig::get()->security;
-        $list = ldap_search($this->conn, $security->user_base_dn, 'objectclass=group');
-        $entries = ldap_get_entries($this->conn, $list);
-        unset($entries['count']);
+        if (!isset($this->groups)) {
+            $security = LVCConfig::get()->security;
+            $list = ldap_search($this->conn, $security->user_base_dn, 'objectclass=group');
+            $entries = ldap_get_entries($this->conn, $list);
+            unset($entries['count']);
 
 
-        $this->groups = array();
-        foreach ($entries as $entry) {
-            if (isset($entry[$security->groupname_attribute])) {
-                $groupDn = $entry["distinguishedname"][0];
-                if ($groupDn) {
-                    $this->groups[$groupDn] = $this->getGroupUsers($groupDn);
+            $this->groups = array();
+            foreach ($entries as $entry) {
+                if (isset($entry[$security->groupname_attribute])) {
+                    $groupDn = $entry["distinguishedname"][0];
+                    if ($groupDn) {
+                        $this->groups[$groupDn] = $this->getGroupUsers($groupDn);
+                    }
                 }
             }
         }
