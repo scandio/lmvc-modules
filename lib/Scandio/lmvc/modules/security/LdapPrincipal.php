@@ -8,6 +8,9 @@ class LdapPrincipal extends JsonPrincipal {
     protected $conn;
     protected $bind;
 
+    protected $users;
+    protected $groups;
+
     public function __construct($userClass = null) {
         parent::__construct($userClass);
         $security = LVCConfig::get()->security;
@@ -37,12 +40,15 @@ class LdapPrincipal extends JsonPrincipal {
      * @return AbstractUser[]
      */
     public function getUsers() {
+        if (isset($this->users)) {
+            return $this->users;
+        }
         $security = LVCConfig::get()->security;
         $list = ldap_search($this->conn, $security->user_base_dn, '(&(objectclass=user)(memberof=CN=DB-User,CN=Users,DC=scandio,DC=de))');
         $entries = ldap_get_entries($this->conn, $list);
         unset($entries['count']);
 
-        $result = array();
+        $this->users = array();
         foreach ($entries as $entry) {
             $userId = $entry[$security->username_attribute][0];
             $userMail = "not available";
@@ -54,31 +60,34 @@ class LdapPrincipal extends JsonPrincipal {
                 'fullname' => $entry["displayname"][0],
                 'email' => $userMail
             );
-            $result[$userId] = new $this->userClass($userId, $user);
+            $this->users[$userId] = new $this->userClass($userId, $user);
         }
-        return $result;
+        return $this->users;
     }
 
     /**
      * @return array[]
      */
     public function getGroups() {
+        if (isset($this->groups)) {
+            return $this->groups;
+        }
         $security = LVCConfig::get()->security;
         $list = ldap_search($this->conn, $security->user_base_dn, 'objectclass=group');
         $entries = ldap_get_entries($this->conn, $list);
         unset($entries['count']);
 
 
-        $result = array();
+        $this->groups = array();
         foreach ($entries as $entry) {
             if (isset($entry[$security->groupname_attribute])) {
                 $groupDn = $entry["distinguishedname"][0];
                 if ($groupDn) {
-                    $result[$groupDn] = $this->getGroupUsers($groupDn);
+                    $this->groups[$groupDn] = $this->getGroupUsers($groupDn);
                 }
             }
         }
-        return $result;
+        return $this->groups;
     }
 
     /**
