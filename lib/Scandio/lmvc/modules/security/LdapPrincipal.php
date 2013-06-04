@@ -58,7 +58,7 @@ class LdapPrincipal extends JsonPrincipal {
                 $_SESSION['security']['ldap_users'][$userId] = new $this->userClass($userId, $user);
             }
         } else {
-            class_exists($this->userClass);
+            class_exists($this->userClass); // autoload userClass
         }
         return $_SESSION['security']['ldap_users'];
     }

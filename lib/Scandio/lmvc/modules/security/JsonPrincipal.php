@@ -98,7 +98,8 @@ class JsonPrincipal extends AbstractPrincipal
     {
         $result = array();
         $groups = $this->getUserGroups($username);
-        foreach ($this->getRoles() as $role => $members) {
+        $roles = $this->getRoles();
+        foreach ($roles as $role => $members) {
             if (isset($members->users) && in_array($username, $members->users)) {
                 $result[] = $role;
                 continue; // unnecessary to check groups of this role
@@ -108,6 +109,21 @@ class JsonPrincipal extends AbstractPrincipal
                     if (in_array($group, $members->groups)) {
                         $result[] = $role;
                         break; // unnecessary to check other groups of this role
+                    }
+                }
+            }
+        }
+        $roleAdded = true;
+        while ($roleAdded) {
+            $roleAdded = false;
+            foreach ($roles as $role => $members) {
+                if (!in_array($role, $result) && isset($members->roles)) {
+                    foreach ($members->roles as $memberRole) {
+                        if (in_array($memberRole, $result)) {
+                            $result[] = $role;
+                            $roleAdded = true;
+                            break; // unnecessary to check other memberroles of this role
+                        }
                     }
                 }
             }
