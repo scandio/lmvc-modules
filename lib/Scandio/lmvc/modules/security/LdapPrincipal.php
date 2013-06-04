@@ -34,6 +34,14 @@ class LdapPrincipal extends JsonPrincipal {
     }
 
     /**
+     * @param string $username
+     * @return AbstractUser
+     */
+    public function getUser($username) {
+        return unserialize(serialize($this->getUsers()[$username]));
+    }
+
+    /**
      * @return AbstractUser[]
      */
     public function getUsers() {
@@ -55,7 +63,7 @@ class LdapPrincipal extends JsonPrincipal {
                     'fullname' => $entry["displayname"][0],
                     'email' => $userMail
                 );
-                $_SESSION['security']['ldap_users'][$userId] = unserialize(serialize(new $this->userClass($userId, $user)));
+                $_SESSION['security']['ldap_users'][$userId] = new $this->userClass($userId, $user);
             }
         }
         return $_SESSION['security']['ldap_users'];
