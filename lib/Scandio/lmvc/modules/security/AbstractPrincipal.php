@@ -22,6 +22,14 @@ abstract class AbstractPrincipal implements PrincipalInterface
     }
 
     /**
+     * @param string $username
+     * @return bool
+     */
+    public function isUser($username) {
+        return is_object(unserialize(serialize($this->getUser($username))));
+    }
+
+    /**
      * @return string[]
      */
     public function getCurrentUserGroups() {

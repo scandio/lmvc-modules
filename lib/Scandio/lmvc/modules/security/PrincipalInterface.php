@@ -73,6 +73,12 @@ interface PrincipalInterface
 
     /**
      * @param string $username
+     * @return bool
+     */
+    public function isUser($username);
+
+    /**
+     * @param string $username
      * @param string $role
      * @return bool
      */
