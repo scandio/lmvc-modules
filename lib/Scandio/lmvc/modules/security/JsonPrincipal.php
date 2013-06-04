@@ -22,7 +22,7 @@ class JsonPrincipal extends AbstractPrincipal
      */
     public function isAuthenticated()
     {
-        return (isset($_SESSION['authenticated']) && ($_SESSION['authenticated'] === true));
+        return (isset($_SESSION['security']['authenticated']) && ($_SESSION['security']['authenticated'] === true));
     }
 
     /**
@@ -30,8 +30,8 @@ class JsonPrincipal extends AbstractPrincipal
      */
     public function currentUser()
     {
-        return (isset($_SESSION['current_user'])) ?
-            new $this->userClass($_SESSION['current_user'], $this->getUser($_SESSION['current_user'])) :
+        return (isset($_SESSION['security']['current_user'])) ?
+            new $this->userClass($_SESSION['security']['current_user'], $this->getUser($_SESSION['security']['current_user'])) :
             new $this->userClass('anonymous', new \StdClass());
     }
 
