@@ -33,10 +33,10 @@ class Security extends AnonymousController
         if ($principal->authenticate(static::request()->username, static::request()->password)) {
             $_SESSION['current_user'] = static::request()->username;
             $_SESSION['authenticated'] = true;
-            $controllerAction = $_SESSION['called_before_login']['controller'] .
-                '::' . $_SESSION['called_before_login']['action'];
-            $params = $_SESSION['called_before_login']['params'];
-            unset($_SESSION['called_before_login']);
+            $controllerAction = $_SESSION['security']['called_before_login']['controller'] .
+                '::' . $_SESSION['security']['called_before_login']['action'];
+            $params = $_SESSION['security']['called_before_login']['params'];
+            unset($_SESSION['security']['called_before_login']);
             return static::redirect($controllerAction, $params);
         } else {
             return static::redirect('Security::login');
