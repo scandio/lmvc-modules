@@ -37,6 +37,7 @@ class LdapPrincipal extends JsonPrincipal {
      * @return AbstractUser[]
      */
     public function getUsers() {
+        class_exists($this->userClass); // autoload userClass
         if (!isset($_SESSION['security']['ldap_users'])) {
             $security = LVCConfig::get()->security;
             $list = ldap_search($this->conn, $security->user_base_dn, '(&(objectclass=user)(memberof=CN=DB-User,CN=Users,DC=scandio,DC=de))');
@@ -57,8 +58,6 @@ class LdapPrincipal extends JsonPrincipal {
                 );
                 $_SESSION['security']['ldap_users'][$userId] = new $this->userClass($userId, $user);
             }
-        } else {
-            class_exists($this->userClass); // autoload userClass
         }
         return $_SESSION['security']['ldap_users'];
     }
