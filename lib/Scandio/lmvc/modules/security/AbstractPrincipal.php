@@ -25,7 +25,7 @@ abstract class AbstractPrincipal implements PrincipalInterface
      * @param string $username
      * @return bool
      */
-    public function isUser($username) {
+    public function existsUser($username) {
         return is_object($this->getUser($username));
     }
 

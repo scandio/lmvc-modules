@@ -75,7 +75,7 @@ interface PrincipalInterface
      * @param string $username
      * @return bool
      */
-    public function isUser($username);
+    public function existsUser($username);
 
     /**
      * @param string $username
