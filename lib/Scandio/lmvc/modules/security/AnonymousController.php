@@ -41,6 +41,7 @@ class AnonymousController extends Controller
     public static function forbidden()
     {
         $forbiddenAction = (isset(LVCConfig::get()->security->forbiddenAction)) ? LVCConfig::get()->security->forbiddenAction : 'Security::forbidden';
-        return static::redirect($forbiddenAction);
+        static::redirect($forbiddenAction);
+        return false;
     }
 }

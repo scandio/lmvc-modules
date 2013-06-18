@@ -24,8 +24,7 @@ class SecureController extends AnonymousController
             if (static::$controllerRole == 'anonymous' || static::$currentUser->isInRole(static::$controllerRole)) {
                 return true;
             } else {
-                static::redirect('Security::forbidden');
-                return false;
+                return static::forbidden();
             }
         }
     }
