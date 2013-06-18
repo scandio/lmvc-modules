@@ -5,6 +5,8 @@
         "principal": "\\Scandio\\lmvc\\modules\\security\\JsonPrincipal",
         /* OPTIONAL Controller::action after logout defaults to Application::index */
         "logoutAction": "Security::login",
+        /* OPTIONAL Controller::action when you call static::forbidden - defaults to Security::forbidden */
+        "forbiddenAction": "Security::forbidden",
         /* users, groups and roles for JsonPrincipal */
         "users": {
             "ckoch": {

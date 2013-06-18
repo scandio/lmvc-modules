@@ -3,6 +3,7 @@
 namespace Scandio\lmvc\modules\security;
 
 use Scandio\lmvc\Controller;
+use Scandio\lmvc\LVCConfig;
 
 class AnonymousController extends Controller
 {
@@ -39,6 +40,7 @@ class AnonymousController extends Controller
      */
     public static function forbidden()
     {
-        return static::redirect('Security::forbidden');
+        $forbiddenAction = (isset(LVCConfig::get()->security->forbiddenAction)) ? LVCConfig::get()->security->forbiddenAction : 'Security::forbidden';
+        return static::redirect($forbiddenAction);
     }
 }
