@@ -19,3 +19,15 @@
         </div>
     </fieldset>
 </form>
+
+<script type="text/javascript">
+    (function () {
+        var onload = window.onload;
+        window.onload = function () {
+            if (window.jQuery) {
+                $('#username').focus();
+            }
+            return onload();
+        }
+    })();
+</script>
