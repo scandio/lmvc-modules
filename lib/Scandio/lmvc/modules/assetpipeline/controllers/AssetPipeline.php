@@ -6,6 +6,7 @@ use Scandio\lmvc\LVC;
 use Scandio\lmvc\Controller;
 use Scandio\lmvc\modules\assetpipeline\interfaces;
 use Scandio\lmvc\modules\assetpipeline\assetpipes;
+use Scandio\lmvc\modules\assetpipeline\util;
 
 
 class AssetPipeline extends Controller implements interfaces\iAssetPipeline
@@ -14,7 +15,8 @@ class AssetPipeline extends Controller implements interfaces\iAssetPipeline
         $_cssPipe,
         $_sassPipe,
         $_lessPipe,
-        $_jsPipe;
+        $_jsPipe,
+        $_helper;
 
     protected static
         $config = [],
@@ -34,6 +36,8 @@ class AssetPipeline extends Controller implements interfaces\iAssetPipeline
         static::$_sassPipe = new assetpipes\SassPipe();
         static::$_lessPipe = new assetpipes\LessPipe();
         static::$_jsPipe = new assetpipes\JsPipe();
+
+        static::$_helper = new util\AssetPipelineHelper();
     }
 
     public static function configure($config = [])
@@ -74,31 +78,31 @@ class AssetPipeline extends Controller implements interfaces\iAssetPipeline
         echo "< Please specify a pipe as action as in: css|js|sass|less >";
     }
 
-    public static function js(/* func_get_args = (options…, filename) */)
+    public static function js(/* func_get_args = (options…, filenames…) */)
     {
         $args = func_get_args();
 
-        echo static::$_jsPipe->serve(end($args), array_slice($args, 0, -1, true));
+        echo static::$_jsPipe->serve(static::$_helper->getFiles($args), static::$_helper->getOptions($args));
     }
 
-    public static function css(/* func_get_args = (options…, filename) */)
+    public static function css(/* func_get_args = (options…, filenames…) */)
     {
         $args = func_get_args();
 
-        echo static::$_cssPipe->serve(end($args), array_slice($args, 0, -1, true));
+        echo static::$_cssPipe->serve(static::$_helper->getFiles($args), static::$_helper->getOptions($args));
     }
 
-    public static function less(/* func_get_args = (options…, filename) */)
+    public static function less(/* func_get_args = (options…, filenames…) */)
     {
         $args = func_get_args();
 
-        echo static::$_lessPipe->serve(end($args), array_slice($args, 0, -1, true));
+        echo static::$_lessPipe->serve(static::$_helper->getFiles($args), static::$_helper->getOptions($args));
     }
 
-    public static function sass(/* func_get_args = (options…, filename) */)
+    public static function sass(/* func_get_args = (options…, filenames…) */)
     {
         $args = func_get_args();
 
-        echo static::$_sassPipe->serve(end($args), array_slice($args, 0, -1, true));
+        echo static::$_sassPipe->serve(static::$_helper->getFiles($args), static::$_helper->getOptions($args));
     }
 }

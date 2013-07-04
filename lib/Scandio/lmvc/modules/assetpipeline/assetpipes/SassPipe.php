@@ -30,7 +30,6 @@ class SassPipe extends AbstractAssetPipe {
 
         $css = $this->_compile($file);
 
-        if ( in_array('concat', $options) ) { $css = $this->concat(); }
         if ( in_array('min', $options) ) { $css = $this->_min($file); }
 
         return $css;

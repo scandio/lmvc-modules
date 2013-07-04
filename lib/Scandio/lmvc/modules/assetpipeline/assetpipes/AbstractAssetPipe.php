@@ -18,16 +18,18 @@ abstract class AbstractAssetPipe implements interfaces\iAssetPipe {
     }
 
     private function _setHttpHeaders() {
-        header("Content-Type: text/" . $this->_contentType);
+        #header("Content-Type: text/" . $this->_contentType);
     }
 
-    public function serve($asset, $options = []) {
+    public function serve($assets = [], $options = []) {
         $servedContent = "";
 
         $this->_setHttpHeaders();
 
-        if ( $this->_fileLocator->initializeCache($asset, $options) ) {
-            $servedContent = $this->_fileLocator->isCached() ? $this->_fileLocator->fromCache() : $this->_fileLocator->cache( $this->process($asset, $options) );
+        if ( $this->_fileLocator->initializeCache($assets, $options) ) {
+            $servedContent = $this->_fileLocator->isCached() ?
+                $this->_fileLocator->fromCache() :
+                $this->_fileLocator->cache( $this->process( $this->_fileLocator->concat($assets) , $options) );
         }
 
         return $servedContent;
