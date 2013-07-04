@@ -46,9 +46,10 @@ class FileLocator
         $fileLocation = false;
 
         foreach ($this->_assetDirectoryFallbacks as $assetDirectoryFallback) {
-            $iterator = new \RecursiveDirectoryIterator($assetDirectoryFallback);
+            $directoryIterator = new \RecursiveDirectoryIterator($assetDirectoryFallback);
+            $iteratorIterator = new \RecursiveIteratorIterator($directoryIterator);
 
-            foreach(new \RecursiveIteratorIterator($iterator) as $possibleFile) {
+            foreach($iteratorIterator as $possibleFile) {
                 if ($asset == $possibleFile->getFileName()) {
                     $fileLocation = $possibleFile->getPathname();
                     break 2;
@@ -108,19 +109,15 @@ class FileLocator
     }
 
     public function concat() {
-        $fileContent = "";
-
         foreach ($this->_requestedFiles as $requestedFile) {
-            $fileContent .= file_get_contents($requestedFile->getPathname());
+            $this->cache( file_get_contents($requestedFile->getPathname()), true);
         }
 
-        $this->cache($fileContent);
-
-        return $this->_cachedFilePath . DIRECTORY_SEPARATOR . $this->_cachedFileName;
+        return $this->_helper->path([$this->_cachedFilePath, $this->_cachedFileName]);
     }
 
-    public function cache($fileContent) {
-        $cachedFileObject  = new \SplFileObject($this->_helper->path([$this->_cachedFilePath, $this->_cachedFileName]), "w+");
+    public function cache($fileContent, $append = false) {
+        $cachedFileObject  = new \SplFileObject($this->_helper->path([$this->_cachedFilePath, $this->_cachedFileName]), $append ? "a+" : "w+");
 
         $cachedFileObject->fwrite($fileContent);
 
