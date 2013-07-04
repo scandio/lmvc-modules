@@ -18,7 +18,7 @@ abstract class AbstractAssetPipe implements interfaces\iAssetPipe {
     }
 
     private function _setHttpHeaders() {
-        #header("Content-Type: text/" . $this->_contentType);
+        header("Content-Type: text/" . $this->_contentType);
     }
 
     public function serve($assets = [], $options = []) {
