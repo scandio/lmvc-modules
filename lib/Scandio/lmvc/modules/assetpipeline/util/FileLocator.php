@@ -16,6 +16,9 @@ class FileLocator
         $_cachedFileInfo,
         $_requestedFiles = [];
 
+    private static
+        $_stage;
+
     function __construct($cacheDirectory = "", $assetDirectory = "") {
         $this->_cacheDirectory = $cacheDirectory;
         $this->_assetDirectory = $assetDirectory;
@@ -56,6 +59,16 @@ class FileLocator
         return $fileLocation;
     }
 
+    private function _forceCache() {
+        if (static::$_stage == 'prod') { return true; }
+
+        return false;
+    }
+
+    public static function setStage($stage) {
+        static::$_stage = $stage;
+    }
+
     public function initializeCache($assets, $options = []) {
         $this->_cachedFileName = $this->_getCachedFileName($assets, $options);
         $this->_cachedFileInfo = new \SplFileInfo( $this->_helper->path([$this->_cachedFilePath, $this->_cachedFileName]) );
@@ -79,6 +92,8 @@ class FileLocator
     }
 
     public function isCached() {
+        if ($this->_cachedFileInfo->isFile() && $this->_forceCache()) { return true; }
+
         foreach ($this->_requestedFiles as $requestedFile) {
             if (! $this->_cachedFileInfo->isFile() || ( $requestedFile->getMTime() > $this->_cachedFileInfo->getMTime() )) {
                 return false;

@@ -21,6 +21,7 @@ class AssetPipeline extends Controller implements interfaces\iAssetPipeline
     protected static
         $config = [],
         $defaults = [
+            'stage' => 'dev',
             'assetRootDirectory' => '',
             'cacheDirectory' => '_cache',
             'assetDirectories' => [
@@ -56,6 +57,8 @@ class AssetPipeline extends Controller implements interfaces\iAssetPipeline
     }
 
     public static function initialize() {
+        util\FileLocator::setStage(static::$config['stage']);
+
         static::$_cssPipe->setCacheDirectory(static::$config['cacheDirectory']);
         static::$_sassPipe->setCacheDirectory(static::$config['cacheDirectory']);
         static::$_jsPipe->setCacheDirectory(static::$config['cacheDirectory']);
