@@ -10,6 +10,7 @@ class FileLocator
         $_helper,
         $_cacheDirectory,
         $_assetDirectory,
+        $_assetDirectoryFallbacks,
         $_cachedFileName,
         $_cachedFilePath,
         $_cachedFileInfo,
@@ -38,15 +39,40 @@ class FileLocator
         return $fileName;
     }
 
-    public function initializeCache($assets, $options = []) {
-        # Requesting an non-existent file should return 404 or ane empty file.
-        #if ( !file_exists($this->_assetDirectory . DIRECTORY_SEPARATOR . $asset)) return false;
+    private function _recursiveSearch($asset) {
+        $fileLocation = false;
 
+        foreach ($this->_assetDirectoryFallbacks as $assetDirectoryFallback) {
+            $iterator = new \RecursiveDirectoryIterator($assetDirectoryFallback);
+
+            foreach(new \RecursiveIteratorIterator($iterator) as $possibleFile) {
+                if ($asset == $possibleFile->getFileName()) {
+                    $fileLocation = $possibleFile->getPathname();
+                    break 2;
+                }
+            }
+        }
+
+        return $fileLocation;
+    }
+
+    public function initializeCache($assets, $options = []) {
         $this->_cachedFileName = $this->_getCachedFileName($assets, $options);
         $this->_cachedFileInfo = new \SplFileInfo( $this->_helper->path([$this->_cachedFilePath, $this->_cachedFileName]) );
 
         foreach ($assets as $asset) {
-            $this->_requestedFiles[] = new \SplFileObject($this->_helper->path([$this->_assetDirectory, $asset]), "r");
+            # Requesting an non-existent file searches fallback dirs
+            $assetFilePath = $this->_helper->path([$this->_assetDirectory, $asset]);
+
+            if ( file_exists( $assetFilePath ) ) {
+                $this->_requestedFiles[] = new \SplFileObject($assetFilePath, "r");
+
+            } else if ($assetFilePath = $this->_recursiveSearch($asset)) {
+                $this->_requestedFiles[] = new \SplFileObject($assetFilePath, "r");
+            }
+            else {
+                return false;
+            }
         }
 
         return true;
@@ -66,13 +92,11 @@ class FileLocator
         return file_get_contents( $this->_cachedFileInfo->getPathname() );
     }
 
-    public function concat($assets) {
+    public function concat() {
         $fileContent = "";
 
-        foreach ($assets as $asset) {
-            $fileLocation = $this->_helper->path([$this->_assetDirectory, $asset]);
-
-            $fileContent .= file_get_contents($fileLocation);
+        foreach ($this->_requestedFiles as $requestedFile) {
+            $fileContent .= file_get_contents($requestedFile->getPathname());
         }
 
         $this->cache($fileContent);
@@ -94,8 +118,9 @@ class FileLocator
         $this->_setCachedFilePath();
     }
 
-    public function setAssetDirectory($assetDirectory) {
-        $this->_assetDirectory = $assetDirectory;
+    public function setAssetDirectory($assetDirectory, $fallbacks = []) {
+        $this->_assetDirectory          = $assetDirectory;
+        $this->_assetDirectoryFallbacks = $fallbacks;
 
         $this->_setCachedFilePath();
     }

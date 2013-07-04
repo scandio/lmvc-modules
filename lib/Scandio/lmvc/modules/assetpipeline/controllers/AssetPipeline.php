@@ -24,10 +24,18 @@ class AssetPipeline extends Controller implements interfaces\iAssetPipeline
             'assetRootDirectory' => '',
             'cacheDirectory' => '_cache',
             'assetDirectories' => [
-                'js'    => 'javascripts',
-                'less'  => 'styles',
-                'sass'  => 'styles',
-                'css'   => 'styles'
+                'js'    => [
+                    'main'  => 'javascripts'
+                ],
+                'less'  => [
+                    'main'  =>  'styles'
+                ],
+                'sass'  => [
+                    'main'  =>  'styles'
+                ],
+                'css'   => [
+                    'main'  =>  'styles'
+                ]
             ]
         ];
 
@@ -42,7 +50,8 @@ class AssetPipeline extends Controller implements interfaces\iAssetPipeline
 
     public static function configure($config = [])
     {
-        static::$config = array_merge(static::$defaults, $config);
+        static::$config = array_replace_recursive(static::$defaults, $config);
+
         static::initialize();
     }
 
@@ -53,19 +62,23 @@ class AssetPipeline extends Controller implements interfaces\iAssetPipeline
         static::$_lessPipe->setCacheDirectory(static::$config['cacheDirectory']);
 
         static::$_cssPipe->setAssetDirectory(
-            static::$_helper->path([static::$config['assetRootDirectory'], static::$config['assetDirectories']['css']])
+            static::$_helper->path([static::$config['assetRootDirectory'], static::$config['assetDirectories']['css']['main']]),
+            static::$_helper->prefix(static::$config['assetDirectories']['css']['fallbacks'], static::$config['assetRootDirectory'])
         );
 
         static::$_sassPipe->setAssetDirectory(
-            static::$_helper->path([static::$config['assetRootDirectory'], static::$config['assetDirectories']['sass']])
+            static::$_helper->path([static::$config['assetRootDirectory'], static::$config['assetDirectories']['sass']['main']]),
+            static::$_helper->prefix(static::$config['assetDirectories']['sass']['fallbacks'], static::$config['assetRootDirectory'])
         );
 
         static::$_jsPipe->setAssetDirectory(
-            static::$_helper->path([static::$config['assetRootDirectory'], static::$config['assetDirectories']['js']])
+            static::$_helper->path([static::$config['assetRootDirectory'], static::$config['assetDirectories']['js']['main']]),
+            static::$_helper->prefix(static::$config['assetDirectories']['js']['fallbacks'], static::$config['assetRootDirectory'])
         );
 
         static::$_lessPipe->setAssetDirectory(
-            static::$_helper->path([static::$config['assetRootDirectory'], static::$config['assetDirectories']['less']])
+            static::$_helper->path([static::$config['assetRootDirectory'], static::$config['assetDirectories']['less']['main']]),
+            static::$_helper->prefix(static::$config['assetDirectories']['less']['fallbacks'], static::$config['assetRootDirectory'])
         );
     }
 

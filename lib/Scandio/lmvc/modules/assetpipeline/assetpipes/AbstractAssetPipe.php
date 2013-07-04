@@ -29,7 +29,7 @@ abstract class AbstractAssetPipe implements interfaces\iAssetPipe {
         if ( $this->_fileLocator->initializeCache($assets, $options) ) {
             $servedContent = $this->_fileLocator->isCached() ?
                 $this->_fileLocator->fromCache() :
-                $this->_fileLocator->cache( $this->process( $this->_fileLocator->concat($assets) , $options) );
+                $this->_fileLocator->cache( $this->process( $this->_fileLocator->concat() , $options) );
         }
 
         return $servedContent;
@@ -39,7 +39,7 @@ abstract class AbstractAssetPipe implements interfaces\iAssetPipe {
         $this->_fileLocator->setCacheDirectory($cacheDirectory);
     }
 
-    public function setAssetDirectory($assetDirectory) {
-        $this->_fileLocator->setAssetDirectory($assetDirectory);
+    public function setAssetDirectory($assetDirectory, $fallbacks = []) {
+        $this->_fileLocator->setAssetDirectory($assetDirectory, $fallbacks);
     }
 }

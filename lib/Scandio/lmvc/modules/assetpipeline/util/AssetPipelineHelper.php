@@ -40,6 +40,16 @@ class AssetPipelineHelper
         return $path;
     }
 
+    public function prefix($directories, $with) {
+        $prefixed = [];
+
+        foreach ($directories as $directory) {
+            $prefixed[] = $this->path([$with, $directory]);
+        }
+
+        return $prefixed;
+    }
+
     public function getOptions($args) {
         return $this->_filterArgs($args, false);
     }
