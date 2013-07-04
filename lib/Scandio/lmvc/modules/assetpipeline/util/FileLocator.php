@@ -23,7 +23,7 @@ class FileLocator
     }
 
     private function _setCachedFilePath() {
-        $this->_cachedFilePath = $this->_assetDirectory . DIRECTORY_SEPARATOR . $this->_cacheDirectory;
+        $this->_cachedFilePath = $this->_helper->path([$this->_assetDirectory, $this->_cacheDirectory]);
     }
 
     private function _getCachedFileName($assets, $options) {
@@ -43,10 +43,10 @@ class FileLocator
         #if ( !file_exists($this->_assetDirectory . DIRECTORY_SEPARATOR . $asset)) return false;
 
         $this->_cachedFileName = $this->_getCachedFileName($assets, $options);
-        $this->_cachedFileInfo = new \SplFileInfo( $this->_cachedFilePath . DIRECTORY_SEPARATOR . $this->_cachedFileName );
+        $this->_cachedFileInfo = new \SplFileInfo( $this->_helper->path([$this->_cachedFilePath, $this->_cachedFileName]) );
 
         foreach ($assets as $asset) {
-            $this->_requestedFiles[] = new \SplFileObject($this->_assetDirectory . DIRECTORY_SEPARATOR . $asset, "r");
+            $this->_requestedFiles[] = new \SplFileObject($this->_helper->path([$this->_assetDirectory, $asset]), "r");
         }
 
         return true;
@@ -70,7 +70,7 @@ class FileLocator
         $fileContent = "";
 
         foreach ($assets as $asset) {
-            $fileLocation = $this->_assetDirectory . DIRECTORY_SEPARATOR . $asset;
+            $fileLocation = $this->_helper->path([$this->_assetDirectory, $asset]);
 
             $fileContent .= file_get_contents($fileLocation);
         }
@@ -81,7 +81,7 @@ class FileLocator
     }
 
     public function cache($fileContent) {
-        $cachedFileObject  = new \SplFileObject($this->_cachedFilePath . DIRECTORY_SEPARATOR . $this->_cachedFileName, "w+");
+        $cachedFileObject  = new \SplFileObject($this->_helper->path([$this->_cachedFilePath, $this->_cachedFileName]), "w+");
 
         $cachedFileObject->fwrite($fileContent);
 

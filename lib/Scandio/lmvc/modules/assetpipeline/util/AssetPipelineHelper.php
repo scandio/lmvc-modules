@@ -25,6 +25,21 @@ class AssetPipelineHelper
         return $filtered;
     }
 
+    public function path($directories) {
+        $path       = "";
+        $lastKey    = key( array_slice($directories, -1, 1, true) );
+
+        foreach ($directories as $key => $directory) {
+            $path .= $directory;
+
+            if ($key != $lastKey) {
+                $path .= DIRECTORY_SEPARATOR;
+            }
+        }
+
+        return $path;
+    }
+
     public function getOptions($args) {
         return $this->_filterArgs($args, false);
     }

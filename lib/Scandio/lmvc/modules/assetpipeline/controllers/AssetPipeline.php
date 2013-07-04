@@ -53,23 +53,19 @@ class AssetPipeline extends Controller implements interfaces\iAssetPipeline
         static::$_lessPipe->setCacheDirectory(static::$config['cacheDirectory']);
 
         static::$_cssPipe->setAssetDirectory(
-            static::$config['assetRootDirectory'] . DIRECTORY_SEPARATOR .
-            static::$config['assetDirectories']['css']
+            static::$_helper->path([static::$config['assetRootDirectory'], static::$config['assetDirectories']['css']])
         );
 
         static::$_sassPipe->setAssetDirectory(
-            static::$config['assetRootDirectory']. DIRECTORY_SEPARATOR .
-            static::$config['assetDirectories']['sass']
+            static::$_helper->path([static::$config['assetRootDirectory'], static::$config['assetDirectories']['sass']])
         );
 
         static::$_jsPipe->setAssetDirectory(
-            static::$config['assetRootDirectory'] . DIRECTORY_SEPARATOR .
-            static::$config['assetDirectories']['js']
+            static::$_helper->path([static::$config['assetRootDirectory'], static::$config['assetDirectories']['js']])
         );
 
         static::$_lessPipe->setAssetDirectory(
-            static::$config['assetRootDirectory'] . DIRECTORY_SEPARATOR .
-            static::$config['assetDirectories']['less']
+            static::$_helper->path([static::$config['assetRootDirectory'], static::$config['assetDirectories']['less']])
         );
     }
 
