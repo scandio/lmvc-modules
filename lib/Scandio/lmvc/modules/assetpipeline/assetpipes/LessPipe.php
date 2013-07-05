@@ -11,8 +11,9 @@ namespace Scandio\lmvc\modules\assetpipeline\assetpipes;
 class LessPipe extends AbstractAssetPipe
 {
 
-    protected
-        $_contentType = "css";
+    protected static
+        $_contentType   = "css",
+        $_pipeForType   = "less";
 
     private
         $_lessCompiler;

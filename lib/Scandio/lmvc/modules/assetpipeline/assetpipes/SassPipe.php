@@ -11,8 +11,9 @@ namespace Scandio\lmvc\modules\assetpipeline\assetpipes;
 class SassPipe extends AbstractAssetPipe
 {
 
-    protected
-        $_contentType = "css";
+    protected static
+        $_contentType   = "css",
+        $_pipeForType   = "sass";
 
     private
         $_sassCompiler;

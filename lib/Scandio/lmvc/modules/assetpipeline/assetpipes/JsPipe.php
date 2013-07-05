@@ -11,8 +11,9 @@ namespace Scandio\lmvc\modules\assetpipeline\assetpipes;
 class JsPipe extends AbstractAssetPipe
 {
 
-    protected
-        $_contentType = "js";
+    protected static
+        $_contentType   = "js",
+        $_pipeForType   = "js";
 
     function __construct()
     {
