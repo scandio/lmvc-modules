@@ -1,4 +1,27 @@
-lmvc-modules
-============
+# lmvc-modules
 
 LMVC-Modules are easy-to-use extensions to the 'scandio/lmvc'-framework
+
+## Form module
+
+Easily create validator classes extending the *AbstractForm* base class while defining validator-functions and error-messages.
+
+[Readme](https://github.com/scandio/lmvc-modules/tree/master/lib/Scandio/lmvc/modules/form)
+
+## Mustache module
+
+Compiles mustache templates and provides a simple integration into LMVC's views.
+
+[Readme](https://github.com/scandio/lmvc-modules/tree/master/lib/Scandio/lmvc/modules/mustache)
+
+## Security module
+
+Protects resources provided by controllers using custom security principals (e.g. Ldap or Json) as gateways.
+
+[Readme](https://github.com/scandio/lmvc-modules/tree/master/lib/Scandio/lmvc/modules/security)
+
+## Snippets module
+
+Allows easy snippets integration in views for e.g. rendering of prepared Html-components such as tables, checkboxes, etc. Moreover, directories can be registered to load more custom snippets from various sources.
+
+[Readme](https://github.com/scandio/lmvc-modules/tree/master/lib/Scandio/lmvc/modules/snippets)
