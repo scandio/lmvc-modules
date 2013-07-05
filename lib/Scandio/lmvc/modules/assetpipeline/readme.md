@@ -1,4 +1,4 @@
-# Asset pipeline Modul (lmvc-modules)
+# Asset pipeline module (lmvc-modules)
 
 This module intends to be a simple and small asset pipeline which integrates easily with the [LMVC-framework](https://github.com/scandio/lmvc).
 
