@@ -2,7 +2,7 @@
 
 namespace Scandio\lmvc\modules\assetpipeline\interfaces;
 
-interface iAssetPipeline
+interface AssetPipelineInterface
 {
 
 }

@@ -9,7 +9,7 @@ use Scandio\lmvc\modules\assetpipeline\assetpipes;
 use Scandio\lmvc\modules\assetpipeline\util;
 
 
-class AssetPipeline extends Controller implements interfaces\iAssetPipeline
+class AssetPipeline extends Controller implements interfaces\AssetPipelineInterface
 {
     private static
         $_cssPipe,

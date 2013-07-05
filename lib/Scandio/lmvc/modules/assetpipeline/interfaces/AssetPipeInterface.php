@@ -2,7 +2,7 @@
 
 namespace Scandio\lmvc\modules\assetpipeline\interfaces;
 
-interface iAssetPipe
+interface AssetPipeInterface
 {
     public function setCacheDirectory($cacheDirectory);
 

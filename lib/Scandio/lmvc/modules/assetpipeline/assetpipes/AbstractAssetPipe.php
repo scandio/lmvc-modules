@@ -5,7 +5,7 @@ namespace Scandio\lmvc\modules\assetpipeline\assetpipes;
 use Scandio\lmvc\modules\assetpipeline\interfaces;
 use Scandio\lmvc\modules\assetpipeline\util;
 
-abstract class AbstractAssetPipe implements interfaces\iAssetPipe
+abstract class AbstractAssetPipe implements interfaces\AssetPipeInterface
 {
 
     protected
