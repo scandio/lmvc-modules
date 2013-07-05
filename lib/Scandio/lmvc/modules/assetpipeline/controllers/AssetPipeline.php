@@ -9,7 +9,7 @@ use Scandio\lmvc\modules\assetpipeline\assetpipes;
 use Scandio\lmvc\modules\assetpipeline\util;
 
 
-class AssetPipeline extends Controller implements interfaces\iAssetPipeline
+class AssetPipeline extends Controller implements interfaces\AssetPipelineInterface
 {
     private static
         $_cssPipe,
@@ -21,26 +21,27 @@ class AssetPipeline extends Controller implements interfaces\iAssetPipeline
     protected static
         $config = [],
         $defaults = [
-            'stage' => 'dev',
-            'assetRootDirectory' => '',
-            'cacheDirectory' => '_cache',
-            'assetDirectories' => [
-                'js'    => [
-                    'main'  => 'javascripts'
-                ],
-                'less'  => [
-                    'main'  =>  'styles'
-                ],
-                'sass'  => [
-                    'main'  =>  'styles'
-                ],
-                'css'   => [
-                    'main'  =>  'styles'
-                ]
+        'stage' => 'dev',
+        'assetRootDirectory' => '',
+        'cacheDirectory' => '_cache',
+        'assetDirectories' => [
+            'js' => [
+                'main' => 'javascripts'
+            ],
+            'less' => [
+                'main' => 'styles'
+            ],
+            'sass' => [
+                'main' => 'styles'
+            ],
+            'css' => [
+                'main' => 'styles'
             ]
-        ];
+        ]
+    ];
 
-    public function __construct(/* No dependency injection yet */) {
+    public function __construct( /* No dependency injection yet */)
+    {
         static::$_cssPipe = new assetpipes\CssPipe();
         static::$_sassPipe = new assetpipes\SassPipe();
         static::$_lessPipe = new assetpipes\LessPipe();
@@ -56,7 +57,8 @@ class AssetPipeline extends Controller implements interfaces\iAssetPipeline
         static::initialize();
     }
 
-    public static function initialize() {
+    public static function initialize()
+    {
         util\FileLocator::setStage(static::$config['stage']);
 
         static::$_cssPipe->setCacheDirectory(static::$config['cacheDirectory']);
@@ -90,28 +92,28 @@ class AssetPipeline extends Controller implements interfaces\iAssetPipeline
         echo "< Please specify a pipe as action as in: css|js|sass|less >";
     }
 
-    public static function js(/* func_get_args = (options…, filenames…) */)
+    public static function js( /* func_get_args = (options…, filenames…) */)
     {
         $args = func_get_args();
 
         echo static::$_jsPipe->serve(static::$_helper->getFiles($args), static::$_helper->getOptions($args));
     }
 
-    public static function css(/* func_get_args = (options…, filenames…) */)
+    public static function css( /* func_get_args = (options…, filenames…) */)
     {
         $args = func_get_args();
 
         echo static::$_cssPipe->serve(static::$_helper->getFiles($args), static::$_helper->getOptions($args));
     }
 
-    public static function less(/* func_get_args = (options…, filenames…) */)
+    public static function less( /* func_get_args = (options…, filenames…) */)
     {
         $args = func_get_args();
 
         echo static::$_lessPipe->serve(static::$_helper->getFiles($args), static::$_helper->getOptions($args));
     }
 
-    public static function sass(/* func_get_args = (options…, filenames…) */)
+    public static function sass( /* func_get_args = (options…, filenames…) */)
     {
         $args = func_get_args();
 

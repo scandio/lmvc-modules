@@ -2,7 +2,14 @@
 
 namespace Scandio\lmvc\modules\assetpipeline\assetpipes;
 
-class SassPipe extends AbstractAssetPipe {
+/**
+ * Class SassPipe
+ * @package Scandio\lmvc\modules\assetpipeline\assetpipes
+ *
+ * Pipe responsible for Sass files.
+ */
+class SassPipe extends AbstractAssetPipe
+{
 
     protected
         $_contentType = "css";
@@ -10,27 +17,41 @@ class SassPipe extends AbstractAssetPipe {
     private
         $_sassCompiler;
 
-    function __construct() {
+    function __construct()
+    {
         $this->_sassCompiler = new \scssc();
 
         parent::__construct();
     }
 
-    private function _min($asset) {
+    private function _min($asset)
+    {
         return \CssMin::minify(file_get_contents($asset));
     }
 
-    private function _compile($asset) {
+    private function _compile($asset)
+    {
         return $this->_sassCompiler->compile(file_get_contents($asset));
     }
 
-    public function process($asset, $options = []) {
-        $css    = null;
-        $file   = $this->_assetDirectory . DIRECTORY_SEPARATOR . $asset;
+    /**
+     * The abstract process method to be called whenever file needs to be handled by this pipe.
+     *
+     * @param $asset which should be processed by this pipe
+     * @param array $options to be applied on asset (e.g. min)
+     *
+     * @return string containing the processed file's content
+     */
+    public function process($asset, $options = [])
+    {
+        $css = null;
+        $file = $this->_assetDirectory . DIRECTORY_SEPARATOR . $asset;
 
         $css = $this->_compile($file);
 
-        if ( in_array('min', $options) ) { $css = $this->_min($file); }
+        if (in_array('min', $options)) {
+            $css = $this->_min($file);
+        }
 
         return $css;
     }
