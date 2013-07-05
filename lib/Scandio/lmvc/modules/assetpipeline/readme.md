@@ -15,25 +15,25 @@ It is easy to configure and bearly needs any setup. It has a simple default conf
 ### Defaults
 
 ```php
-   $defaults = [
-      'stage' => 'dev',
-      'assetRootDirectory' => '',
-      'cacheDirectory' => '_cache',
-      'assetDirectories' => [
-         'js'    => [
-            'main'  => 'javascripts'
-         ],
-         'less'  => [
-            'main'  =>  'styles'
-         ],
-         'sass'  => [
-            'main'  =>  'styles'
-         ],
-         'css'   => [
-            'main'  =>  'styles'
-         ]
+$defaults = [
+   'stage' => 'dev',
+   'assetRootDirectory' => '',
+   'cacheDirectory' => '_cache',
+   'assetDirectories' => [
+      'js'    => [
+         'main'  => 'javascripts'
+      ],
+      'less'  => [
+         'main'  =>  'styles'
+      ],
+      'sass'  => [
+         'main'  =>  'styles'
+      ],
+      'css'   => [
+         'main'  =>  'styles'
       ]
-   ];
+   ]
+];
 ```
 
 The $rootDirectory will be handeled realativly from your app's root and can e.g. be set to be /assets. The $cacheDirectory will be used to chache concatinated and/or minified sources in each's pipes (js, less, sass and css) subdirectory. The _*cache directory will not be created* and needs to exist prior to using the pipeline.
@@ -43,13 +43,13 @@ The $rootDirectory will be handeled realativly from your app's root and can e.g.
 Each $assetDirectory can have multiple fallbacks as in
 
 ```php
-   'js'    => [
-      'main'      => 'javascripts',
-      'fallbacks' => ['vendor/twitter' ,'vendor/']
-   ],
-   'less'  => [
-      'main'  =>  'styles'
-   ]
+'js'    => [
+   'main'      => 'javascripts',
+   'fallbacks' => ['vendor/twitter' ,'vendor/']
+],
+'less'  => [
+   'main'  =>  'styles'
+]
 ```
 
 which will be used whenever a asset is not found in its main directory. Nevertheless, be aware the search will be performed recursivly and can return files from undisired locations which is why multiple fallbacks can be registered which should be set in order of preference.
@@ -68,7 +68,7 @@ E.g. if one requests *http://localhost/LMVC/lmvc-base/assetpipeline/js/jquery-1.
 Its easy to integrate with the assetpipeline through lmvc. Assuming that you have the pipline as a module just type
 
 ```php
-   $app->assets(['jquery-1.9.1.js', 'bootstrap.js'], ['min'])
+$app->assets(['jquery-1.9.1.js', 'bootstrap.js'], ['min'])
 ```
 
 will return a url which will request the concatinated and minifed assets.
@@ -77,7 +77,7 @@ Its even easier with the UI-Snippetslibrary enabled which reduces the overhead o
 Therefore typing
 
 ```php
-   UI::css($app->assets(['bootstrap.css', 'bootstrap-responsive.css'], ['min']))
+UI::css($app->assets(['bootstrap.css', 'bootstrap-responsive.css'], ['min']))
 ```
 
 will print a link-tag which requests the sources with the options from the server.
