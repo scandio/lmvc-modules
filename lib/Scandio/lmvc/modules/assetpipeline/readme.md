@@ -2,7 +2,7 @@
 
 This module intends to be a simple and small asset pipeline which integrates easily with the [LMVC-framework](https://github.com/scandio/lmvc).
 
-## An convention of configuration pipeline
+## A convention over configuration pipeline
 
 The asset pipeline currently supports CSS, Sass, Less and Javascript files through its directives in */assetpipeline/(css|sass|less|js)*.
 
