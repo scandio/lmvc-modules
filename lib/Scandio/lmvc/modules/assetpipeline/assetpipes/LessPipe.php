@@ -2,6 +2,12 @@
 
 namespace Scandio\lmvc\modules\assetpipeline\assetpipes;
 
+/**
+ * Class LessPipe
+ * @package Scandio\lmvc\modules\assetpipeline\assetpipes
+ *
+ * Handles all Less files to be processed.
+ */
 class LessPipe extends AbstractAssetPipe
 {
 
@@ -28,6 +34,14 @@ class LessPipe extends AbstractAssetPipe
         return $this->_lessCompiler->compile(file_get_contents($asset));
     }
 
+    /**
+     * The abstract process method to be called whenever file needs to be handled by this pipe.
+     *
+     * @param $asset which should be processed by this pipe
+     * @param array $options to be applied on asset (e.g. min)
+     *
+     * @return string containing the processed file's content
+     */
     public function process($asset, $options = [])
     {
         $css = null;

@@ -2,6 +2,12 @@
 
 namespace Scandio\lmvc\modules\assetpipeline\assetpipes;
 
+/**
+ * Class SassPipe
+ * @package Scandio\lmvc\modules\assetpipeline\assetpipes
+ *
+ * Pipe responsible for Sass files.
+ */
 class SassPipe extends AbstractAssetPipe
 {
 
@@ -28,6 +34,14 @@ class SassPipe extends AbstractAssetPipe
         return $this->_sassCompiler->compile(file_get_contents($asset));
     }
 
+    /**
+     * The abstract process method to be called whenever file needs to be handled by this pipe.
+     *
+     * @param $asset which should be processed by this pipe
+     * @param array $options to be applied on asset (e.g. min)
+     *
+     * @return string containing the processed file's content
+     */
     public function process($asset, $options = [])
     {
         $css = null;
