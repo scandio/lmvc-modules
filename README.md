@@ -25,3 +25,9 @@ Protects resources provided by controllers using custom security principals (e.g
 Allows easy snippets integration in views for e.g. rendering of prepared Html-components such as tables, checkboxes, etc. Moreover, directories can be registered to load more custom snippets from various sources.
 
 [Readme](https://github.com/scandio/lmvc-modules/tree/master/lib/Scandio/lmvc/modules/snippets)
+
+## Asset pipeline module
+
+Facilitates asset requesting, concatenation and minification of Javascript, CSS, Sass and Less sources. In addition, easily integrates into lmvc and its views.
+
+[Readme](https://github.com/scandio/lmvc-modules/tree/master/lib/Scandio/lmvc/modules/assetpipeline)
