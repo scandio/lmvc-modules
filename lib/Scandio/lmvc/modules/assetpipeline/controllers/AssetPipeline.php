@@ -12,10 +12,7 @@ use Scandio\lmvc\modules\assetpipeline\util;
 class AssetPipeline extends Controller implements interfaces\AssetPipelineInterface
 {
     private static
-        $_cssPipe,
-        $_sassPipe,
-        $_lessPipe,
-        $_jsPipe,
+        $_pipes = [],
         $_helper;
 
     protected static
@@ -40,14 +37,31 @@ class AssetPipeline extends Controller implements interfaces\AssetPipelineInterf
         ]
     ];
 
-    public function __construct( /* No dependency injection yet */)
+    function __construct()
     {
-        static::$_cssPipe = new assetpipes\CssPipe();
-        static::$_sassPipe = new assetpipes\SassPipe();
-        static::$_lessPipe = new assetpipes\LessPipe();
-        static::$_jsPipe = new assetpipes\JsPipe();
-
         static::$_helper = new util\AssetPipelineHelper();
+    }
+
+    private static function _instantiatePipes()
+    {
+        #create all the pipes for types - all double nested
+        foreach (static::$_pipes as $type => $pipe) {
+            static::$_pipes[$type] = new $pipe;
+
+            #set some settings on pipes dependend on their type (array-reference) which may be fragile but works for now
+            static::$_pipes[$type]->setCacheDirectory(static::$config['cacheDirectory']);
+
+            static::$_pipes[$type]->setAssetDirectory(
+                static::$_helper->path([static::$config['assetRootDirectory'], static::$config['assetDirectories'][$type]['main']]),
+                static::$_helper->prefix(static::$config['assetDirectories'][$type]['fallbacks'], static::$config['assetRootDirectory'])
+            );
+        }
+    }
+
+    public static function registerAssetpipe($forType, $pipe)
+    {
+        #one pipe per type possible it does not make sense otherwise yet: last one wins!
+        static::$_pipes[$forType] = $pipe;
     }
 
     public static function configure($config = [])
@@ -59,32 +73,11 @@ class AssetPipeline extends Controller implements interfaces\AssetPipelineInterf
 
     public static function initialize()
     {
+        #for any file locator set the stage
         util\FileLocator::setStage(static::$config['stage']);
 
-        static::$_cssPipe->setCacheDirectory(static::$config['cacheDirectory']);
-        static::$_sassPipe->setCacheDirectory(static::$config['cacheDirectory']);
-        static::$_jsPipe->setCacheDirectory(static::$config['cacheDirectory']);
-        static::$_lessPipe->setCacheDirectory(static::$config['cacheDirectory']);
-
-        static::$_cssPipe->setAssetDirectory(
-            static::$_helper->path([static::$config['assetRootDirectory'], static::$config['assetDirectories']['css']['main']]),
-            static::$_helper->prefix(static::$config['assetDirectories']['css']['fallbacks'], static::$config['assetRootDirectory'])
-        );
-
-        static::$_sassPipe->setAssetDirectory(
-            static::$_helper->path([static::$config['assetRootDirectory'], static::$config['assetDirectories']['sass']['main']]),
-            static::$_helper->prefix(static::$config['assetDirectories']['sass']['fallbacks'], static::$config['assetRootDirectory'])
-        );
-
-        static::$_jsPipe->setAssetDirectory(
-            static::$_helper->path([static::$config['assetRootDirectory'], static::$config['assetDirectories']['js']['main']]),
-            static::$_helper->prefix(static::$config['assetDirectories']['js']['fallbacks'], static::$config['assetRootDirectory'])
-        );
-
-        static::$_lessPipe->setAssetDirectory(
-            static::$_helper->path([static::$config['assetRootDirectory'], static::$config['assetDirectories']['less']['main']]),
-            static::$_helper->prefix(static::$config['assetDirectories']['less']['fallbacks'], static::$config['assetRootDirectory'])
-        );
+        #creates all the pipes (http://cdn.meme.li/instances/300x300/39438036.jpg)
+        static::_instantiatePipes();
     }
 
     public static function index()
@@ -96,27 +89,27 @@ class AssetPipeline extends Controller implements interfaces\AssetPipelineInterf
     {
         $args = func_get_args();
 
-        echo static::$_jsPipe->serve(static::$_helper->getFiles($args), static::$_helper->getOptions($args));
+        echo static::$_pipes['js']->serve(static::$_helper->getFiles($args), static::$_helper->getOptions($args));
     }
 
     public static function css( /* func_get_args = (options…, filenames…) */)
     {
         $args = func_get_args();
 
-        echo static::$_cssPipe->serve(static::$_helper->getFiles($args), static::$_helper->getOptions($args));
+        echo static::$_pipes['css']->serve(static::$_helper->getFiles($args), static::$_helper->getOptions($args));
     }
 
     public static function less( /* func_get_args = (options…, filenames…) */)
     {
         $args = func_get_args();
 
-        echo static::$_lessPipe->serve(static::$_helper->getFiles($args), static::$_helper->getOptions($args));
+        echo static::$_pipes['less']->serve(static::$_helper->getFiles($args), static::$_helper->getOptions($args));
     }
 
     public static function sass( /* func_get_args = (options…, filenames…) */)
     {
         $args = func_get_args();
 
-        echo static::$_sassPipe->serve(static::$_helper->getFiles($args), static::$_helper->getOptions($args));
+        echo static::$_pipes['sass']->serve(static::$_helper->getFiles($args), static::$_helper->getOptions($args));
     }
 }
