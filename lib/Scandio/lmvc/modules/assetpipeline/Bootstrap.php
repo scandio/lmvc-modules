@@ -9,7 +9,8 @@ use Scandio\lmvc\modules\assetpipeline;
 class Bootstrap extends \Scandio\lmvc\Bootstrap
 {
 
-    public static function configure($config = []) {
+    public static function configure($config = [])
+    {
         controllers\AssetPipeline::configure($config);
     }
 

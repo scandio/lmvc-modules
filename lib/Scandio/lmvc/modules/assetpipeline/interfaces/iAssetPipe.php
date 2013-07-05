@@ -2,8 +2,10 @@
 
 namespace Scandio\lmvc\modules\assetpipeline\interfaces;
 
-interface iAssetPipe {
+interface iAssetPipe
+{
     public function setCacheDirectory($cacheDirectory);
+
     public function setAssetDirectory($assetDirectory);
 
     public function process($asset, $options = []);
