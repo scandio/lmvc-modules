@@ -92,41 +92,12 @@ class AssetPipeline extends Controller implements interfaces\AssetPipelineInterf
 
     public static function index($action, $params)
     {
-        echo "< Please specify a pipe as action as in: css|js|sass|less >";
-    }
-
-    public static function js( /* func_get_args = (options…, filenames…) */)
-    {
         $args = func_get_args();
 
-        echo static::$_pipes['js']->serve(static::$_helper->getFiles($args), static::$_helper->getOptions($args));
-    }
-
-    public static function css( /* func_get_args = (options…, filenames…) */)
-    {
-        $args = func_get_args();
-
-        echo static::$_pipes['css']->serve(static::$_helper->getFiles($args), static::$_helper->getOptions($args));
-    }
-
-    public static function less( /* func_get_args = (options…, filenames…) */)
-    {
-        $args = func_get_args();
-
-        echo static::$_pipes['less']->serve(static::$_helper->getFiles($args), static::$_helper->getOptions($args));
-    }
-
-    public static function sass( /* func_get_args = (options…, filenames…) */)
-    {
-        $args = func_get_args();
-
-        echo static::$_pipes['sass']->serve(static::$_helper->getFiles($args), static::$_helper->getOptions($args));
-    }
-
-    public static function scss( /* func_get_args = (options…, filenames…) */)
-    {
-        $args = func_get_args();
-
-        echo static::$_pipes['sass']->serve(static::$_helper->getFiles($args), static::$_helper->getOptions($args));
+        if(array_key_exists($action, static::$_pipes)) {
+            echo static::$_pipes[$action]->serve(static::$_helper->getFiles($args), static::$_helper->getOptions($args));
+        } else {
+            echo "< Please specify a pipe as action as in: " . implode(" | ", array_keys(static::$_pipes)) . " >";
+        }
     }
 }
