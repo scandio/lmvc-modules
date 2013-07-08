@@ -16,6 +16,7 @@ class Bootstrap extends \Scandio\lmvc\Bootstrap
         assetpipes\SassPipe::register(['sass', 'scss']);
         assetpipes\LessPipe::register(['less']);
         assetpipes\JsPipe::register(['js']);
+        assetpipes\CoffeescriptPipe::register(['coffee', 'coffeescript']);
 
         controllers\AssetPipeline::configure($config);
     }

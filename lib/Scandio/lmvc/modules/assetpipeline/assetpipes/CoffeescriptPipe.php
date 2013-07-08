@@ -2,13 +2,15 @@
 
 namespace Scandio\lmvc\modules\assetpipeline\assetpipes;
 
+use CoffeeScript;
+
 /**
- * Class JsPipe
+ * Class CoffeescriptPipe
  * @package Scandio\lmvc\modules\assetpipeline\assetpipes
  *
- * Handling all the js files to be processed.
+ * Handles Css files to be processed by pipe.
  */
-class JsPipe extends AbstractAssetPipe
+class CoffeescriptPipe extends AbstractAssetPipe
 {
 
     protected static
@@ -19,6 +21,12 @@ class JsPipe extends AbstractAssetPipe
         parent::__construct();
     }
 
+    /**
+     * Minifies the contents of file given.
+     *
+     * @param $asset to be minified
+     * @return string the minified stream
+     */
     private function _min($asset)
     {
         return \JSMinPlus::minify(file_get_contents($asset));
@@ -34,16 +42,26 @@ class JsPipe extends AbstractAssetPipe
      */
     public function process($asset, $options = [])
     {
-        $css = null;
         $file = $this->_assetDirectory . DIRECTORY_SEPARATOR . $asset;
+        $js = null;
 
-        #needs no explanation?
-        if (in_array('min', $options)) {
-            $css = $this->_min($file);
-        } else {
-            $css = file_get_contents($file);
+        try
+        {
+            $coffee = file_get_contents($file);
+
+            // See available options above.
+            $js = CoffeeScript\Compiler::compile($coffee, array('filename' => $file));
+
+            if(in_array('min', $options)) {
+                $js = $this->_min($file);
+            }
+        }
+        catch (Exception $e)
+        {
+            echo $e->getMessage();
         }
 
-        return $css;
+        return $js;
     }
+
 }

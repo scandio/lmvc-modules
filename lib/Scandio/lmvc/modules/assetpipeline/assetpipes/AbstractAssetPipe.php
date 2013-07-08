@@ -39,7 +39,7 @@ abstract class AbstractAssetPipe implements interfaces\AssetPipeInterface
     private function _setHttpHeaders()
     {
         #Nothing more complicated up to now
-        header("Content-Type: text/" . static::$_contentType);
+        header("Content-Type: " . static::$_contentType);
     }
 
     /**

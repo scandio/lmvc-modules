@@ -12,7 +12,7 @@ class LessPipe extends AbstractAssetPipe
 {
 
     protected static
-        $_contentType   = "css";
+        $_contentType   = "text/css";
 
     private
         $_lessCompiler;

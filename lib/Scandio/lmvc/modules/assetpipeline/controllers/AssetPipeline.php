@@ -25,6 +25,9 @@ class AssetPipeline extends Controller implements interfaces\AssetPipelineInterf
             'js' => [
                 'main' => 'javascripts'
             ],
+            'coffee' => [
+                'main' => 'coffeescript'
+            ],
             'less' => [
                 'main' => 'styles'
             ],
