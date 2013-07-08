@@ -13,6 +13,7 @@ class AssetPipeline extends Controller implements interfaces\AssetPipelineInterf
 {
     private static
         $_pipes = [],
+        $_flexOptions = [],
         $_reservedUrlKeywords = [],
         $_helper;
 
@@ -95,6 +96,11 @@ class AssetPipeline extends Controller implements interfaces\AssetPipelineInterf
         static::initialize();
     }
 
+    public static function registerFlexOptions($options = [])
+    {
+        static::$_flexOptions = array_merge(static::$_flexOptions, $options);
+    }
+
     public static function initialize()
     {
         #for any file locator set the stage
@@ -107,7 +113,9 @@ class AssetPipeline extends Controller implements interfaces\AssetPipelineInterf
     public static function index($action)
     {
         #first is action
-        $args = array_filter(array_slice(func_get_args(), 1));
+        $args = array_filter(
+            array_merge(array_slice(func_get_args(), 1), static::$_flexOptions)
+        );
 
         if(array_key_exists($action, static::$_pipes)) {
             echo static::$_pipes[$action]->serve(
