@@ -12,8 +12,7 @@ class SassPipe extends AbstractAssetPipe
 {
 
     protected static
-        $_contentType   = "css",
-        $_pipeForType   = "sass";
+        $_contentType   = "css";
 
     private
         $_sassCompiler;

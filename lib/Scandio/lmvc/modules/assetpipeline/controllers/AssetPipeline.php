@@ -31,6 +31,9 @@ class AssetPipeline extends Controller implements interfaces\AssetPipelineInterf
             'sass' => [
                 'main' => 'styles'
             ],
+            'scss' => [
+                'main' => 'styles'
+            ],
             'css' => [
                 'main' => 'styles'
             ]
@@ -53,15 +56,22 @@ class AssetPipeline extends Controller implements interfaces\AssetPipelineInterf
 
             static::$_pipes[$type]->setAssetDirectory(
                 static::$_helper->path([static::$config['assetRootDirectory'], static::$config['assetDirectories'][$type]['main']]),
-                static::$_helper->prefix(static::$config['assetDirectories'][$type]['fallbacks'], static::$config['assetRootDirectory'])
+
+                static::$_helper->prefix(isset(static::$config['assetDirectories'][$type]['fallbacks']) ?
+                                            static::$config['assetDirectories'][$type]['fallbacks'] :
+                                            [],
+                static::$config['assetRootDirectory'])
             );
         }
     }
 
-    public static function registerAssetpipe($forType, $pipe)
+    public static function registerAssetpipe($types, $pipe)
     {
-        #one pipe per type possible it does not make sense otherwise yet: last one wins!
-        static::$_pipes[$forType] = $pipe;
+        #multiple pipes per type possible although last of type wins because multiple pipes per type would lead
+        #to unpredictable outcomes due to order imho
+        foreach ($types as $type) {
+            static::$_pipes[$type] = $pipe;
+        }
     }
 
     public static function configure($config = [])
@@ -80,7 +90,7 @@ class AssetPipeline extends Controller implements interfaces\AssetPipelineInterf
         static::_instantiatePipes();
     }
 
-    public static function index()
+    public static function index($action, $params)
     {
         echo "< Please specify a pipe as action as in: css|js|sass|less >";
     }
@@ -107,6 +117,13 @@ class AssetPipeline extends Controller implements interfaces\AssetPipelineInterf
     }
 
     public static function sass( /* func_get_args = (options…, filenames…) */)
+    {
+        $args = func_get_args();
+
+        echo static::$_pipes['sass']->serve(static::$_helper->getFiles($args), static::$_helper->getOptions($args));
+    }
+
+    public static function scss( /* func_get_args = (options…, filenames…) */)
     {
         $args = func_get_args();
 

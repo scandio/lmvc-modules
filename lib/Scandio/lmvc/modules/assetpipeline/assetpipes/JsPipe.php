@@ -12,8 +12,7 @@ class JsPipe extends AbstractAssetPipe
 {
 
     protected static
-        $_contentType   = "js",
-        $_pipeForType   = "js";
+        $_contentType   = "js";
 
     function __construct()
     {
