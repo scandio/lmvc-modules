@@ -15,6 +15,7 @@ class FileLocator
 {
     private
         $_helper,
+        $_useFolders,
         $_cacheDirectory,
         $_assetDirectory,
         $_assetDirectoryFallbacks,
@@ -64,7 +65,7 @@ class FileLocator
         $prefix = array_merge($paths, $options);
 
         #Prefix with options e.g: min.00898888222. (dot in in end!)
-        $fileName .= (count($prefix) > 0)  ? implode(".", $prefix) . "" : ".";
+        $fileName .= (count($prefix) > 0)  ? implode(".", $prefix) . "." : "";
 
         #Append file names with + as delimiter and remove extensions from all except last file (e.g. [min.929292.]jquery+my-plugin.js
         $fileName .= implode("+", $this->_helper->stripExtensions($assets, true));
@@ -130,6 +131,9 @@ class FileLocator
     private function _allFiles($path) {
         $assets = [];
 
+        #only do work if folders are enabled
+        if ($this->_useFolders === false) return $assets;
+
         $directoryIterator = new \DirectoryIterator($this->_helper->path([$this->_assetDirectory, $path]));
 
         foreach ($directoryIterator as $fileInfo) {
@@ -149,6 +153,13 @@ class FileLocator
     public static function setStage($stage)
     {
         static::$_stage = $stage;
+    }
+
+    /**
+     * @param boolean $flag indicating if sub directories should be used
+     */
+    public function useFolders($flag) {
+        $this->_useFolders = $flag;
     }
 
     /**

@@ -13,12 +13,14 @@ class AssetPipeline extends Controller implements interfaces\AssetPipelineInterf
 {
     private static
         $_pipes = [],
+        $_flexOptions = [],
         $_reservedUrlKeywords = [],
         $_helper;
 
     protected static
         $config = [],
         $defaults = [
+        'useFolders' => true,
         'stage' => 'dev',
         'assetRootDirectory' => '',
         'cacheDirectory' => '_cache',
@@ -40,6 +42,9 @@ class AssetPipeline extends Controller implements interfaces\AssetPipelineInterf
             ],
             'css' => [
                 'main' => 'styles'
+            ],
+            'img' => [
+                'main' => 'img'
             ]
         ]
     ];
@@ -57,6 +62,8 @@ class AssetPipeline extends Controller implements interfaces\AssetPipelineInterf
 
             #set some settings on pipes dependend on their type (array-reference) which may be fragile but works for now
             static::$_pipes[$type]->setCacheDirectory(static::$config['cacheDirectory']);
+
+            static::$_pipes[$type]->useFolders(static::$config['useFolders']);
 
             static::$_pipes[$type]->setAssetDirectory(
                 static::$_helper->path([static::$config['assetRootDirectory'], static::$config['assetDirectories'][$type]['main']]),
@@ -89,6 +96,11 @@ class AssetPipeline extends Controller implements interfaces\AssetPipelineInterf
         static::initialize();
     }
 
+    public static function registerFlexOptions($options = [])
+    {
+        static::$_flexOptions = array_merge(static::$_flexOptions, $options);
+    }
+
     public static function initialize()
     {
         #for any file locator set the stage
@@ -98,15 +110,19 @@ class AssetPipeline extends Controller implements interfaces\AssetPipelineInterf
         static::_instantiatePipes();
     }
 
-    public static function index($action, $params)
+    public static function index($action)
     {
-        $args = func_get_args();
+        #first is action
+        $args = array_filter(
+            array_merge(array_slice(func_get_args(), 1), static::$_flexOptions)
+        );
 
         if(array_key_exists($action, static::$_pipes)) {
             echo static::$_pipes[$action]->serve(
                 static::$_helper->getFiles($args),
                 static::$_helper->getPaths($args),
-                static::$_helper->getOptions(array_slice($args, 1))); #first is action
+                static::$_helper->getOptions($args)
+            );
         } else {
             echo "< Please specify a pipe as action as in: " . implode(" | ", array_keys(static::$_pipes)) . " >";
         }

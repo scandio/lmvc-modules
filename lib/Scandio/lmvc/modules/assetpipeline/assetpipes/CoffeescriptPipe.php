@@ -27,9 +27,9 @@ class CoffeescriptPipe extends AbstractAssetPipe
      * @param $asset to be minified
      * @return string the minified stream
      */
-    private function _min($asset)
+    private function _min($js)
     {
-        return \JSMinPlus::minify(file_get_contents($asset));
+        return \JSMinPlus::minify($js);
     }
 
     /**
@@ -53,12 +53,13 @@ class CoffeescriptPipe extends AbstractAssetPipe
             $js = CoffeeScript\Compiler::compile($coffee, array('filename' => $file));
 
             if(in_array('min', $options)) {
-                $js = $this->_min($file);
+                $js = $this->_min($js);
             }
         }
         catch (Exception $e)
         {
             echo $e->getMessage();
+            $js = $e->getMessage();
         }
 
         return $js;

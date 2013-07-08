@@ -16,6 +16,7 @@ It is easy to configure and barely needs any setup. It has a simple default conf
 
 ```php
 $defaults = [
+   'useFolders' => false,
    'stage' => 'dev',
    'assetRootDirectory' => '',
    'cacheDirectory' => '_cache',
@@ -96,8 +97,10 @@ will print a link-tag which requests the sources with the options from the serve
 
 ## Additional tricks
 
+The following trick only works if the `useFolders`-flag is set to false. Otherwise the pipeline will assume that the hash/version-number is indeed a folder and fail locating the file.
+
 Passing a hash in the url will force the cache to generate a uniquely cached file e.g. requesting Javascript by `/assetpipeline/js/min/6d1b5e3/jquery.js/bootstrap.js/main.js` will concat and minify all source and prepend the hash to the cached filename.
-After all, this trick mitigates some browser's rather eager caching mechanisms
+After all, this trick mitigates some browser's rather eager caching mechanisms.
 
 Visioning between assets is hereby also fairly easy. For example by never clearly the cache-directory one can easily switch between versions by `/assetpipeline/js/min/v1/jquery.js/bootstrap.js/main.js` or `/assetpipeline/js/min/v2/jquery.js/bootstrap.js/main.js`.
 
