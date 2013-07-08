@@ -95,6 +95,6 @@ Visioning between assets is hereby also fairly easy. For example by never clearl
 
 ## Contributing
 
-Writing your own asset pipe is fairly easy. Just checkout the [CONTRIBUTING.md](https://github.com/scandio/lmvc-modules/blob/master/CONTRIBUTING.md).
+Writing your own asset pipe is fairly easy. Just checkout the [contributing.md](https://github.com/scandio/lmvc-modules/blob/master/lib/Scandio/lmvc/modules/assetpipeline/contributing.md).
 
 **Thanks for reading!**
