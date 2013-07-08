@@ -22,8 +22,7 @@ abstract class AbstractAssetPipe implements interfaces\AssetPipeInterface
         $_fileLocator;
 
     protected static
-        $_contentType,
-        $_pipeForType;
+        $_contentType;
 
     #Each pipe is responsible for this
     abstract public function process($asset, $options = []);
@@ -40,16 +39,19 @@ abstract class AbstractAssetPipe implements interfaces\AssetPipeInterface
     private function _setHttpHeaders()
     {
         #Nothing more complicated up to now
-        header("Content-Type: text/" . static::$_contentType);
+        header("Content-Type: " . static::$_contentType);
     }
 
     /**
      * Registers pipe at controller based on its pipe type.
+     *
+     * @param array $types  to be registered upon which pipe will get notified (e.g. [css]) also defines
+     *                      controller path (e.g. assetpipe/css/styles.scss)
      */
-    public static function register()
+    public static function register($types)
     {
         #late static binding goodness
-        controllers\AssetPipeline::registerAssetpipe(static::$_pipeForType, get_called_class());
+        controllers\AssetPipeline::registerAssetpipe($types, get_called_class());
     }
 
     /**

@@ -25,10 +25,16 @@ class AssetPipeline extends Controller implements interfaces\AssetPipelineInterf
             'js' => [
                 'main' => 'javascripts'
             ],
+            'coffee' => [
+                'main' => 'coffeescript'
+            ],
             'less' => [
                 'main' => 'styles'
             ],
             'sass' => [
+                'main' => 'styles'
+            ],
+            'scss' => [
                 'main' => 'styles'
             ],
             'css' => [
@@ -53,15 +59,22 @@ class AssetPipeline extends Controller implements interfaces\AssetPipelineInterf
 
             static::$_pipes[$type]->setAssetDirectory(
                 static::$_helper->path([static::$config['assetRootDirectory'], static::$config['assetDirectories'][$type]['main']]),
-                static::$_helper->prefix(static::$config['assetDirectories'][$type]['fallbacks'], static::$config['assetRootDirectory'])
+
+                static::$_helper->prefix(isset(static::$config['assetDirectories'][$type]['fallbacks']) ?
+                                            static::$config['assetDirectories'][$type]['fallbacks'] :
+                                            [],
+                static::$config['assetRootDirectory'])
             );
         }
     }
 
-    public static function registerAssetpipe($forType, $pipe)
+    public static function registerAssetpipe($types, $pipe)
     {
-        #one pipe per type possible it does not make sense otherwise yet: last one wins!
-        static::$_pipes[$forType] = $pipe;
+        #multiple pipes per type possible although last of type wins because multiple pipes per type would lead
+        #to unpredictable outcomes due to order imho
+        foreach ($types as $type) {
+            static::$_pipes[$type] = $pipe;
+        }
     }
 
     public static function configure($config = [])
@@ -80,36 +93,14 @@ class AssetPipeline extends Controller implements interfaces\AssetPipelineInterf
         static::_instantiatePipes();
     }
 
-    public static function index()
-    {
-        echo "< Please specify a pipe as action as in: css|js|sass|less >";
-    }
-
-    public static function js( /* func_get_args = (options…, filenames…) */)
+    public static function index($action, $params)
     {
         $args = func_get_args();
 
-        echo static::$_pipes['js']->serve(static::$_helper->getFiles($args), static::$_helper->getOptions($args));
-    }
-
-    public static function css( /* func_get_args = (options…, filenames…) */)
-    {
-        $args = func_get_args();
-
-        echo static::$_pipes['css']->serve(static::$_helper->getFiles($args), static::$_helper->getOptions($args));
-    }
-
-    public static function less( /* func_get_args = (options…, filenames…) */)
-    {
-        $args = func_get_args();
-
-        echo static::$_pipes['less']->serve(static::$_helper->getFiles($args), static::$_helper->getOptions($args));
-    }
-
-    public static function sass( /* func_get_args = (options…, filenames…) */)
-    {
-        $args = func_get_args();
-
-        echo static::$_pipes['sass']->serve(static::$_helper->getFiles($args), static::$_helper->getOptions($args));
+        if(array_key_exists($action, static::$_pipes)) {
+            echo static::$_pipes[$action]->serve(static::$_helper->getFiles($args), static::$_helper->getOptions($args));
+        } else {
+            echo "< Please specify a pipe as action as in: " . implode(" | ", array_keys(static::$_pipes)) . " >";
+        }
     }
 }

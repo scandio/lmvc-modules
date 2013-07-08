@@ -12,8 +12,7 @@ class CssPipe extends AbstractAssetPipe
 {
 
     protected static
-        $_contentType   = "css",
-        $_pipeForType   = "css";
+        $_contentType   = "text/css";
 
     function __construct()
     {
