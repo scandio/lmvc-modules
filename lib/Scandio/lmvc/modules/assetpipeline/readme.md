@@ -4,7 +4,7 @@ This module intends to be a simple and small asset pipeline which integrates eas
 
 ## A convention over configuration pipeline
 
-The asset pipeline currently supports CSS, Sass, Less and Javascript files through its directives in `/assetpipeline/(css|sass|less|js)`.
+The asset pipeline currently supports CSS, Sass, Less and Javascript files through its directives in */assetpipeline/(css|sass|less|js|coffee)*.
 
 Each pipe can serve multiple files which will be concatenated into one e.g. `/asssetpipeline/css/general.css/menu.css`. In addition a min-option can be passed as in `/assetpipeline/css/min...` to minify the concatenated file. This option currently works for every pipe and more options might be added later on.
 
@@ -32,6 +32,9 @@ $defaults = [
       ],
       'css'   => [
          'main'  =>  'styles'
+      ]
+      'coffee'   => [
+         'main'  =>  'coffescript'
       ]
    ]
 ];
@@ -78,6 +81,7 @@ Its easy to integrate with the asset pipeline through lmvc. Assuming that you ha
 
 ```php
 $app->assets(['jquery-1.9.1.js', 'bootstrap.js'], ['min'])
+$app->assets(['jquery.plugin.coffee'], ['min'])
 ```
 
 will return a url which will request the concatenated and minifed assets.
@@ -99,5 +103,9 @@ Passing a hash in the url will force the cache to generate a uniquely cached fil
 After all, this trick mitigates some browser's rather eager caching mechanisms.
 
 Visioning between assets is hereby also fairly easy. For example by never clearly the cache-directory one can easily switch between versions by `/assetpipeline/js/min/v1/jquery.js/bootstrap.js/main.js` or `/assetpipeline/js/min/v2/jquery.js/bootstrap.js/main.js`.
+
+## Contributing
+
+Writing your own asset pipe is fairly easy. Just checkout the [contributing.md](https://github.com/scandio/lmvc-modules/blob/master/lib/Scandio/lmvc/modules/assetpipeline/contributing.md).
 
 **Thanks for reading!**
