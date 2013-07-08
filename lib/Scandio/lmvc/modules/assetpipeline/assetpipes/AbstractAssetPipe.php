@@ -92,6 +92,13 @@ abstract class AbstractAssetPipe implements interfaces\AssetPipeInterface
     }
 
     /**
+     * @param boolean $flag indicating if sub directories should be used
+     */
+    public function useFolders($flag) {
+        $this->_fileLocator->useFolders($flag);
+    }
+
+    /**
      * Sets and delegates asset-directory and fallbacks to file locator.
      *
      * @param string $assetDirectory where ordinary assets can be found

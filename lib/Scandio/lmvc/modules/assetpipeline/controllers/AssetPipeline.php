@@ -19,6 +19,7 @@ class AssetPipeline extends Controller implements interfaces\AssetPipelineInterf
     protected static
         $config = [],
         $defaults = [
+        'useFolders' => true,
         'stage' => 'dev',
         'assetRootDirectory' => '',
         'cacheDirectory' => '_cache',
@@ -60,6 +61,8 @@ class AssetPipeline extends Controller implements interfaces\AssetPipelineInterf
 
             #set some settings on pipes dependend on their type (array-reference) which may be fragile but works for now
             static::$_pipes[$type]->setCacheDirectory(static::$config['cacheDirectory']);
+
+            static::$_pipes[$type]->useFolders(static::$config['useFolders']);
 
             static::$_pipes[$type]->setAssetDirectory(
                 static::$_helper->path([static::$config['assetRootDirectory'], static::$config['assetDirectories'][$type]['main']]),

@@ -15,6 +15,7 @@ class FileLocator
 {
     private
         $_helper,
+        $_useFolders,
         $_cacheDirectory,
         $_assetDirectory,
         $_assetDirectoryFallbacks,
@@ -130,6 +131,9 @@ class FileLocator
     private function _allFiles($path) {
         $assets = [];
 
+        #only do work if folders are enabled
+        if ($this->_useFolders === false) return $assets;
+
         $directoryIterator = new \DirectoryIterator($this->_helper->path([$this->_assetDirectory, $path]));
 
         foreach ($directoryIterator as $fileInfo) {
@@ -149,6 +153,13 @@ class FileLocator
     public static function setStage($stage)
     {
         static::$_stage = $stage;
+    }
+
+    /**
+     * @param boolean $flag indicating if sub directories should be used
+     */
+    public function useFolders($flag) {
+        $this->_useFolders = $flag;
     }
 
     /**
