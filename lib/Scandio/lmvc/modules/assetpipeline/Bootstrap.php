@@ -12,11 +12,11 @@ class Bootstrap extends \Scandio\lmvc\Bootstrap
 
     public static function configure($config = [])
     {
-        assetpipes\CssPipe::register(['css']);
-        assetpipes\SassPipe::register(['sass', 'scss']);
-        assetpipes\LessPipe::register(['less']);
-        assetpipes\JsPipe::register(['js']);
-        assetpipes\CoffeescriptPipe::register(['coffee', 'coffeescript']);
+        assetpipes\CssPipe::register(['css'], ['min']);
+        assetpipes\SassPipe::register(['sass', 'scss'], ['min']);
+        assetpipes\LessPipe::register(['less'], ['min']);
+        assetpipes\JsPipe::register(['js'], ['min']);
+        assetpipes\CoffeescriptPipe::register(['coffee', 'coffeescript'], ['min']);
 
         controllers\AssetPipeline::configure($config);
     }

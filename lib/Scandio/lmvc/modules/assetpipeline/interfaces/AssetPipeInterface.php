@@ -20,5 +20,5 @@ interface AssetPipeInterface
     public function process($asset, $options = []);
 
     #every pipe needs to register itself to the managing entity/controller
-    public static function register($types);
+    public static function register($types, $options = []);
 }

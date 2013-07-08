@@ -57,12 +57,14 @@ class FileLocator
      *
      * @return string file name of cached asset e.g. jquery+myplugin.js
      */
-    private function _getCachedFileName($assets, $options)
+    private function _getCachedFileName($assets, $paths, $options)
     {
         $fileName = "";
 
+        #Prefix with paths e.g: scripts.jquery. (dot in in end!)
+        $fileName = (count($paths) > 0) ? implode(".", $paths) . "." : "";
         #Prefix with options e.g: min.00898888222. (dot in in end!)
-        $fileName = (count($options) > 0) ? implode(".", $options) . "." : "";
+        $fileName .= (count($options) > 0) ? implode(".", $options) . "." : "";
 
         #Append file names with + as delimiter and remove extensions from all except last file (e.g. [min.929292.]jquery+my-plugin.js
         $fileName .= implode("+", $this->_helper->stripExtensions($assets, true));
@@ -134,16 +136,18 @@ class FileLocator
      *
      * @return bool indicating if cache was initialized correctly (e.g. all ordinary assets were found)
      */
-    public function initializeCache($assets, $options = [])
+    public function initializeCache($assets, $paths, $options = [])
     {
         #Get the file name for cached file
-        $this->_cachedFileName = $this->_getCachedFileName($assets, $options);
+        $this->_cachedFileName = $this->_getCachedFileName($assets, $paths, $options);
         #and only file info for it because no writing/reading needed in all cases
         $this->_cachedFileInfo = new \SplFileInfo($this->_helper->path([$this->_cachedFilePath, $this->_cachedFileName]));
 
         foreach ($assets as $asset) {
             #At first asset may be under its asset directory
-            $assetFilePath = $this->_helper->path([$this->_assetDirectory, $asset]);
+            $assetFilePath = $this->_helper->path(
+                [$this->_assetDirectory, $paths, $asset]
+            );
 
             #if it is return true
             if (file_exists($assetFilePath)) {
