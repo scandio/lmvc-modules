@@ -40,6 +40,9 @@ class AssetPipeline extends Controller implements interfaces\AssetPipelineInterf
             ],
             'css' => [
                 'main' => 'styles'
+            ],
+            'img' => [
+                'main' => 'img'
             ]
         ]
     ];
@@ -98,15 +101,17 @@ class AssetPipeline extends Controller implements interfaces\AssetPipelineInterf
         static::_instantiatePipes();
     }
 
-    public static function index($action, $params)
+    public static function index($action)
     {
-        $args = func_get_args();
+        #first is action
+        $args = array_filter(array_slice(func_get_args(), 1));
 
         if(array_key_exists($action, static::$_pipes)) {
             echo static::$_pipes[$action]->serve(
                 static::$_helper->getFiles($args),
                 static::$_helper->getPaths($args),
-                static::$_helper->getOptions(array_slice($args, 1))); #first is action
+                static::$_helper->getOptions($args)
+            );
         } else {
             echo "< Please specify a pipe as action as in: " . implode(" | ", array_keys(static::$_pipes)) . " >";
         }

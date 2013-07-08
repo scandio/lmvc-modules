@@ -17,6 +17,7 @@ class Bootstrap extends \Scandio\lmvc\Bootstrap
         assetpipes\LessPipe::register(['less'], ['min']);
         assetpipes\JsPipe::register(['js'], ['min']);
         assetpipes\CoffeescriptPipe::register(['coffee', 'coffeescript'], ['min']);
+        assetpipes\ImagePipe::register(['img', 'image'], []);
 
         controllers\AssetPipeline::configure($config);
     }

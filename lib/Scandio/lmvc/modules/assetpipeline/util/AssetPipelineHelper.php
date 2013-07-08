@@ -41,7 +41,7 @@ class AssetPipelineHelper
      */
     public static function addReservedKeywords($_reservedKeywords)
     {
-        static::$_reservedKeywords = array_replace(static::$_reservedKeywords, $_reservedKeywords);
+        static::$_reservedKeywords = array_unique(array_merge(static::$_reservedKeywords, $_reservedKeywords));
     }
 
     /**

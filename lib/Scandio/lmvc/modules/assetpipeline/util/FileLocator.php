@@ -64,7 +64,7 @@ class FileLocator
         $prefix = array_merge($paths, $options);
 
         #Prefix with options e.g: min.00898888222. (dot in in end!)
-        $fileName .= (count($prefix) > 0)  ? implode(".", $prefix) . "" : ".";
+        $fileName .= (count($prefix) > 0)  ? implode(".", $prefix) . "." : "";
 
         #Append file names with + as delimiter and remove extensions from all except last file (e.g. [min.929292.]jquery+my-plugin.js
         $fileName .= implode("+", $this->_helper->stripExtensions($assets, true));
