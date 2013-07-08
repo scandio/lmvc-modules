@@ -32,11 +32,14 @@ class ImagePipe extends AbstractAssetPipe
      */
     public function process($asset, $options = [])
     {
+        var_dump($options);
         $file = $this->_assetDirectory . DIRECTORY_SEPARATOR . $asset;
 
         $img = Image::make($asset);
 
-        $img->resize(LVC::get()->request->w, LVC::get()->request->h);
+        if (isset($options[0]) && isset($options[1])) {
+            $img->resize($options[0], $options[1]);
+        }
 
         $img->save($asset);
 
