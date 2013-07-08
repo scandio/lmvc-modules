@@ -48,10 +48,10 @@ abstract class AbstractAssetPipe implements interfaces\AssetPipeInterface
      * @param array $types  to be registered upon which pipe will get notified (e.g. [css]) also defines
      *                      controller path (e.g. assetpipe/css/styles.scss)
      */
-    public static function register($types)
+    public static function register($types, $options = [])
     {
         #late static binding goodness
-        controllers\AssetPipeline::registerAssetpipe($types, get_called_class());
+        controllers\AssetPipeline::registerAssetpipe($types, get_called_class(), $options);
     }
 
     /**
@@ -62,7 +62,7 @@ abstract class AbstractAssetPipe implements interfaces\AssetPipeInterface
      *
      * @return string containing the stream which has been processed
      */
-    public function serve($assets = [], $options = [])
+    public function serve($assets = [], $paths, $options = [])
     {
         $servedContent = "";
 
@@ -70,7 +70,7 @@ abstract class AbstractAssetPipe implements interfaces\AssetPipeInterface
         $this->_setHttpHeaders();
 
         #only if cache has been initialized
-        if ($this->_fileLocator->initializeCache($assets, $options)) {
+        if ($this->_fileLocator->initializeCache($assets, $paths, $options)) {
             #the served content is either read from cache
             $servedContent = $this->_fileLocator->isCached() ?
                 $this->_fileLocator->fromCache() :

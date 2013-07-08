@@ -57,12 +57,14 @@ class FileLocator
      *
      * @return string file name of cached asset e.g. jquery+myplugin.js
      */
-    private function _getCachedFileName($assets, $options)
+    private function _getCachedFileName($assets, $paths, $options)
     {
         $fileName = "";
 
+        $prefix = array_merge($paths, $options);
+
         #Prefix with options e.g: min.00898888222. (dot in in end!)
-        $fileName = (count($options) > 0) ? implode(".", $options) . "." : "";
+        $fileName .= (count($prefix) > 0)  ? implode(".", $prefix) . "" : ".";
 
         #Append file names with + as delimiter and remove extensions from all except last file (e.g. [min.929292.]jquery+my-plugin.js
         $fileName .= implode("+", $this->_helper->stripExtensions($assets, true));
@@ -119,6 +121,27 @@ class FileLocator
     }
 
     /**
+     * Finds all files contained in one directory.
+     *
+     * @param string $path for which all files need to be found
+     *
+     * @return array containing all file names in path
+     */
+    private function _allFiles($path) {
+        $assets = [];
+
+        $directoryIterator = new \DirectoryIterator($this->_helper->path([$this->_assetDirectory, $path]));
+
+        foreach ($directoryIterator as $fileInfo) {
+            if ($fileInfo->isFile()) {
+                $assets[] = $fileInfo->getFilename();
+            }
+        }
+
+        return $assets;
+    }
+
+    /**
      * Sets the stage in which the software is running in.
      *
      * @param string $stage of production the software is in.
@@ -134,16 +157,21 @@ class FileLocator
      *
      * @return bool indicating if cache was initialized correctly (e.g. all ordinary assets were found)
      */
-    public function initializeCache($assets, $options = [])
+    public function initializeCache($assets, $paths, $options = [])
     {
+        #Either files are requested or all files from a directory need to be found
+        $assets = (count($assets) > 0) ? $assets : $this->_allFiles($paths);
+
         #Get the file name for cached file
-        $this->_cachedFileName = $this->_getCachedFileName($assets, $options);
+        $this->_cachedFileName = $this->_getCachedFileName($assets, $paths, $options);
         #and only file info for it because no writing/reading needed in all cases
         $this->_cachedFileInfo = new \SplFileInfo($this->_helper->path([$this->_cachedFilePath, $this->_cachedFileName]));
 
         foreach ($assets as $asset) {
             #At first asset may be under its asset directory
-            $assetFilePath = $this->_helper->path([$this->_assetDirectory, $asset]);
+            $assetFilePath = $this->_helper->path(
+                [$this->_assetDirectory, $paths, $asset]
+            );
 
             #if it is return true
             if (file_exists($assetFilePath)) {

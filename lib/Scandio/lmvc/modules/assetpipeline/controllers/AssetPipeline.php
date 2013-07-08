@@ -13,6 +13,7 @@ class AssetPipeline extends Controller implements interfaces\AssetPipelineInterf
 {
     private static
         $_pipes = [],
+        $_reservedUrlKeywords = [],
         $_helper;
 
     protected static
@@ -68,8 +69,12 @@ class AssetPipeline extends Controller implements interfaces\AssetPipelineInterf
         }
     }
 
-    public static function registerAssetpipe($types, $pipe)
+    public static function registerAssetpipe($types, $pipe, $options = [])
     {
+        #notifiy helper about new reserved keywords which are options and types
+        util\AssetPipelineHelper::addReservedKeywords($options);
+        util\AssetPipelineHelper::addReservedKeywords($types);
+
         #multiple pipes per type possible although last of type wins because multiple pipes per type would lead
         #to unpredictable outcomes due to order imho
         foreach ($types as $type) {
@@ -98,7 +103,10 @@ class AssetPipeline extends Controller implements interfaces\AssetPipelineInterf
         $args = func_get_args();
 
         if(array_key_exists($action, static::$_pipes)) {
-            echo static::$_pipes[$action]->serve(static::$_helper->getFiles($args), static::$_helper->getOptions($args));
+            echo static::$_pipes[$action]->serve(
+                static::$_helper->getFiles($args),
+                static::$_helper->getPaths($args),
+                static::$_helper->getOptions(array_slice($args, 1))); #first is action
         } else {
             echo "< Please specify a pipe as action as in: " . implode(" | ", array_keys(static::$_pipes)) . " >";
         }

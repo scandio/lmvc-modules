@@ -10,6 +10,40 @@ namespace Scandio\lmvc\modules\assetpipeline\util;
  */
 class AssetPipelineHelper
 {
+    private static
+        $_reservedKeywords = [];
+
+
+    /**
+     * Glues values in array with glue specified.
+     *
+     * @param string $glue put between every element of $arr
+     * @param array $arr of values to be imploded with glue
+     *
+     * @return string of glued values
+     */
+    private function _implode_recursive($glue, array $arr)
+    {
+        $imploded = '';
+
+        foreach($arr as $piece) {
+            if(is_array($piece)) { $imploded .= $glue . $this->_implode_recursive($glue, $piece); }
+            else { $imploded .= $glue . $piece; }
+        }
+
+        return $imploded;
+    }
+
+    /**
+     * Adds to the list of reserved keywords such as filenames and options registered in the pipeline.
+     *
+     * @param array $pipeOptions which are registered in parent
+     */
+    public static function addReservedKeywords($_reservedKeywords)
+    {
+        static::$_reservedKeywords = array_replace(static::$_reservedKeywords, $_reservedKeywords);
+    }
+
     /**
      * Filters an array returning only the file names or options passed.
      *
@@ -28,7 +62,7 @@ class AssetPipelineHelper
                 if (!$onlyFiles) continue;
 
                 $filtered[] = $arg;
-            } else if (!$onlyFiles) {
+            } else if (!$onlyFiles && in_array($arg, static::$_reservedKeywords)) {
                 $filtered[] = $arg;
             }
         }
@@ -39,12 +73,12 @@ class AssetPipelineHelper
     /**
      * Generates a path by giving an array of directories
      *
-     * @param array $directories of directories to be imploded into string
+     * @param array $directories of directories to be imploded into string (may be nested, multidimensional!)
      * @return string representing the directories passed in the array
      */
     public function path($directories)
     {
-        return implode(DIRECTORY_SEPARATOR, $directories);
+        return $this->_implode_recursive(DIRECTORY_SEPARATOR, $directories);
     }
 
     /**
@@ -75,6 +109,20 @@ class AssetPipelineHelper
     public function getOptions($args)
     {
         return $this->_filterArgs($args, false);
+    }
+
+    /**
+     * Filters array to only contain paths to files.
+     *
+     * @param array $args to be filtered
+     * @return array containing only paths filtered from $args
+     */
+    public function getPaths($args)
+    {
+        $withoutFiles = array_diff($args, $this->_filterArgs($args, true));
+        $withoutOptions = array_diff($withoutFiles, $this->_filterArgs($args, false));
+
+        return $withoutOptions;
     }
 
     /**
