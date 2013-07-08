@@ -106,7 +106,7 @@ class AssetPipeline extends Controller implements interfaces\AssetPipelineInterf
             echo static::$_pipes[$action]->serve(
                 static::$_helper->getFiles($args),
                 static::$_helper->getPaths($args),
-                static::$_helper->getOptions(array_slice($args, 1, -1))); #first is action
+                static::$_helper->getOptions(array_slice($args, 1))); #first is action
         } else {
             echo "< Please specify a pipe as action as in: " . implode(" | ", array_keys(static::$_pipes)) . " >";
         }
