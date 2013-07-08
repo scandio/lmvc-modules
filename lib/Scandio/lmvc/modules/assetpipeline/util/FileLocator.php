@@ -61,10 +61,10 @@ class FileLocator
     {
         $fileName = "";
 
-        #Prefix with paths e.g: scripts.jquery. (dot in in end!)
-        $fileName = (count($paths) > 0) ? implode(".", $paths) . "." : "";
+        $prefix = array_merge($paths, $options);
+
         #Prefix with options e.g: min.00898888222. (dot in in end!)
-        $fileName .= (count($options) > 0) ? implode(".", $options) . "." : "";
+        $fileName .= (count($prefix) > 0)  ? implode(".", $prefix) . "" : ".";
 
         #Append file names with + as delimiter and remove extensions from all except last file (e.g. [min.929292.]jquery+my-plugin.js
         $fileName .= implode("+", $this->_helper->stripExtensions($assets, true));
@@ -121,6 +121,27 @@ class FileLocator
     }
 
     /**
+     * Finds all files contained in one directory.
+     *
+     * @param string $path for which all files need to be found
+     *
+     * @return array containing all file names in path
+     */
+    private function _allFiles($path) {
+        $assets = [];
+
+        $directoryIterator = new \DirectoryIterator($this->_helper->path([$this->_assetDirectory, $path]));
+
+        foreach ($directoryIterator as $fileInfo) {
+            if ($fileInfo->isFile()) {
+                $assets[] = $fileInfo->getFilename();
+            }
+        }
+
+        return $assets;
+    }
+
+    /**
      * Sets the stage in which the software is running in.
      *
      * @param string $stage of production the software is in.
@@ -138,6 +159,9 @@ class FileLocator
      */
     public function initializeCache($assets, $paths, $options = [])
     {
+        #Either files are requested or all files from a directory need to be found
+        $assets = (count($assets) > 0) ? $assets : $this->_allFiles($paths);
+
         #Get the file name for cached file
         $this->_cachedFileName = $this->_getCachedFileName($assets, $paths, $options);
         #and only file info for it because no writing/reading needed in all cases
