@@ -32,7 +32,6 @@ class ImagePipe extends AbstractAssetPipe
      */
     public function process($asset, $options = [])
     {
-        var_dump($options);
         $file = $this->_assetDirectory . DIRECTORY_SEPARATOR . $asset;
 
         $img = Image::make($asset);
