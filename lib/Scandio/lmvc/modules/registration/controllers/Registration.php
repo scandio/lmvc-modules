@@ -38,6 +38,8 @@ class Registration extends Controller
         );
 
         if ($areCredientialsValid) {
+            $credentials['password'] = sha1($credentials['password']);
+
             $mediator->signup($credentials);
 
             return static::redirect('Registration::success');
