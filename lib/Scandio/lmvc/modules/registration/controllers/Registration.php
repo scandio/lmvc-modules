@@ -2,9 +2,11 @@
 
 namespace Scandio\lmvc\modules\registration\controllers;
 
+use Scandio\lmvc;
 use Scandio\lmvc\Controller;
 use Scandio\lmvc\LVCConfig;
 use Scandio\lmvc\modules\registration\Registration as RegistrationMediator;
+use Scandio\lmvc\modules\registration\forms;
 
 
 class Registration extends Controller
@@ -16,28 +18,42 @@ class Registration extends Controller
 
     public static function register()
     {
-        return static::render();
+        if (static::request()->signup != null) {
+            $signupForm = new forms\Signup();
+            $signupForm->validate(static::request());
+
+            if (!$signupForm->isValid()) {
+                return static::render([
+                    'errors' => $signupForm->getErrors()
+                ]);
+            } else {
+                static::signup();
+            }
+        } else {
+            static::render();
+        }
     }
 
     public static function signup() {
+        var_dump(static::request()->username);
         $mediator = RegistrationMediator::get();
 
         $credentials = [
           'username'            =>  static::request()->username,
           'password'            =>  static::request()->password,
-          'passwordRetyped'     =>  static::request()->password_retyped,
+          'passwordRetyped'     =>  static::request()->passwordRetyped,
           'fullname'            =>  static::request()->fullname,
           'email'               =>  static::request()->email,
           'phone'               =>  static::request()->phone,
           'mobile'              =>  static::request()->mobile
         ];
 
-        $areCredientialsValid = (
+        $areCredentialsValid = (
             $mediator->isValidPassword($credentials['password'], $credentials['passwordRetyped']) &&
             $mediator->arePossibleCredentials($credentials['username'], $credentials['password'])
         );
 
-        if ($areCredientialsValid) {
+        if ($areCredentialsValid) {
             $credentials['password'] = sha1($credentials['password']);
 
             $mediator->signup($credentials);
