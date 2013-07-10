@@ -1,6 +1,6 @@
 <?php
 
-namespace Scandio\lmvc\modules\security\database;
+namespace Scandio\lmvc\modules\security\handlers\database;
 
 use Scandio\lmvc\modules\security;
 use Scandio\troba;

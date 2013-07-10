@@ -1,6 +1,6 @@
 <?php
 
-namespace Scandio\lmvc\modules\security;
+namespace Scandio\lmvc\modules\security\handlers\ldap;
 
 use Scandio\lmvc\LVCConfig;
 
