@@ -3,8 +3,9 @@
 namespace Scandio\lmvc\modules\security\handlers\ldap;
 
 use Scandio\lmvc\LVCConfig;
+use Scandio\lmvc\modules\security\handlers;
 
-class LdapPrincipal extends JsonPrincipal {
+class LdapPrincipal extends handlers\AbstractSessionPrincipal {
     protected $conn;
     protected $bind;
 

@@ -3,8 +3,9 @@
 namespace Scandio\lmvc\modules\security\handlers\json;
 
 use Scandio\lmvc\LVCConfig;
+use Scandio\lmvc\modules\security\handlers;
 
-class JsonPrincipal extends AbstractPrincipal
+class JsonPrincipal extends handlers\AbstractSessionPrincipal
 {
     /**
      * @param string $username
@@ -15,24 +16,6 @@ class JsonPrincipal extends AbstractPrincipal
     {
         $users = LVCConfig::get()->security->users;
         return (isset($users->{$username}) && ($users->{$username}->password == $password));
-    }
-
-    /**
-     * @return bool
-     */
-    public function isAuthenticated()
-    {
-        return (isset($_SESSION['security']['authenticated']) && ($_SESSION['security']['authenticated'] === true));
-    }
-
-    /**
-     * @return AbstractUser
-     */
-    public function currentUser()
-    {
-        return (isset($_SESSION['security']['current_user'])) ?
-            new $this->userClass($_SESSION['security']['current_user'], $this->getUser($_SESSION['security']['current_user'])) :
-            new $this->userClass('anonymous', new \StdClass());
     }
 
     /**

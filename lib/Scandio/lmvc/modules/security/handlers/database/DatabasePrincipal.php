@@ -2,10 +2,10 @@
 
 namespace Scandio\lmvc\modules\security\handlers\database;
 
-use Scandio\lmvc\modules\security;
+use Scandio\lmvc\modules\security\handlers;
 use Scandio\troba;
 
-class DatabasePrincipal extends security\JsonPrincipal {
+class DatabasePrincipal extends handlers\AbstractSessionPrincipal {
 
     public function __construct($userClass) {
         parent::__construct($userClass);
