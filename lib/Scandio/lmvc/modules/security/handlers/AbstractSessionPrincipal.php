@@ -12,7 +12,8 @@ namespace Scandio\lmvc\modules\security\handlers;
  *          Stuff which was previously mostly in the JsonPrincipal which lead to everybody extending that
  *          class. This in a way is not very meaningful in object-oriented terms.
  */
-abstract class AbstractSessionPrincipal extends AbstractPrincipal {
+abstract class AbstractSessionPrincipal extends AbstractPrincipal
+{
 
     public function __contruct($userClass = null)
     {
@@ -29,5 +30,15 @@ abstract class AbstractSessionPrincipal extends AbstractPrincipal {
         return (isset($_SESSION['security']['current_user'])) ?
             new $this->userClass($_SESSION['security']['current_user'], $this->getUser($_SESSION['security']['current_user'])) :
             new $this->userClass('anonymous', new \StdClass());
+    }
+
+    public function isUserInRole($username, $role)
+    {
+        return in_array($role, $this->getUserRoles($username));
+    }
+
+    public function isUserInGroup($username, $group)
+    {
+        return in_array($group, $this->getUserGroups($username));
     }
 }

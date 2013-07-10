@@ -10,6 +10,18 @@ use troba\Model;
  *
  * Model used by EQM representing a group.
  */
-class Groups {
+class Groups
+{
     use Model\Getters, Model\Finders;
+
+    public static function getByUsername($username)
+    {
+        $groups = static::query()
+            ->leftJoin('User_to_Groups', 'Groups.id = User_to_Groups.group_id')
+            ->leftJoin(new Users(), 'User_to_Groups.user_id = Users.id')
+            ->where('Users.username = :username', ['username' => $username])
+            ->all();
+
+        return $groups;
+    }
 }

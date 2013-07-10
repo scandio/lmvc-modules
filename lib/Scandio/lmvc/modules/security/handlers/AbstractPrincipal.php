@@ -27,21 +27,24 @@ abstract class AbstractPrincipal implements PrincipalInterface
      * @param string $username
      * @return bool
      */
-    public function existsUser($username) {
+    public function existsUser($username)
+    {
         return is_object($this->getUser($username));
     }
 
     /**
      * @return string[]
      */
-    public function getCurrentUserGroups() {
+    public function getCurrentUserGroups()
+    {
         return $this->getUserGroups($this->currentUser()->username);
     }
 
     /**
      * @return string[]
      */
-    public function getCurrentUserRoles() {
+    public function getCurrentUserRoles()
+    {
         return $this->getUserRoles($this->currentUser()->username);
     }
 }

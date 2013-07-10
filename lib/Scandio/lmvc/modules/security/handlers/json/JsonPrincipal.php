@@ -128,23 +128,4 @@ class JsonPrincipal extends handlers\AbstractSessionPrincipal
         }
         return $result;
     }
-
-    /**
-     * @param string $username
-     * @param string $role
-     * @return bool
-     */
-    public function isUserInRole($username, $role) {
-        return in_array($role, $this->getUserRoles($username));
-    }
-
-    /**
-     * @param string $username
-     * @param string $group
-     * @return bool
-     */
-    public function isUserInGroup($username, $group)
-    {
-        return in_array($group, $this->getUserGroups($username));
-    }
 }

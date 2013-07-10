@@ -10,6 +10,18 @@ use troba\Model;
  *
  * Model used by EQM representing a role.
  */
-class Roles {
+class Roles
+{
     use Model\Getters, Model\Finders;
+
+    public static function getByUsername($username)
+    {
+        $roles = static::query()
+            ->leftJoin('User_to_Roles', 'Roles.id = User_to_Roles.role_id')
+            ->leftJoin(new Users(), 'User_to_Roles.user_id = Users.id')
+            ->where('Users.username = :username', ['username' => $username])
+            ->all();
+
+        return $roles;
+    }
 }
