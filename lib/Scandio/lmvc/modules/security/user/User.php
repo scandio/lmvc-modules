@@ -1,6 +1,6 @@
 <?php
 
-namespace Scandio\lmvc\modules\security;
+namespace Scandio\lmvc\modules\security\user;
 
 use Scandio\lmvc\modules\security\Security;
 

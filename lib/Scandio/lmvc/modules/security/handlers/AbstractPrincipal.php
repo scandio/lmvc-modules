@@ -1,6 +1,8 @@
 <?php
 
-namespace Scandio\lmvc\modules\security;
+namespace Scandio\lmvc\modules\security\handlers;
+
+use Scandio\lmvc\modules\security\Bootstrap;
 
 abstract class AbstractPrincipal implements PrincipalInterface
 {
@@ -14,10 +16,10 @@ abstract class AbstractPrincipal implements PrincipalInterface
      */
     public function __construct($userClass)
     {
-        if ($userClass && is_subclass_of($userClass, '\\Scandio\\lmvc\\modules\\security\\AbstractUser')) {
+        if ($userClass && is_subclass_of($userClass, '\\Scandio\\lmvc\\modules\\security\\user\\AbstractUser')) {
             $this->userClass = $userClass;
         } else {
-            $this->userClass = Bootstrap::getNamespace() . '\\User';
+            $this->userClass = Bootstrap::getNamespace() . '\\user\\User';
         }
     }
 
@@ -25,21 +27,24 @@ abstract class AbstractPrincipal implements PrincipalInterface
      * @param string $username
      * @return bool
      */
-    public function existsUser($username) {
+    public function existsUser($username)
+    {
         return is_object($this->getUser($username));
     }
 
     /**
      * @return string[]
      */
-    public function getCurrentUserGroups() {
+    public function getCurrentUserGroups()
+    {
         return $this->getUserGroups($this->currentUser()->username);
     }
 
     /**
      * @return string[]
      */
-    public function getCurrentUserRoles() {
+    public function getCurrentUserRoles()
+    {
         return $this->getUserRoles($this->currentUser()->username);
     }
 }

@@ -3,7 +3,7 @@
 namespace Scandio\lmvc\modules\security\tests;
 
 use Scandio\lmvc\LVCConfig;
-use Scandio\lmvc\modules\security\LdapPrincipal;
+use Scandio\lmvc\modules\security\handlers\ldap;
 
 class LdapPrincipalTest extends \PHPUnit_Framework_TestCase {
 
@@ -17,11 +17,11 @@ class LdapPrincipalTest extends \PHPUnit_Framework_TestCase {
     }
 
     public function setUp() {
-        $this->principal = new LdapPrincipal();
+        $this->principal = new ldap\LdapPrincipal();
     }
 
     public function testConnection() {
-        $this->assertInstanceOf('Scandio\\lmvc\\modules\\security\\LdapPrincipal', $this->principal);
+        $this->assertInstanceOf('Scandio\\lmvc\\modules\\security\\handlers\\ldap\\LdapPrincipal', $this->principal);
     }
 
     /**
@@ -50,7 +50,7 @@ class LdapPrincipalTest extends \PHPUnit_Framework_TestCase {
         $username = LVCConfig::get()->securityTest->existent_user;
         $user = $users[$username];
         $this->assertEquals($user, $this->principal->getUser($username));
-        $this->assertInstanceOf('\\Scandio\\lmvc\\modules\\security\\UserInterface', $user);
+        $this->assertInstanceOf('\\Scandio\\lmvc\\modules\\security\\user\\UserInterface', $user);
         $this->assertNotEmpty($user->dn);
         $this->assertNotEmpty($user->fullname);
         $this->assertNotEmpty($user->email);
