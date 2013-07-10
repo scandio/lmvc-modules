@@ -12,5 +12,5 @@ use troba\Model;
  */
 class Users
 {
-    use Model\Getters, Model\Finders;
+    use Model\Getters, Model\Finders, Model\Persisters;
 }
