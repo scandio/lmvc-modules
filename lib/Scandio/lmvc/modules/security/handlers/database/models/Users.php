@@ -2,7 +2,7 @@
 
 namespace Scandio\lmvc\modules\security\handlers\database\models;
 
-use troba\Model\Finders;
+use troba\Model;
 
 /**
  * Class UserModel
@@ -10,10 +10,8 @@ use troba\Model\Finders;
  *
  * Model used by EQM representing a user.
  */
-class UserModel {
-    use Finders, Getters;
-
-    protected $__table = "Users";
+class Users {
+    use Model\Getters, Model\Finders;
 
     public function getGroups() {
         $groups = static::query()

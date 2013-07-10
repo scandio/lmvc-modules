@@ -2,8 +2,7 @@
 
 namespace Scandio\lmvc\modules\security\handlers\database\models;
 
-use troba\Model\Finders;
-use troba\Model\Getters;
+use troba\Model;
 
 /**
  * Class GroupModel
@@ -11,8 +10,6 @@ use troba\Model\Getters;
  *
  * Model used by EQM representing a group.
  */
-class GroupModel {
-    use Finders, Getters;
-
-    protected $__table = "Groups";
+class Groups {
+    use Model\Getters, Model\Finders;
 }

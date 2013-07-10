@@ -3,6 +3,7 @@
 namespace Scandio\lmvc\modules\security\handlers\database;
 
 use Scandio\lmvc\modules\security\handlers;
+use Scandio\lmvc\modules\security\handlers\database\models;
 use Scandio\troba;
 
 class DatabasePrincipal extends handlers\AbstractSessionPrincipal {
@@ -12,43 +13,43 @@ class DatabasePrincipal extends handlers\AbstractSessionPrincipal {
     }
 
     public function authenticate($username, $password) {
-        $user = UserModel::findBy('username', $user);
+        $user = models\Users::findBy('username', $username)->one();
 
-        return ($user && $user->getPassword() == sha1($password));
+        return ($user && $user->password == sha1($password));
     }
 
     public function getUser($username) {
-        $user = UserModel::findBy('username', $username);
+        $user = models\Users::findBy('username', $username)->one();
 
         return $user ? $user : null;
     }
 
     public function getUsers() {
-        $users = UserModel::findAll();
+        $users = models\Users::findAll();
 
         return $users;
     }
 
     public function getRole($role) {
-        $role = RoleModel::findBy('role', $role);
+        $role = models\Roles::findBy('role', $role)->one();
 
         return $role ? $role : null;
     }
 
     public function getRoles() {
-        $roles = RoleModel::findAll();
+        $roles = models\Roles::findAll();
 
         return $roles;
     }
 
     public function getGroup($group) {
-        $group = GroupModel::findBy('group', $group);
+        $group = models\Groups::findBy('group', $group)->one();
 
         return $group ? $group : null;
     }
 
     public function getGroups() {
-        $groups = GroupModel::findAll();
+        $groups = models\Groups::findAll();
 
         return $groups;
     }
@@ -62,7 +63,7 @@ class DatabasePrincipal extends handlers\AbstractSessionPrincipal {
     }
 
     public function existsUser($username) {
-        $user = UserModel::findBy('username', $user);
+        $user = Users::findBy('username', $user)->one();
 
         return $user ? true : false;
     }
