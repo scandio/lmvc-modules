@@ -9,11 +9,11 @@ class Registration extends Controller
 {
     public static function index()
     {
-        return static::redirect('Registration::signup');
+        return static::redirect('Registration::register');
     }
 
-    public static function signup()
+    public static function register()
     {
-
+        return static::render();
     }
 }
