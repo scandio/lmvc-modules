@@ -37,3 +37,9 @@ Facilitates asset requesting, concatenation and minification of Javascript, CSS,
 Allows for user registration in the application. Currently uses a database but could easily be extended to persist registrations in LDAP or maybe even config.json.
 
 [Readme](https://github.com/scandio/lmvc-modules/tree/master/lib/Scandio/lmvc/modules/registration)
+
+## Html-tag module
+
+Module simplifying Html-tag generation in views. Abstracts string handling and templating while being a more tailored snippet component.
+
+[Readme](https://github.com/scandio/lmvc-modules/tree/master/lib/Scandio/lmvc/modules/htmltag)
