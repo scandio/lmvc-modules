@@ -21,7 +21,8 @@
         "mustache/mustache": "v2.1.0",
         "leafo/scssphp": "v0.0.7",
         "intervention/image": "dev-master",
-        "coffeescript/coffeescript": "dev-master"
+        "coffeescript/coffeescript": "dev-master",
+        "scandio/troba": "dev-master"
     },
     "require-dev": {
         "phpunit/phpunit": "3.7.*"
