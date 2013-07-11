@@ -16,16 +16,36 @@ namespace Scandio\lmvc\modules\htmltag;
  *      The arguments for the preHooks are $tag, $attr = [] and $content = false for the postHook you
  *      will just get the string.
  *
- *      Important: The return of any on the class defined preHook-function must be an enumerated array as passed
- *      in so that it can be passed to the post-hooks.
- *      Every post-hook function on the other hand should return a string and gets passed a string.
- *      Otherwise you break all the things! (http://cdn.meme.li/instances/400x/39604835.jpg)
+ *      Important:
+ *          The return of any on the class defined preHook-function must be an enumerated array as passed
+ *          in so that it can be passed to the post-hooks.
+ *          Every post-hook function on the other hand should return a string and gets passed a string.
+ *          Otherwise you break all the things! (http://cdn.meme.li/instances/400x/39604835.jpg)
+ *      Examples:
+ *          public static function preImg($tagName, $attr, $content) {
+ *              return [$tagName, $attr, $content];
+ *          }
+ *
+ *          public static function postImg($html) {
+ *              return $html;
+ *          }
  *
  *  Without extending:
  *      Adding a hook can also be done without extending the class.
  *      Just call ::addPre($tagName, function) or ::addPost($tagName, function).
  *      As a side not, hooks defined on the base are also being called on the extended class due to their
  *      protected nature.
+ *
+ *      Important:
+ *          Hooks defined as member functions as described above are called before hooks added in functional manner.
+ *      Examples:
+ *          Html::addPre('img', function($tagName, $attr, $content) {
+ *              return [$tagName, $attr, $content];
+ *          });
+ *
+ *          Html::addPost('img', function($html) {
+ *              return $html;
+ *          });
  */
 class Html {
 
@@ -44,35 +64,37 @@ class Html {
     public static function __callStatic($tagName, $arguments) {
         # Define pre/post-hook function names
         $ucFirstTagName         = ucfirst($tagName);
-        $preHookFunctionName    = 'static::pre'  . $ucFirstTagName;
-        $postHookFunctionName   = 'static::post' . $ucFirstTagName;
+        $preHookFunctionName    = 'pre'  . $ucFirstTagName;
+        $postHookFunctionName   = 'post' . $ucFirstTagName;
         $pipedResponse          = [
             $tagName,
-            $arguments[0],
-            $arguments[1]
+            isset($arguments[0]) ? $arguments[0] : null,
+            isset($arguments[1]) ? $arguments[1] : false,
         ];
 
-        # Call the member hook-function is defined using late static binding
-        if (method_exists(get_called_class(), $preHookFunctionName)) {
-            $pipedResponse = forward_static_call_array($preHookFunctionName, $pipedResponse);
-        }
-
-        if (method_exists(get_called_class(), $postHookFunctionName)) {
-            $pipedResponse = forward_static_call_array($postHookFunctionName, $pipedResponse);
-        }
-
-        # Call the hooks added by add[Pre|Post]
+        # Get hooks defined for tag-name currently being processed
         $preHooks   = isset(static::$preHooks[$tagName])    ?   static::$preHooks[$tagName]   : [];
         $postHooks  = isset(static::$postHooks[$tagName])   ?   static::$postHooks[$tagName]  : [];
+
+        # Call the member pre-hook function is defined using late static binding
+        if (method_exists(get_called_class(), $preHookFunctionName)) {
+            $pipedResponse = forward_static_call_array('static::' . $preHookFunctionName, $pipedResponse);
+        }
 
         # Work all the pre-hooks piping in the [$tagName, $attr, $content]
         foreach ($preHooks as $preHook) {
             $pipedResponse = $preHook($pipedResponse[0], $pipedResponse[1], $pipedResponse[2]);
         }
 
-        # Work all the post-hooks passing in the generated html-tag-string
+        # Time to generate the html-tag as a string
         $pipedResponse = Helper::tag($pipedResponse[0], $pipedResponse[1], $pipedResponse[2]);
 
+        # Call the member post-hook function is defined using late static binding
+        if (method_exists(get_called_class(), $postHookFunctionName)) {
+            $pipedResponse = forward_static_call_array('static::' . $postHookFunctionName, [$pipedResponse]);
+        }
+
+        # Work all the post-hooks passing in the generated html-tag-string
         foreach ($postHooks as $postHook) {
             $pipedResponse = $postHook($pipedResponse);
         }
@@ -85,7 +107,7 @@ class Html {
      * calling the passed in function.
      *
      * @param string $tagName
-     * @param function $hook
+     * @param callable $hook
      */
     public static function addPre($tagName, $hook) {
         # Initiate array is no hook for it has ever been defined
@@ -100,7 +122,7 @@ class Html {
      * calling the passed in function.
      *
      * @param string $tagName
-     * @param function $hook
+     * @param callable $hook
      */
     public static function addPost($tagName, $hook) {
         if (!isset(static::$postHooks[$tagName])) { static::$postHooks[$tagName] = []; }

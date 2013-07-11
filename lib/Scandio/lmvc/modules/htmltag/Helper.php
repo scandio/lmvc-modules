@@ -19,7 +19,7 @@ class Helper {
      *
      * @return string
      */
-    public static function tag($tag, $attr = array(), $content = false)
+    public static function tag($tag, $attr = [], $content = false)
     {
         # Don't pass me null-ed content
         $hasContent = ($content !== false and $content !== null);
