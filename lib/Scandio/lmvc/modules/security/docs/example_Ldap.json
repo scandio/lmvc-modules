@@ -2,7 +2,7 @@
 {
     "security": {
         /* MUST */
-        "principal": "\\Scandio\\lmvc\\modules\\security\\LdapPrincipal",
+        "principal": "\\Scandio\\lmvc\\modules\\security\\hanlders\ldap\LdapPrincipal",
         /* OPTIONAL Controller::action after logout defaults to Application::index */
         "logoutAction": "Security::login",
         /* MUST */
