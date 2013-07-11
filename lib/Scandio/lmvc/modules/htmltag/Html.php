@@ -65,7 +65,6 @@ namespace Scandio\lmvc\modules\htmltag;
 class Html {
 
     protected static
-        $chained = '',
         $preHooks = [],
         $postHooks = [];
 
