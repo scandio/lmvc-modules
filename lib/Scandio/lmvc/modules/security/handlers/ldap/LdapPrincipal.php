@@ -1,14 +1,17 @@
 <?php
 
-namespace Scandio\lmvc\modules\security;
+namespace Scandio\lmvc\modules\security\handlers\ldap;
 
 use Scandio\lmvc\LVCConfig;
+use Scandio\lmvc\modules\security\handlers;
 
-class LdapPrincipal extends JsonPrincipal {
+class LdapPrincipal extends handlers\AbstractSessionPrincipal
+{
     protected $conn;
     protected $bind;
 
-    public function __construct($userClass = null) {
+    public function __construct($userClass = null)
+    {
         parent::__construct($userClass);
         $security = LVCConfig::get()->security;
         $this->conn = ldap_connect($security->host, $security->port) or die ("The LDAP server couldn't be reached!");
@@ -20,7 +23,8 @@ class LdapPrincipal extends JsonPrincipal {
      * @param string $password
      * @return bool
      */
-    public function authenticate($username, $password) {
+    public function authenticate($username, $password)
+    {
         $security = LVCConfig::get()->security;
         try {
             $info = $this->search($username);
@@ -36,7 +40,8 @@ class LdapPrincipal extends JsonPrincipal {
     /**
      * @return AbstractUser[]
      */
-    public function getUsers() {
+    public function getUsers()
+    {
         if (!isset($_SESSION['security']['ldap_users'])) {
             $security = LVCConfig::get()->security;
             $list = ldap_search($this->conn, $security->user_base_dn, '(&(objectclass=user)(memberof=CN=DB-User,CN=Users,DC=scandio,DC=de))');
@@ -64,7 +69,8 @@ class LdapPrincipal extends JsonPrincipal {
     /**
      * @return array[]
      */
-    public function getGroups() {
+    public function getGroups()
+    {
         if (!isset($_SESSION['security']['ldap_groups'])) {
             $security = LVCConfig::get()->security;
             $list = ldap_search($this->conn, $security->user_base_dn, 'objectclass=group');
@@ -89,7 +95,8 @@ class LdapPrincipal extends JsonPrincipal {
      * @param string $username
      * @return string[]
      */
-    public function getUserGroups($username) {
+    public function getUserGroups($username)
+    {
         $entries = $this->search($username);
         unset($entries['count']);
 
@@ -102,7 +109,8 @@ class LdapPrincipal extends JsonPrincipal {
         return $result;
     }
 
-    protected function search($username) {
+    protected function search($username)
+    {
         $security = LVCConfig::get()->security;
         $search = ldap_search($this->conn, $security->user_base_dn, $security->username_attribute . '=' . $username);
         $entries = ldap_get_entries($this->conn, $search);
@@ -110,9 +118,10 @@ class LdapPrincipal extends JsonPrincipal {
         return $entries;
     }
 
-    protected function getGroupUsers($groupDn) {
+    protected function getGroupUsers($groupDn)
+    {
         $security = LVCConfig::get()->security;
-        $search = ldap_search($this->conn, $security->user_base_dn, '(&(objectCategory=User)(memberOf='. $groupDn . '))');
+        $search = ldap_search($this->conn, $security->user_base_dn, '(&(objectCategory=User)(memberOf=' . $groupDn . '))');
         $entries = ldap_get_entries($this->conn, $search);
         unset($entries['count']);
 

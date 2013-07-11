@@ -31,3 +31,9 @@ Allows easy snippets integration in views for e.g. rendering of prepared Html-co
 Facilitates asset requesting, concatenation and minification of Javascript, CSS, Sass and Less sources. In addition, easily integrates into lmvc and its views.
 
 [Readme](https://github.com/scandio/lmvc-modules/tree/master/lib/Scandio/lmvc/modules/assetpipeline)
+
+## Registration module
+
+Allows for user registration in the application. Currently uses a database but could easily be extended to persist registrations in LDAP or maybe even config.json.
+
+[Readme](https://github.com/scandio/lmvc-modules/tree/master/lib/Scandio/lmvc/modules/registration)
