@@ -42,15 +42,19 @@ class Html {
      * @param array $arguments
      */
     public static function __callStatic($tagName, $arguments) {
-
         # Define pre/post-hook function names
         $ucFirstTagName         = ucfirst($tagName);
         $preHookFunctionName    = 'static::pre'  . $ucFirstTagName;
         $postHookFunctionName   = 'static::post' . $ucFirstTagName;
+        $pipedResponse          = [
+            $tagName,
+            $arguments[0],
+            $arguments[1]
+        ];
 
         # Call the member hook-function is defined using late static binding
         if (method_exists(get_called_class(), $preHookFunctionName)) {
-            $pipedResponse = forward_static_call_array($preHookFunctionName, $arguments);
+            $pipedResponse = forward_static_call_array($preHookFunctionName, $pipedResponse);
         }
 
         if (method_exists(get_called_class(), $postHookFunctionName)) {
