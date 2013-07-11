@@ -12,7 +12,7 @@ namespace Scandio\lmvc\modules\htmltag;
  * Examples:
  *      Html::img([
  *          'class' => 'aside border',
- *          'src'   => 'images/bild1.png'
+ *          'src'   => 'images/image.png'
  *      ]);
  *
  *      Html::div(
@@ -65,6 +65,7 @@ namespace Scandio\lmvc\modules\htmltag;
 class Html {
 
     protected static
+        $chained = '',
         $preHooks = [],
         $postHooks = [];
 
