@@ -9,7 +9,13 @@ namespace Scandio\lmvc\modules\htmltag;
  * Class generating Html-element strings.
  * Can be used to build anything from ul, img and h1-tags.
  *
- *  Extending:
+ * Example:
+ *      Html::img([
+ *          'class' => 'aside border',
+ *          'src'   => 'images/bild1.png'
+ *      ]);
+ *
+ * Extending:
  *      The class can be extended for defining hooks (multiple per tag-name). The convention is fairly easy.
  *      Whenever a private|public|protected static method with the name pre<Tag> and post<Tag> is found,
  *      the function will be called before and|or after the internal function have done its work.
@@ -30,7 +36,7 @@ namespace Scandio\lmvc\modules\htmltag;
  *              return $html;
  *          }
  *
- *  Without extending:
+ * Without extending:
  *      Adding a hook can also be done without extending the class.
  *      Just call ::addPre($tagName, function) or ::addPost($tagName, function).
  *      As a side not, hooks defined on the base are also being called on the extended class due to their
