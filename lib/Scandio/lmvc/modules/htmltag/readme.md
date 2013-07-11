@@ -1,6 +1,6 @@
-Html-tag module (lmvc-modules)
+# Html-tag module (lmvc-modules)
 
-This module generates Html-tags within views of an application using the [LMVC-framework](https://github.com/scandio/lmvc).
+This module generates Html-tags within any part of an application using the [LMVC-framework](https://github.com/scandio/lmvc).
 
 ## Installation
 
@@ -11,21 +11,21 @@ No installation required just add `lmvc-modules` to your `composer.json` and use
 ### The following in php
 
 ´´´php
-# Simple image-tag
+//Simple image-tag
 
 Html::img([
    'class' => 'aside border',
    'src'   => 'images/image.png'
 ]);
 
-# Nest the calls
+//Nest the calls
 
 Html::div(
    ['class' => 'wrap-it'],
    Html::p(null, '... and nest it')
 );
 
-# Pass in content arrays which unfold into a tag each
+//Pass in content arrays which unfold into a tag each
 
 Html::ul(['class' => 'wrap-it'],
    Html::li(null, ['item-1', 'item-2', 'item-3'])
@@ -69,6 +69,7 @@ public static function preImg($tagName, $attr, $content) {
 public static function postImg($html) {
    return $html;
 }
+``
 
 ### By adding a hook with a callback
 
