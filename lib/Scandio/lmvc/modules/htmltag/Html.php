@@ -9,11 +9,20 @@ namespace Scandio\lmvc\modules\htmltag;
  * Class generating Html-element strings.
  * Can be used to build anything from ul, img and h1-tags.
  *
- * Example:
+ * Examples:
  *      Html::img([
  *          'class' => 'aside border',
  *          'src'   => 'images/bild1.png'
  *      ]);
+ *
+ *      Html::div(
+ *          ['class' => 'wrap-it'],
+ *          Html::p(null, '... and nest it')
+ *      );
+ *
+ *      Html::ul(['class' => 'wrap-it'],
+ *          Html::li(null, ['item-1', 'item-2', 'item-3'])
+ *      );
  *
  * Extending:
  *      The class can be extended for defining hooks (multiple per tag-name). The convention is fairly easy.

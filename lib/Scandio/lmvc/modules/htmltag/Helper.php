@@ -6,7 +6,7 @@ namespace Scandio\lmvc\modules\htmltag;
  * Class Helper
  * @package Scandio\lmvc\modules\htmltag
  *
- * Little helper class responsible for generating tags, paring attributes etc.
+ * Little helper class responsible for generating tags, parsing attributes etc.
  */
 class Helper {
 
@@ -14,27 +14,39 @@ class Helper {
      * Builds an html-tag by tag-name, attributes and content.
      *
      * @param string $tag name to be generated
-     * @param array|string $attr ibutes of html-tag
+     * @param array|string $attrs ibutes of html-tag
      * @param string|bool $content of html-tag if intended
      *
      * @return string
      */
-    public static function tag($tag, $attr = [], $content = false)
+    public static function tag($tag, $attrs = [], $content = false)
     {
         # Don't pass me null-ed content
-        $hasContent = ($content !== false and $content !== null);
+        $hasContent = ($content !== false && $content !== null);
 
-        # Open the tag with tag-name
-        $html = '<'.$tag;
+        # Content may also be nested which generates a tag per element
+        if ($hasContent && is_array($content)) {
+            # Start a new line to secure from previous output
+            $html .= PHP_EOL;
 
-        # If $attr is not empty transform array in case or just concat string
-        $html .= ( !empty($attr) ) ? ' '.(is_array($attr) ? static::attr($attr) : $attr) : '';
+            # Enter the looopsiloooo
+            foreach ($content as $unrolledContent) {
+                # Recursion calling with EOL at the end
+                $html .= static::tag($tag, $attrs, $unrolledContent).PHP_EOL;
+            }
+        } else {
+            # Open the tag with tag-name
+            $html = '<'.$tag;
 
-        # If content is passed close tag > otherwise without content option '/>'
-        $html .= $hasContent ? '>' : ' />';
+            # If $attr is not empty transform array in case or just concat string
+            $html .= ( !empty($attrs) ) ? ' '.(is_array($attrs) ? static::attr($attrs) : $attrs) : '';
 
-        # If content pass concat otherwise leave empty
-        $html .= $hasContent ? $content.'</'.$tag.'>' : '';
+            # If content is passed close tag > otherwise without content option '/>'
+            $html .= $hasContent ? '>' : ' />';
+
+            # If content passed concat and close otherwise leave empty
+            $html .= $hasContent ? $content.'</'.$tag.'>' : '';
+        }
 
         return $html;
     }
@@ -42,24 +54,23 @@ class Helper {
     /**
      * Flattens array of attributes into html-compliant attribute string.
      *
-     * @param array $attr ibutes to be parsed into string
+     * @param array $attrs ibutes to be parsed into string
      *
      * @return string
      */
-    public static function attr($attr)
+    public static function attr($attrs)
     {
         $attrStr = '';
 
-        foreach ($attr as $property => $value)
-        {
+        foreach ($attrs as $property => $value) {
             # Continue on unusable values
-            if($value === null or $value === false) { continue; }
+            if($value === null || $value === false) { continue; }
 
             # Numeric props mean something like selected = "selected"
             if (is_numeric($property)) { $property = $value; }
 
             # Concat prop and value
-            $attrStr .= $property.'="'.$value.'" ';
+            $attrStr .= $property .'="'.$value.'" ';
         }
 
         # Remove potentially last whitespace
