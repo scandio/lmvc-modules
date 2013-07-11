@@ -2,6 +2,8 @@
 
 namespace Scandio\lmvc\modules\security\handlers;
 
+use Scandio\lmvc\LVCConfig;
+
 /**
  * Class SessionPrincipal
  * @package Scandio\lmvc\modules\security\handlers
@@ -40,5 +42,62 @@ abstract class AbstractSessionPrincipal extends AbstractPrincipal
     public function isUserInGroup($username, $group)
     {
         return in_array($group, $this->getUserGroups($username));
+    }
+
+    public function getUser($username)
+    {
+        return $this->getUsers()[$username];
+    }
+
+    public function getRole($role)
+    {
+        return $this->getRoles()[$role];
+    }
+
+    public function getRoles()
+    {
+        return LVCConfig::get()->security->roles;
+    }
+
+    public function getGroup($group)
+    {
+        return $this->getGroups()[$group];
+    }
+
+    public function getUserRoles($username)
+    {
+        $result = array();
+        $groups = $this->getUserGroups($username);
+        $roles = $this->getRoles();
+        foreach ($roles as $role => $members) {
+            if (isset($members->users) && in_array($username, $members->users)) {
+                $result[] = $role;
+                continue; // unnecessary to check groups of this role
+            }
+            if (isset($members->groups)) {
+                foreach ($groups as $group) {
+                    if (in_array($group, $members->groups)) {
+                        $result[] = $role;
+                        break; // unnecessary to check other groups of this role
+                    }
+                }
+            }
+        }
+        $roleAdded = true;
+        while ($roleAdded) {
+            $roleAdded = false;
+            foreach ($roles as $role => $members) {
+                if (!in_array($role, $result) && isset($members->roles)) {
+                    foreach ($members->roles as $memberRole) {
+                        if (in_array($memberRole, $result)) {
+                            $result[] = $role;
+                            $roleAdded = true;
+                            break; // unnecessary to check other memberroles of this role
+                        }
+                    }
+                }
+            }
+        }
+        return $result;
     }
 }

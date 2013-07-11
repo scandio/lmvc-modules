@@ -2,7 +2,7 @@
 {
     "security": {
         /* MUST namespace and classname of the principal that follows PrincipalInterface */
-        "principal": "\\Scandio\\lmvc\\modules\\security\\JsonPrincipal",
+        "principal": "\\Scandio\\lmvc\\modules\\security\\handlers\\json\\JsonPrincipal",
         /* OPTIONAL Controller::action after logout defaults to Application::index */
         "logoutAction": "Security::login",
         /* OPTIONAL Controller::action when you call static::forbidden - defaults to Security::forbidden */
