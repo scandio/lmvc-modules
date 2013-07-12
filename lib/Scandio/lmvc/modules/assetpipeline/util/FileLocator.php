@@ -242,6 +242,9 @@ class FileLocator
      */
     public function concat()
     {
+        #empty the cache first
+        $this->cache('', false);
+
         #cache all the requested files into one
         foreach ($this->_requestedFiles as $requestedFile) {
             $this->cache(file_get_contents($requestedFile->getPathname()), true);
