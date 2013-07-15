@@ -16,7 +16,7 @@ Next setup your app's config.json to specify the intended registration mediator 
    "mediator": "\\Scandio\\lmvc\\modules\\registration\\handlers\\DatabaseMediator"
 ```
 
-Your almost set!
+You're almost set!
 
 ## Running registrations
 
