@@ -43,3 +43,9 @@ Allows for user registration in the application. Currently uses a database but c
 Module simplifying Html-tag generation in views. Abstracts string handling and templating while being a more tailored snippet component.
 
 [Readme](https://github.com/scandio/lmvc-modules/tree/master/lib/Scandio/lmvc/modules/htmltag)
+
+## Upload module
+
+Module handling uploads of various types. Currently only supports image uploads but will hopefully contain a bigger set of types in the near future.
+
+[Readme](https://github.com/scandio/lmvc-modules/tree/master/lib/Scandio/lmvc/modules/upload)

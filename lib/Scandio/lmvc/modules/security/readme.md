@@ -20,7 +20,7 @@ Next setup your app's config.json to specify the intended registration mediator 
 
 Other principals are `"\\Scandio\\lmvc\\modules\\security\\handlers\\database\\LdapPrincipal"` and `"\\Scandio\\lmvc\\modules\\security\\handlers\\database\\JsonPrincipal"`.
 
-Your almost set!
+You're almost set!
 
 ## Protecting controllers
 
