@@ -23,12 +23,23 @@ class Upload extends Controller
     {
         if (!empty($_FILES)) {
             $tempFile = $_FILES['file']['tmp_name'];
+            $extension = pathinfo($_FILES['file']['name'], PATHINFO_EXTENSION);
 
             $uploadIntoPath = static::$config['root'] . DIRECTORY_SEPARATOR. static::$config['uploadDirectory'] . DIRECTORY_SEPARATOR;
 
-            $targetFile =  $uploadIntoPath . $filename != null ? $filename : $_FILES['file']['name'];
+            $targetFileName = "";
+
+            if ($filename == "sha1") {$targetFileName = sha1_file($tempFile) . "." . $extension;}
+            elseif ($filename != null) {$targetFileName = $filename;}
+            else {$targetFileName = $_FILES['file']['name'];}
+
+            $targetFile =  $uploadIntoPath . $targetFileName;
 
             move_uploaded_file($tempFile, $targetFile);
+
+            self::renderJson(array('filename' => static::$config['uploadDirectory'] . DIRECTORY_SEPARATOR . $targetFileName));
+        } else {
+            self::renderJson(array('error' => 'No files in $_FILES[]!'));
         }
     }
 }
