@@ -37,7 +37,10 @@ class Upload extends Controller
 
             move_uploaded_file($tempFile, $targetFile);
 
-            self::renderJson(array('filename' => static::$config['uploadDirectory'] . DIRECTORY_SEPARATOR . $targetFileName));
+            self::renderJson(array(
+                'path'      => static::$config['uploadDirectory'] . DIRECTORY_SEPARATOR,
+                'filename'  => $targetFileName)
+            );
         } else {
             self::renderJson(array('error' => 'No files in $_FILES[]!'));
         }
