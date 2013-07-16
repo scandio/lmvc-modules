@@ -5,8 +5,11 @@ namespace Scandio\lmvc\modules\registration\handlers;
 use Scandio\lmvc\modules\security\handlers\database\models;
 use Scandio\troba;
 
+
 class DatabaseMediator implements MediatorInterface
 {
+    protected
+        $signedUpUser;
 
     public function arePossibleCredentials($username, $password)
     {
@@ -33,6 +36,11 @@ class DatabaseMediator implements MediatorInterface
         $user->phone = $credentials['phone'];
         $user->mobile = $credentials['mobile'];
 
-        $user->insert();
+        $this->signedUpUser = $user->insert();
+    }
+
+    public function getSignedUpUser()
+    {
+        return $this->signedUpUser;
     }
 }

@@ -33,8 +33,7 @@ class Signup extends Form
 
     protected function checkEmail($name)
     {
-        if (!empty($this->request()->$name)
-            && (preg_match('^[_\\.0-9a-z-]+@([0-9a-z][0-9a-z-]+\\.)+[a-z]{2,4}\$', $this->request()->$name))
+        if (!filter_var($this->request()->$name, FILTER_VALIDATE_EMAIL)
         ) {
             $this->setError($name, array($this->request()->$name));
         }

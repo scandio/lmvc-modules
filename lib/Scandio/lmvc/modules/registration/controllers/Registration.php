@@ -18,7 +18,7 @@ class Registration extends Controller
 
     public static function register()
     {
-        if (static::request()->signup != null) {
+        if (static::request()->signup !== null) {
             $signupForm = new forms\Signup();
             $signupForm->validate(static::request());
 
@@ -34,8 +34,7 @@ class Registration extends Controller
         }
     }
 
-    public static function signup() {
-        var_dump(static::request()->username);
+    public static function signup($redirect = true) {
         $mediator = RegistrationMediator::get();
 
         $credentials = [
@@ -58,9 +57,9 @@ class Registration extends Controller
 
             $mediator->signup($credentials);
 
-            return static::redirect('Registration::success');
+            return $redirect ? static::redirect('Registration::success') : $mediator->getSignedUpUser();
         } else {
-            return static::redirect('Registration::failure');
+            return $redirect ? static::redirect('Registration::failure') : false;
         }
     }
 
