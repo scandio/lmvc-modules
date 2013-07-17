@@ -16,6 +16,8 @@ Just setup your app's config.json to add the upload module to the modules-array:
 
 You're set!
 
+As a side note: the `Boostrap.php` of this module will automatically start the session for you.
+
 ## Usage
 
 ### Getting parameters
@@ -37,13 +39,14 @@ Parameters can be set in a similar fashion as getting them.
 ```php
 Session::set('user.id', $user->id);
 
-Session::set('authenticated', true)::set('user.id', $userId);
+Session::set('authenticated', true);
+Session::set('user.id', $userId);
 
-$userId = Session::set('authenticated', true)::set('user.id', $userId)::get('authenticated');
+$authenticated = Session::get('authenticated', true);
 ```
 
-The first example shows setting a value while the second one outlines the ability to chain set-calls.
-The last example finishes the setting process by finally getting a value which has been set previously.
+The first example shows setting a value while the second one outlines the ability to give a default value which
+will be set if the demanded value ain't set yet. If it was set the get would return its value (e.g. false).
 
 ### Merging values into the session-object
 

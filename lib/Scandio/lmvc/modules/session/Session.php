@@ -44,16 +44,27 @@ class Session
     public static function set($attr, $value)
     {
         static::setByDotNotation($attr, $value);
+
+        return $value;
     }
 
     /**
      * Gets a value at $attr via dot-notation.
      *
      * @param $attr in dot-notation to the session's value to be set
+     * @param $default value to be set
+     *
+     * @return the value behind $attr or the $default value if nothing was set at $attr
      */
-    public static function get($attr)
+    public static function get($attr, $default = null)
     {
-        return static::resolveByDotNotation($attr);
+        $ordinary = static::resolveByDotNotation($attr);
+
+        if ($default === null) {
+            return $ordinary;
+        } else {
+            return $ordinary === null ? static::setByDotNotation($attr, $default) : $ordinary;
+        }
     }
 
     /**
@@ -106,7 +117,7 @@ class Session
             ini_set('session.cookie_lifetime', $lifetime);
         }
 
-        $response = session_regenerate_id($destroy);
+        $response = session_regenerate_id($flush);
 
         session_write_close();
         $backup = $flush ? [] : $_SESSION;
