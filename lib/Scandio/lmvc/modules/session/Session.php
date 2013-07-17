@@ -1,7 +1,13 @@
 <?php
 
+namespace Scandio\lmvc\modules\session;
+
 /**
  * Class Session
+ * @package Scandio\lmvc\modules\session
+ *
+ * Class abstraction from session handling so that nobody needs to modify the global $_SESSION
+ * varibale. Offers a few simple helper methods to interact with the the user's session.
  */
 class Session
 {
