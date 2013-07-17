@@ -75,4 +75,23 @@ Session::replace([
 
 The above example will replace every value (set it if not existend) in the session no matter what its previous value was.
 
+### Some helper methods
+
+```php
+# Starts a session
+Session::start();
+
+# Checks if a value is set
+Session::has('user.id');
+
+# Flushes the session's data
+Session::flush();
+
+# Regenerates the session's id - optional params are $flush and $lifetime in seconds.
+Session::regenerate();
+
+# Finally closes the session.
+Session::close();
+```
+
 **Thanks for reading**
