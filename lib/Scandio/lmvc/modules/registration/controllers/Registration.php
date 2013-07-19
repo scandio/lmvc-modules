@@ -7,6 +7,7 @@ use Scandio\lmvc\Controller;
 use Scandio\lmvc\LVCConfig;
 use Scandio\lmvc\modules\registration\Registration as RegistrationMediator;
 use Scandio\lmvc\modules\registration\forms;
+use Scandio\lmvc\modules\security;
 
 
 class Registration extends Controller
@@ -18,7 +19,9 @@ class Registration extends Controller
 
     public static function register()
     {
-        if (static::request()->signup !== null) {
+        $isPost = static::request()->signup != null;
+
+        if ($isPost) {
             $signupForm = new forms\Signup();
             $signupForm->validate(static::request());
 
@@ -63,13 +66,51 @@ class Registration extends Controller
         }
     }
 
+    public static function edit($redirect = true) {
+        $mediator = RegistrationMediator::get();
+        $isPost = static::request()->edit != null;
+
+        if ($isPost == false && security\Security::get()->isAuthenticated()) {
+            $redirect ? static::render([
+                'user' => $mediator->getUserById(security\Security::get()->currentUser()->id)
+            ]) : null;
+
+            return false;
+        } else {
+            $credentials = [
+                'id'                  =>  security\Security::get()->currentUser()->id,
+                'password'            =>  static::request()->password,
+                'passwordRetyped'     =>  static::request()->passwordRetyped,
+                'fullname'            =>  static::request()->fullname,
+                'email'               =>  static::request()->email,
+                'phone'               =>  static::request()->phone,
+                'mobile'              =>  static::request()->mobile
+            ];
+
+            $areCredentialsValid = (
+                $mediator->isValidPassword($credentials['password'], $credentials['passwordRetyped']) &&
+                security\Security::get()->isAuthenticated() && ( security\Security::get()->currentUser()->id != null )
+            );
+
+            if ($areCredentialsValid) {
+                $credentials['password'] = sha1($credentials['password']);
+
+                $mediator->edit($credentials);
+
+                return $redirect ? static::redirect('Registration::success') : $mediator->getSignedUpUser();
+            }
+        }
+
+        return $redirect ? static::redirect('Registration::failure') : false;
+    }
+
     public static function failure()
     {
-        static::render();
+        return static::render();
     }
 
     public static function success()
     {
-        static::render();
+        return static::render();
     }
 }

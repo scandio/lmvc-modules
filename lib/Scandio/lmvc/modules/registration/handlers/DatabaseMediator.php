@@ -39,8 +39,29 @@ class DatabaseMediator implements MediatorInterface
         $this->signedUpUser = $user->insert();
     }
 
+    public function edit($credentials)
+    {
+        $user = new models\Users();
+
+        $user->id           = $credentials['id'];
+        $user->fullname     = $credentials['fullname'];
+        $user->password     = $credentials['password'];
+        $user->email        = $credentials['email'];
+        $user->phone        = $credentials['phone'];
+        $user->mobile       = $credentials['mobile'];
+
+        $this->signedUpUser = $user->save();
+    }
+
     public function getSignedUpUser()
     {
         return $this->signedUpUser;
+    }
+
+    public function getUserById($id)
+    {
+        $user = models\Users::findBy('id', $id)->one();
+
+        return $user;
     }
 }
