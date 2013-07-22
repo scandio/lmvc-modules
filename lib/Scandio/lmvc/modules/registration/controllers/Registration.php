@@ -14,7 +14,7 @@ class Registration extends Controller
 {
     public static function index()
     {
-        return static::redirect('Registration::register');
+        return static::redirect('Registration::signup');
     }
 
     public static function signup()

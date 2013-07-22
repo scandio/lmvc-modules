@@ -19,10 +19,10 @@ class Security extends AnonymousController
     /**
      * @return bool
      */
-    public static function login($failure)
+    public static function login($failure = null)
     {
         return static::render([
-            'failure'   =>  "failure"
+            'failure'   =>  $failure == null ? false : true
         ]);
     }
 
