@@ -80,7 +80,7 @@ class Session
      */
     public static function replace($array)
     {
-        array_replace_recursive($_SESSION, $array);
+        $_SESSION = array_replace_recursive($_SESSION, $array);
     }
 
     /**
@@ -90,7 +90,7 @@ class Session
      */
     public static function merge($array)
     {
-        array_merge_recursive($_SESSION, $array);
+        $_SESSION = array_merge_recursive($_SESSION, $array);
     }
 
     /**
