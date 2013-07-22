@@ -114,6 +114,8 @@ class Registration extends Controller
                 'errors' => $signupForm->getErrors()
             ]);
         } else {
+            $mediator = RegistrationMediator::get();
+
             $credentials = [
                 'id'                  =>  security\Security::get()->currentUser()->id,
                 'password'            =>  static::request()->password,
