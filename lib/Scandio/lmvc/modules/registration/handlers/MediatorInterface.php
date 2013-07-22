@@ -9,4 +9,5 @@ interface MediatorInterface
     public function signup($credentials);
     public function getSignedUpUser();
     public function getUserById($id);
+    public function edit($credentials);
 }

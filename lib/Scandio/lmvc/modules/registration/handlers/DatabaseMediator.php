@@ -22,19 +22,19 @@ class DatabaseMediator implements MediatorInterface
 
     public function isValidPassword($password, $passwordRetyped)
     {
-        return true;
+        return ( strlen($password) >= 3 && strlen($passwordRetyped) >= 3 );
     }
 
     public function signup($credentials)
     {
         $user = new models\Users();
 
-        $user->username = $credentials['username'];
-        $user->fullname = $credentials['fullname'];
-        $user->password = $credentials['password'];
-        $user->email = $credentials['email'];
-        $user->phone = $credentials['phone'];
-        $user->mobile = $credentials['mobile'];
+        $user->username     = $credentials['username'];
+        $user->fullname     = $credentials['fullname'];
+        $user->password     = $credentials['password'];
+        $user->email        = $credentials['email'];
+        $user->phone        = $credentials['phone'];
+        $user->mobile       = $credentials['mobile'];
 
         $this->signedUpUser = $user->insert();
     }
