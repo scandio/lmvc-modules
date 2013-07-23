@@ -29,10 +29,10 @@ class AnonymousController extends Controller
         return true;
     }
 
-    public static function render($renderArgs = array(), $template = null, $masterTemplate = null)
+    public static function render($renderArgs = array(), $httpCode = 200, $template = null, $masterTemplate = null)
     {
         static::setRenderArg('currentUser', static::$currentUser);
-        return parent::render($renderArgs, $template, $masterTemplate);
+        return parent::render($renderArgs, $template, $httpCode, $masterTemplate);
     }
 
     /**
