@@ -84,24 +84,24 @@ class DatabasePrincipal extends handlers\AbstractSessionPrincipal
         return $user ? true : false;
     }
 
-    public function isUserInRole($username, $role)
+    public function isUserInRole($username, $inRole)
     {
         $roles = models\Roles::getByUsername($username);
 
         foreach ($roles as $role) {
-            if ($role->id == $role->id)
+            if ($role->id == $inRole->id)
                 return true;
         }
 
         return false;
     }
 
-    public function isUserInGroup($username, $group)
+    public function isUserInGroup($username, $inGroup)
     {
         $groups = models\Groups::getByUsername($username);
 
         foreach ($groups as $group) {
-            if ($group->id == $group->id)
+            if ($group->id == $inGroup->id)
                 return true;
         }
 

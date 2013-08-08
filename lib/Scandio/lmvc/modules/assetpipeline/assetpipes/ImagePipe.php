@@ -37,7 +37,7 @@ class ImagePipe extends AbstractAssetPipe
         $img = Image::make($asset);
 
         if (isset($options[0]) && isset($options[1])) {
-            $img->resize($options[0], $options[1]);
+            $img->resize($options[0], $options[1], true);
         }
 
         $img->save($asset);

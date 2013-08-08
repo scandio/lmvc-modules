@@ -19,9 +19,11 @@ class Security extends AnonymousController
     /**
      * @return bool
      */
-    public static function login()
+    public static function login($failure = null)
     {
-        return static::render();
+        return static::render([
+            'failure'   =>  $failure == null ? false : true
+        ]);
     }
 
     /**
@@ -39,7 +41,7 @@ class Security extends AnonymousController
             unset($_SESSION['security']['called_before_login']);
             return static::redirect($controllerAction, $params);
         } else {
-            return static::redirect('Security::login');
+            return static::redirect('Security::login', 'failure');
         }
     }
 

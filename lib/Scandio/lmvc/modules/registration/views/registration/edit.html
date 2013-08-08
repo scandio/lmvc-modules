@@ -4,14 +4,13 @@
     $errors['username'] = $errors['username'] ? $errors['username'] : [];
     $errors['email'] = $errors['email'] ? $errors['email'] : [];
 ?>
-
-<form method="POST" action="<?= $app->url('Registration::register') ?>">
+<form method="POST" action="<?= $app->url('Registration::edit') ?>">
     <fieldset>
         <legend>Register</legend>
         <div class="control-group">
             <label class="control-label" for="username">Username</label>
             <div class="controls">
-                <input type="text" name="username" id="username">
+                <input readonly type="text" name="username" id="username" placeholder="Username" value="<?= $user->username ?>" />
 
                 <?php foreach ($errors['username'] as $validator => $message): ?>
                     <span class="help-inline <?= $validator ?>"><?= $message ?></span>
@@ -21,7 +20,7 @@
         <div class="control-group">
             <label class="control-label" for="password">Password</label>
             <div class="controls">
-                <input type="password" name="password" id="password">
+                <input type="password" name="password" placeholder="Passwort" id="password" />
 
                 <?php foreach ($errors['password'] as $validator => $message): ?>
                     <span class="help-inline <?= $validator ?>"><?= $message ?></span>
@@ -31,7 +30,7 @@
         <div class="control-group">
             <label class="control-label" for="password">Retype password</label>
             <div class="controls">
-                <input type="password" name="passwordRetyped" id="password-retyped">
+                <input type="password" name="passwordRetyped" placeholder="Retype password" id="password-retyped" />
 
                 <?php foreach ($errors['passwordRetyped'] as $validator => $message): ?>
                     <span class="help-inline <?= $validator ?>"><?= $message ?></span>
@@ -41,13 +40,13 @@
         <div class="control-group">
             <label class="control-label" for="username">Fullname</label>
             <div class="controls">
-                <input type="text" name="fullname" id="fullname">
+                <input type="text" name="fullname" id="fullname" placeholder="Fullname" value="<?= $user->fullname ?>" />
             </div>
         </div>
         <div class="control-group">
             <label class="control-label" for="password">E-Mail</label>
             <div class="controls">
-                <input type="email" name="email" id="email">
+                <input type="email" name="email" id="email" placeholder="E-Mail" value="<?= $user->email ?>" />
 
                 <?php foreach ($errors['email'] as $validator => $message): ?>
                     <span class="help-inline <?= $validator ?>"><?= $message ?></span>
@@ -57,17 +56,17 @@
         <div class="control-group">
             <label class="control-label" for="password">Phone</label>
             <div class="controls">
-                <input type="phone" name="phone" id="phone">
+                <input type="phone" name="phone" id="phone" placeholder="Phone" value="<?= $user->phone ?>" />
             </div>
         </div>
         <div class="control-group">
             <label class="control-label" for="password">Mobile</label>
             <div class="controls">
-                <input type="mobile" name="mobile" id="mobile">
+                <input type="mobile" name="mobile" id="mobile" placeholder="Mobile" value="<?= $user->mobile ?>" />
             </div>
         </div>
         <div class="control-group">
-            <input class="btn btn-primary" type="submit" id="signup" name="signup" value="Signup">
+            <input class="btn btn-primary" type="submit" id="edit" name="edit" value="Edit">
             <a class="btn" href="<?= $app->url('Application::index') ?>">Cancel</a>
         </div>
     </fieldset>

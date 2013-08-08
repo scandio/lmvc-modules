@@ -8,4 +8,6 @@ interface MediatorInterface
     public function isValidPassword($password, $passwordRetyped);
     public function signup($credentials);
     public function getSignedUpUser();
+    public function getUserById($id);
+    public function edit($credentials);
 }

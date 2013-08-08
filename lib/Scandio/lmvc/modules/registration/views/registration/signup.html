@@ -1,0 +1,74 @@
+<?php
+    $errors['password'] = $errors['password'] ? $errors['password'] : [];
+    $errors['passwordRetyped'] = $errors['passwordRetyped'] ? $errors['passwordRetyped'] : [];
+    $errors['username'] = $errors['username'] ? $errors['username'] : [];
+    $errors['email'] = $errors['email'] ? $errors['email'] : [];
+?>
+
+<form method="POST" action="<?= $app->url('Registration::signup') ?>">
+    <fieldset>
+        <legend>Register</legend>
+        <div class="control-group">
+            <label class="control-label" for="username">Username</label>
+            <div class="controls">
+                <input type="text" name="username" id="username">
+
+                <?php foreach ($errors['username'] as $validator => $message): ?>
+                    <span class="help-inline <?= $validator ?>"><?= $message ?></span>
+                <?php endforeach ?>
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label" for="password">Password</label>
+            <div class="controls">
+                <input type="password" name="password" id="password">
+
+                <?php foreach ($errors['password'] as $validator => $message): ?>
+                    <span class="help-inline <?= $validator ?>"><?= $message ?></span>
+                <?php endforeach ?>
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label" for="password">Retype password</label>
+            <div class="controls">
+                <input type="password" name="passwordRetyped" id="password-retyped">
+
+                <?php foreach ($errors['passwordRetyped'] as $validator => $message): ?>
+                    <span class="help-inline <?= $validator ?>"><?= $message ?></span>
+                <?php endforeach ?>
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label" for="username">Fullname</label>
+            <div class="controls">
+                <input type="text" name="fullname" id="fullname">
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label" for="password">E-Mail</label>
+            <div class="controls">
+                <input type="email" name="email" id="email">
+
+                <?php foreach ($errors['email'] as $validator => $message): ?>
+                    <span class="help-inline <?= $validator ?>"><?= $message ?></span>
+                <?php endforeach ?>
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label" for="password">Phone</label>
+            <div class="controls">
+                <input type="phone" name="phone" id="phone">
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label" for="password">Mobile</label>
+            <div class="controls">
+                <input type="mobile" name="mobile" id="mobile">
+            </div>
+        </div>
+        <div class="control-group">
+            <input class="btn btn-primary" type="submit" id="signup" name="signup" value="Signup">
+            <a class="btn" href="<?= $app->url('Application::index') ?>">Cancel</a>
+        </div>
+    </fieldset>
+</form>
