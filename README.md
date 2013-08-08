@@ -49,3 +49,9 @@ Module simplifying Html-tag generation in views. Abstracts string handling and t
 Module handling uploads of various types. Currently only supports image uploads but will hopefully contain a bigger set of types in the near future.
 
 [Readme](https://github.com/scandio/lmvc-modules/tree/master/lib/Scandio/lmvc/modules/upload)
+
+## Session module
+
+Module abtracting from php's session handling. It allows getting, setting, merging and replacing its values without actually touching the $_SESSION variable.
+
+[Readme](https://github.com/scandio/lmvc-modules/tree/master/lib/Scandio/lmvc/modules/session)
