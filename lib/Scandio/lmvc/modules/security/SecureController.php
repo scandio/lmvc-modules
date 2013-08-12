@@ -2,6 +2,7 @@
 
 namespace Scandio\lmvc\modules\security;
 
+use Scandio\lmvc\modules\session\Session;
 use Scandio\lmvc\LVC;
 
 class SecureController extends AnonymousController
@@ -15,9 +16,12 @@ class SecureController extends AnonymousController
             return false;
         }
         if (!static::$currentUser->isAuthenticated()) {
-            $_SESSION['security']['called_before_login']['controller'] = LVC::get()->controller;
-            $_SESSION['security']['called_before_login']['action'] = LVC::get()->actionName;
-            $_SESSION['security']['called_before_login']['params'] = LVC::get()->params;
+            Session::set('security.called_before_login', array(
+                'controller'    => LVC::get()->controller,
+                'action'        => LVC::get()->actionName,
+                'params'        => LVC::get()->params
+            ));
+
             static::redirect('Security::login');
             return false;
         } else {

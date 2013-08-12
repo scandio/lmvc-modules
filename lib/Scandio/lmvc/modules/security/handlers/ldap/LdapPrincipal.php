@@ -4,6 +4,7 @@ namespace Scandio\lmvc\modules\security\handlers\ldap;
 
 use Scandio\lmvc\LVCConfig;
 use Scandio\lmvc\modules\security\handlers;
+use Scandio\lmvc\modules\session\Session;
 
 class LdapPrincipal extends handlers\AbstractSessionPrincipal
 {
@@ -42,13 +43,13 @@ class LdapPrincipal extends handlers\AbstractSessionPrincipal
      */
     public function getUsers()
     {
-        if (!isset($_SESSION['security']['ldap_users'])) {
+        if (!Session::get('security.ldap_users')) {
             $security = LVCConfig::get()->security;
             $list = ldap_search($this->conn, $security->user_base_dn, '(&(objectclass=user)(memberof=CN=DB-User,CN=Users,DC=scandio,DC=de))');
             $entries = ldap_get_entries($this->conn, $list);
             unset($entries['count']);
 
-            $_SESSION['security']['ldap_users'] = array();
+            Session::set('security.ldap_users', array());
             foreach ($entries as $entry) {
                 $userId = $entry[$security->username_attribute][0];
                 $userMail = "not available";
@@ -60,10 +61,11 @@ class LdapPrincipal extends handlers\AbstractSessionPrincipal
                     'fullname' => $entry["displayname"][0],
                     'email' => $userMail
                 );
-                $_SESSION['security']['ldap_users'][$userId] = new $this->userClass($userId, $user);
+                Session::set('security.ldap_users.'.$userId, new $this->userClass($userId, $user), true);
             }
         }
-        return unserialize(serialize($_SESSION['security']['ldap_users']));
+
+        return Session::get('security.ldap_users', array(), true);
     }
 
     /**
@@ -71,24 +73,24 @@ class LdapPrincipal extends handlers\AbstractSessionPrincipal
      */
     public function getGroups()
     {
-        if (!isset($_SESSION['security']['ldap_groups'])) {
+        if (!Session::get('security.ldap_groups')) {
             $security = LVCConfig::get()->security;
             $list = ldap_search($this->conn, $security->user_base_dn, 'objectclass=group');
             $entries = ldap_get_entries($this->conn, $list);
             unset($entries['count']);
 
 
-            $_SESSION['security']['ldap_groups'] = array();
+            Session::set('security.ldap_groups', array());
             foreach ($entries as $entry) {
                 if (isset($entry[$security->groupname_attribute])) {
                     $groupDn = $entry["distinguishedname"][0];
                     if ($groupDn) {
-                        $_SESSION['security']['ldap_groups'][$groupDn] = $this->getGroupUsers($groupDn);
+                        Session::set('security.ldap_groups.'.$groupDn, $this->getGroupUsers($groupDn));
                     }
                 }
             }
         }
-        return $_SESSION['security']['ldap_groups'];
+        return Session::get('security.ldap_groups');
     }
 
     /**

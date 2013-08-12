@@ -3,6 +3,7 @@
 namespace Scandio\lmvc\modules\security\handlers;
 
 use Scandio\lmvc\LVCConfig;
+use Scandio\lmvc\modules\session\Session;
 
 /**
  * Class SessionPrincipal
@@ -24,13 +25,13 @@ abstract class AbstractSessionPrincipal extends AbstractPrincipal
 
     public function isAuthenticated()
     {
-        return (isset($_SESSION['security']['authenticated']) && ($_SESSION['security']['authenticated'] === true));
+        return ( Session::get('security.authenticated') === true );
     }
 
     public function currentUser()
     {
-        return (isset($_SESSION['security']['current_user'])) ?
-            new $this->userClass($_SESSION['security']['current_user'], $this->getUser($_SESSION['security']['current_user'])) :
+        return ( Session::get('security.current_user') ) ?
+            new $this->userClass(Session::get('security.current_user'), $this->getUser(Session::get('security.current_user'))) :
             new $this->userClass('anonymous', new \StdClass());
     }
 

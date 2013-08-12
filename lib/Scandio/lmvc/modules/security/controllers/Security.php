@@ -3,7 +3,9 @@
 namespace Scandio\lmvc\modules\security\controllers;
 
 use Scandio\lmvc\LVCConfig;
+use Scandio\lmvc\LVC;
 use Scandio\lmvc\modules\security\AnonymousController;
+use Scandio\lmvc\modules\session\Session;
 use Scandio\lmvc\modules\security\Security as SecurityPrincipal;
 
 class Security extends AnonymousController
@@ -33,12 +35,18 @@ class Security extends AnonymousController
     {
         $principal = SecurityPrincipal::get();
         if ($principal->authenticate(static::request()->username, static::request()->password)) {
-            $_SESSION['security']['current_user'] = static::request()->username;
-            $_SESSION['security']['authenticated'] = true;
-            $controllerAction = $_SESSION['security']['called_before_login']['controller'] .
-                '::' . $_SESSION['security']['called_before_login']['action'];
-            $params = $_SESSION['security']['called_before_login']['params'];
-            unset($_SESSION['security']['called_before_login']);
+            Session::set('security', array(
+                'current_user'  => static::request()->username,
+                'authenticated' => true
+            ));
+
+            $controllerAction = Session::get('security.called_before_login.controller') .
+                '::' . Session::get('security.called_before_login.action');
+
+            $params = Session::get('security.called_before_login.params');
+
+            Session::set('security.called_before_login', null);
+
             return static::redirect($controllerAction, $params);
         } else {
             return static::redirect('Security::login', 'failure');
@@ -50,8 +58,8 @@ class Security extends AnonymousController
      */
     public static function logout()
     {
-        session_unset();
-        session_destroy();
+        Session::stop();
+
         $logoutAction = (isset(LVCConfig::get()->security->logoutAction)) ? LVCConfig::get()->security->logoutAction : 'Application::index';
         return static::redirect($logoutAction);
     }

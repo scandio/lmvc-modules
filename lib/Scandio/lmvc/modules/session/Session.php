@@ -70,12 +70,12 @@ class Session
      */
     public static function get($attr, $default = null, $serialized = false)
     {
-        $ordinary = $serialized === false ? static::resolveByDotNotation($attr) : unserialize(static::resolveByDotNotation($attr));
+        $ordinary = static::resolveByDotNotation($attr);
 
-        if ($default === null) {
-            return $ordinary;
+        if ($ordinary === null) {
+            return $default;
         } else {
-            return $ordinary === null ? static::setByDotNotation($attr, $default) : $ordinary;
+            return $serialized === false ? $ordinary : unserialize($ordinary);
         }
     }
 
@@ -183,20 +183,16 @@ class Session
         if ($dot == null) { $_SESSION = $value; }
 
         $exploded = explode('.', $dot);
-        $root = &$_SESSION;
+        $valuePointer = &$_SESSION;
 
-        # Loop until end of explodes and reset $_SESSION pointer to $root by reference
-        while (count($exploded) > 1) {
-            $key = array_shift($exploded);
+        # Loop until end of explodes and reset $_SESSION pointer to $valuePointer by reference
+        $length = count($exploded);
+        for($i = 0; $i < $length; $i++){
+            $key = $exploded[$i];
 
-            if (!isset($root[$key])) {
-                $root[$key] = [];
-            }
-
-            $root = &$root[$key];
+            $valuePointer = &$valuePointer[$key];
         }
 
-        $key = reset($exploded);
-        $root[$key] = $value;
+        $valuePointer = $value;
     }
 }
