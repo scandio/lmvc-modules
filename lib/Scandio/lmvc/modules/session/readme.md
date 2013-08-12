@@ -6,7 +6,7 @@ It offers a little helper collection reading and writing to and from the session
 
 ## Installation
 
-Just setup your app's config.json to add the upload module to the modules-array:
+Just setup your app's config.json to add the session module to the modules-array:
 
 ```js
 "modules": [
