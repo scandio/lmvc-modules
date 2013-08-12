@@ -34,9 +34,11 @@ class Session
      *
      * @return bool result of closing session.
      */
-    public static function stop()
+    public static function stop($unset = true)
     {
         if (static::$started) { static::$started = session_destroy(); }
+
+        if ($unset) { session_unset(); }
 
         return static::$started;
     }
