@@ -32,20 +32,9 @@ Remember to chmod the uploads folder to 777.
 ## Uploading files
 
 The Upload-controllers::img-function looks into the `$_FILES[]` of php reads and moves the tempfile to your specified path.
-Therefore, just firing a request to the `
-`/Upload/img`
-` with an image in the `
-`$_FILES[]`
-` will upload the file.
+Therefore, just firing a request to the `/Upload/img` with an image in the `$_FILES[]` will upload the file.
 
-It is also possible to specify a custom filename by calling `
-`/Upload/img/filename.jpg`
-` which will not use the filename from the `
-`$_FILES[]`
-`.
-As an addition specifying `
-`"sha1"`
-` as the filename will hash the file and store the file under the its hash.
+It is also possible to specify a custom filename by calling `/Upload/img/filename.jpg` which will not use the filename from the `$_FILES[]`. As an addition specifying `"sha1"` as the filename will hash the file and store the file under the its hash.
 
 The return value of every file is the path to the file from the app's root as json in `{path: "path/to/, filename: "file.jpg"}`.
 
