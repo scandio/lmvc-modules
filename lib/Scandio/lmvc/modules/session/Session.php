@@ -24,21 +24,21 @@ class Session
     {
         if (static::$started) { return true; }
 
-        session_start();
+        static::$started = session_start();
 
         return static::$started;
     }
 
     /**
-     * Closes / destroys the session.
+     * Stops / destroys the session.
      *
      * @return bool result of closing session.
      */
-    public static function close()
+    public static function stop()
     {
-        if (static::$started) { return session_destroy(); }
+        if (static::$started) { static::$started = session_destroy(); }
 
-        else { return false; }
+        return static::$started;
     }
 
     /**
