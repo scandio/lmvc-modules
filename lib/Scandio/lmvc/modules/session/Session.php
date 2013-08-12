@@ -48,9 +48,12 @@ class Session
      *
      * @param $attr in dot-notation to the session's value to be set
      * @param $value value to be set at $attr
+     * @param $serialize boolean indicating if value should be serialized
      */
-    public static function set($attr, $value)
+    public static function set($attr, $value, $serialize = false)
     {
+        $value = ( $serialize === false ) ? $value : serialize($value);
+
         static::setByDotNotation($attr, $value);
 
         return $value;
@@ -61,12 +64,13 @@ class Session
      *
      * @param $attr in dot-notation to the session's value to be set
      * @param $default value to be set
+     * @param $serialized boolean indicating if value was serialized
      *
      * @return the value behind $attr or the $default value if nothing was set at $attr
      */
-    public static function get($attr, $default = null)
+    public static function get($attr, $default = null, $serialized = false)
     {
-        $ordinary = static::resolveByDotNotation($attr);
+        $ordinary = $serialized === false ? static::resolveByDotNotation($attr) : unserialize(static::resolveByDotNotation($attr));
 
         if ($default === null) {
             return $ordinary;
