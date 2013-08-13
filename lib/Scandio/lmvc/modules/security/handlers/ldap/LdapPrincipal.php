@@ -49,7 +49,7 @@ class LdapPrincipal extends handlers\AbstractSessionPrincipal
             $entries = ldap_get_entries($this->conn, $list);
             unset($entries['count']);
 
-            Session::set('security.ldap_users', array());
+            $ldapUsers = array();
             foreach ($entries as $entry) {
                 $userId = $entry[$security->username_attribute][0];
                 $userMail = "not available";
@@ -61,8 +61,9 @@ class LdapPrincipal extends handlers\AbstractSessionPrincipal
                     'fullname' => $entry["displayname"][0],
                     'email' => $userMail
                 );
-                Session::set('security.ldap_users.'.$userId, new $this->userClass($userId, $user), true);
+                $ldapUsers[$userId] = new $this->userClass($userId, $user);
             }
+            Session::set('security.ldap_users', $ldapUsers, true);
         }
 
         return Session::get('security.ldap_users', array(), true);

@@ -62,11 +62,11 @@ class Session
     /**
      * Gets a value at $attr via dot-notation.
      *
-     * @param $attr in dot-notation to the session's value to be set
-     * @param $default value to be set
-     * @param $serialized boolean indicating if value was serialized
+     * @param string $attr in dot-notation to the session's value to be set
+     * @param mixed $default value to be set
+     * @param bool $serialized boolean indicating if value was serialized
      *
-     * @return the value behind $attr or the $default value if nothing was set at $attr
+     * @return mixed the value behind $attr or the $default value if nothing was set at $attr
      */
     public static function get($attr, $default = null, $serialized = false)
     {
