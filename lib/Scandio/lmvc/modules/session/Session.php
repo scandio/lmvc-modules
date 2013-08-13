@@ -134,7 +134,8 @@ class Session
         session_write_close();
         $backup = $flush ? [] : $_SESSION;
 
-        session_start();
+        static::$started = session_start();
+
         $_SESSION = $backup;
 
         return $response;
