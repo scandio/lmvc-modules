@@ -23,7 +23,7 @@ class Asset
         $pipe = pathinfo($assets[count($assets) - 1], PATHINFO_EXTENSION);
 
         # Return the url with its options
-        return LVC::get()->url('assetpipeline::' . $pipe, array_merge($options, $assets));
+        return LVC::get()->url('asset-pipeline::' . $pipe, array_merge($options, $assets));
     }
 
     /**
@@ -44,6 +44,6 @@ class Asset
         $queryString = "?" . http_build_query($options);
 
         # Return the url with its options
-        return LVC::get()->url('assetpipeline::img', implode(DIRECTORY_SEPARATOR, $img)) . $queryString;
+        return LVC::get()->url('asset-pipeline::img', implode(DIRECTORY_SEPARATOR, $img)) . $queryString;
     }
 }
