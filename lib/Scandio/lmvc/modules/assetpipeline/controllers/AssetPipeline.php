@@ -46,17 +46,13 @@ class AssetPipeline extends Controller implements interfaces\AssetPipelineInterf
         }
     }
 
-    public static function registerAssetpipe($types, $pipe, $options = [])
+    public static function registerAssetpipe($type, $pipe, $options = [])
     {
         #notifiy helper about new reserved keywords which are options and types
         util\AssetPipelineHelper::addReservedKeywords($options);
-        util\AssetPipelineHelper::addReservedKeywords($types);
+        util\AssetPipelineHelper::addReservedKeywords(array($type));
 
-        #multiple pipes per type possible although last of type wins because multiple pipes per type would lead
-        #to unpredictable outcomes due to order imho
-        foreach ($types as $type) {
-            static::$_pipes[$type] = $pipe;
-        }
+        static::$_pipes[$type] = $pipe;
     }
 
     public static function configure()

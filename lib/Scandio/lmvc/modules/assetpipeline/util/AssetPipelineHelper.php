@@ -37,11 +37,11 @@ class AssetPipelineHelper
     /**
      * Adds to the list of reserved keywords such as filenames and options registered in the pipeline.
      *
-     * @param array $pipeOptions which are registered in parent
+     * @param array $reservedKeywords which are registered in parent
      */
-    public static function addReservedKeywords($_reservedKeywords)
+    public static function addReservedKeywords($reservedKeywords)
     {
-        static::$_reservedKeywords = array_unique(array_merge(static::$_reservedKeywords, $_reservedKeywords));
+        static::$_reservedKeywords = array_unique(array_merge(static::$_reservedKeywords, $reservedKeywords));
     }
 
     /**

@@ -12,12 +12,12 @@ class Bootstrap extends \Scandio\lmvc\Bootstrap
 
     private function _configure()
     {
-        assetpipes\CssPipe::register(['css'], ['min']);
-        assetpipes\SassPipe::register(['sass', 'scss'], ['min']);
-        assetpipes\LessPipe::register(['less'], ['min']);
-        assetpipes\JsPipe::register(['js'], ['min']);
-        assetpipes\CoffeescriptPipe::register(['coffee'], ['min']);
-        assetpipes\ImagePipe::register(['img'], [LVC::get()->request->w, LVC::get()->request->h]);
+        assetpipes\CssPipe::register('css', ['min']);
+        assetpipes\SassPipe::register('scss', ['min']);
+        assetpipes\LessPipe::register('less', ['min']);
+        assetpipes\JsPipe::register('js', ['min']);
+        assetpipes\CoffeescriptPipe::register('coffee', ['min']);
+        assetpipes\ImagePipe::register('img', [LVC::get()->request->w, LVC::get()->request->h]);
 
         controllers\AssetPipeline::registerFlexOptions([
             LVC::get()->request->w => LVC::get()->request->w,

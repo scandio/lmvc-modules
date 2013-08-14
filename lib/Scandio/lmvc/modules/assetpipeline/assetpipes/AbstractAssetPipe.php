@@ -68,13 +68,13 @@ abstract class AbstractAssetPipe implements interfaces\AssetPipeInterface
     /**
      * Registers pipe at controller based on its pipe type.
      *
-     * @param array $types  to be registered upon which pipe will get notified (e.g. [css]) also defines
-     *                      controller path (e.g. assetpipe/css/styles.scss)
+     * @param array $type  to be registered upon which pipe will get notified (e.g. css) also defines
+     *                      controller path (e.g. assetpipe/css/styles.css)
      */
-    public static function register($types, $options = [])
+    public static function register($type, $options = [])
     {
         #late static binding goodness
-        controllers\AssetPipeline::registerAssetpipe($types, get_called_class(), $options);
+        controllers\AssetPipeline::registerAssetpipe($type, get_called_class(), $options);
     }
 
     /**
