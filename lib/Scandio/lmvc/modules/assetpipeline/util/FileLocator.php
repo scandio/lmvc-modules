@@ -58,17 +58,21 @@ class FileLocator
      *
      * @return string file name of cached asset e.g. jquery+myplugin.js
      */
-    private function _getCachedFileName($assets, $paths, $options)
+    private function _getCachedFileName($assets, $paths, $options, $delimiter = "+")
     {
         $fileName = "";
 
-        $prefix = array_merge($paths, $options);
+        # Trim file identifiers (filename, path and options) to max of 35 characters (uses sha-1 for unique idenfication)
+        # Ternary used to append separator for next part of 'slug'
+        $pathImploded       = ( count($paths) > 0 ) ? implode($delimiter, $paths) . "-" : "";
+        $fileImploded       = implode($delimiter, $this->_helper->stripExtensions($assets, true));
 
-        #Prefix with options e.g: min.00898888222. (dot in in end!)
-        $fileName .= (count($prefix) > 0)  ? implode(".", $prefix) . "." : "";
+        $optionsIdentifier  = ( count($options) > 0 ) ? implode(".", $options) . "-" : "";
+        $pathIdentifier     = substr($pathImploded, 0, 8);
+        $fileIdentifier     = substr($fileImploded, -20);
+        $hashIdentifier     = substr( sha1($pathImploded . $fileImploded . $optionsIdentifier), 0 , 7 ) . "-";
 
-        #Append file names with + as delimiter and remove extensions from all except last file (e.g. [min.929292.]jquery+my-plugin.js
-        $fileName .= implode("+", $this->_helper->stripExtensions($assets, true));
+        $fileName = $hashIdentifier . $optionsIdentifier . $pathIdentifier . $fileIdentifier;
 
         return $fileName;
     }
