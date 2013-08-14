@@ -16,8 +16,8 @@ class Bootstrap extends \Scandio\lmvc\Bootstrap
         assetpipes\SassPipe::register(['sass', 'scss'], ['min']);
         assetpipes\LessPipe::register(['less'], ['min']);
         assetpipes\JsPipe::register(['js'], ['min']);
-        assetpipes\CoffeescriptPipe::register(['coffee', 'coffeescript'], ['min']);
-        assetpipes\ImagePipe::register(['img', 'image'], [LVC::get()->request->w, LVC::get()->request->h]);
+        assetpipes\CoffeescriptPipe::register(['coffee'], ['min']);
+        assetpipes\ImagePipe::register(['img'], [LVC::get()->request->w, LVC::get()->request->h]);
 
         controllers\AssetPipeline::registerFlexOptions([
             LVC::get()->request->w => LVC::get()->request->w,
@@ -25,6 +25,7 @@ class Bootstrap extends \Scandio\lmvc\Bootstrap
         ]);
 
         controllers\AssetPipeline::configure();
+
     }
 
     public static function setRootDirectory($setRootDirectory)

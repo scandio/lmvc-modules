@@ -20,41 +20,7 @@ class AssetPipeline extends Controller implements interfaces\AssetPipelineInterf
 
     protected static
         $config = [],
-        $defaults = [
-            'useFolders' => true,
-            'stage' => 'dev',
-            'cacheDirectory' => '_cache',
-            'assetDirectories' => [
-                'js' => [
-                    'main'      => 'javascripts',
-                    'fallbacks' => []
-                ],
-                'coffee' => [
-                    'main'      => 'coffeescript',
-                    'fallbacks' => []
-                ],
-                'less' => [
-                    'main'      => 'styles',
-                    'fallbacks' => []
-                ],
-                'sass' => [
-                    'main'      => 'styles',
-                    'fallbacks' => []
-                ],
-                'scss' => [
-                    'main'      => 'styles',
-                    'fallbacks' => []
-                ],
-                'css' => [
-                    'main'      => 'styles',
-                    'fallbacks' => []
-                ],
-                'img' => [
-                    'main'      => 'img',
-                    'fallbacks' => []
-                ]
-            ]
-        ];
+        $defaults = [];
 
     function __construct()
     {
@@ -96,8 +62,8 @@ class AssetPipeline extends Controller implements interfaces\AssetPipelineInterf
     public static function configure()
     {
         static::$config = array_replace_recursive(
-            static::$defaults,
-            static::$_helper->asArray(LVCConfig::get()->assetpipeline)
+            static::$_helper->asArray(json_decode( file_get_contents(dirname(dirname(__FILE__)) . '/config.json') )),
+            static::$_helper->asArray(LVCConfig::get()->assetpipeline ?: [])
         );
 
         static::initialize();

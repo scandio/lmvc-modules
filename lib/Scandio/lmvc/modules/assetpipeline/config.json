@@ -1,0 +1,35 @@
+{
+    "useFolders": true,
+    "stage": "dev",
+    "cacheDirectory": "_cache",
+    "assetDirectories": {
+        "js": {
+            "main": "javascripts",
+            "fallbacks": []
+        },
+        "coffee": {
+            "main": "coffeescript",
+            "fallbacks": []
+        },
+        "less": {
+            "main": "styles",
+            "fallbacks": []
+        },
+        "sass": {
+            "main": "styles",
+            "fallbacks": []
+        },
+        "scss": {
+            "main": "styles",
+            "fallbacks": []
+        },
+        "css": {
+            "main": "styles",
+            "fallbacks": []
+        },
+        "img": {
+            "main": "img",
+            "fallbacks": []
+        }
+    }
+}
