@@ -161,4 +161,30 @@ class AssetPipelineHelper
 
         return $strippedFileNames;
     }
+
+    /**
+    * Converts a StdClass object to an associative array.
+    * It might even be deeply nested.
+    *
+    * @param object $obj
+    *
+    * @return array containing associative indexes for object references
+    **/
+    function asArray($obj)
+    {
+        if(is_object($obj)) {
+            $obj = (array) $obj;
+        }
+
+        if(is_array($obj)) {
+            $new = array();
+            foreach($obj as $key => $val) {
+                $new[$key] = $this->asArray($val);
+            }
+        } else {
+            $new = $obj;
+        }
+
+        return $new;
+    }
 }

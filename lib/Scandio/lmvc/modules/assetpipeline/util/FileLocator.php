@@ -3,6 +3,8 @@
 namespace Scandio\lmvc\modules\assetpipeline\util;
 
 use Scandio\lmvc\modules\assetpipeline\util;
+use Scandio\lmvc\LVCConfig;
+use Scandio\lmvc\LVC;
 
 /**
  * Class FileLocator
@@ -87,7 +89,6 @@ class FileLocator
     private function _recursiveSearch($asset)
     {
         $fileLocation = false;
-
         #Enter iterator madness: for every fallback given for pipeline
         foreach ($this->_assetDirectoryFallbacks as $assetDirectoryFallback) {
             #generate an directory iterator and an iterator-iterator to recursively traverse tree
@@ -296,10 +297,15 @@ class FileLocator
      * @param string $assetDirectory which should be used form now on
      * @param array $fallbacks to be used for searching for asset if file ca not be found in "root"
      */
-    public function setAssetDirectory($assetDirectory, $fallbacks = [])
+    public function setAssetDirectory($assetDirectory, $fallbacks = [], $assetRootDirectory)
     {
-        $this->_assetDirectory = $assetDirectory;
-        $this->_assetDirectoryFallbacks = $fallbacks;
+        $fallbacks = is_array($fallbacks) ? $fallbacks : [];
+
+        $this->_assetDirectory = $this->_helper->path([$assetRootDirectory, $assetDirectory]);
+
+        foreach ($fallbacks as $fallback) {
+            $this->_assetDirectoryFallbacks[] = $this->_helper->path([$assetRootDirectory, $fallback]);
+        }
 
         $this->_setCachedFilePath();
     }

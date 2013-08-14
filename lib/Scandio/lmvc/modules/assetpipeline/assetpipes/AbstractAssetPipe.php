@@ -104,8 +104,8 @@ abstract class AbstractAssetPipe implements interfaces\AssetPipeInterface
      * @param string $assetDirectory where ordinary assets can be found
      * @param array $fallbacks if nothing was found, all these fallbacks shall be used
      */
-    public function setAssetDirectory($assetDirectory, $fallbacks = [])
+    public function setAssetDirectory($assetDirectory, $fallbacks = [], $assetRootDirectory = '')
     {
-        $this->_fileLocator->setAssetDirectory($assetDirectory, $fallbacks);
+        $this->_fileLocator->setAssetDirectory($assetDirectory, $fallbacks, $assetRootDirectory);
     }
 }

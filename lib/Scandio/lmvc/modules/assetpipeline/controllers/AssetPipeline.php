@@ -3,6 +3,7 @@
 namespace Scandio\lmvc\modules\assetpipeline\controllers;
 
 use Scandio\lmvc\LVC;
+use Scandio\lmvc\LVCConfig;
 use Scandio\lmvc\Controller;
 use Scandio\lmvc\modules\assetpipeline\interfaces;
 use Scandio\lmvc\modules\assetpipeline\assetpipes;
@@ -20,34 +21,40 @@ class AssetPipeline extends Controller implements interfaces\AssetPipelineInterf
     protected static
         $config = [],
         $defaults = [
-        'useFolders' => true,
-        'stage' => 'dev',
-        'assetRootDirectory' => '',
-        'cacheDirectory' => '_cache',
-        'assetDirectories' => [
-            'js' => [
-                'main' => 'javascripts'
-            ],
-            'coffee' => [
-                'main' => 'coffeescript'
-            ],
-            'less' => [
-                'main' => 'styles'
-            ],
-            'sass' => [
-                'main' => 'styles'
-            ],
-            'scss' => [
-                'main' => 'styles'
-            ],
-            'css' => [
-                'main' => 'styles'
-            ],
-            'img' => [
-                'main' => 'img'
+            'useFolders' => true,
+            'stage' => 'dev',
+            'cacheDirectory' => '_cache',
+            'assetDirectories' => [
+                'js' => [
+                    'main'      => 'javascripts',
+                    'fallbacks' => []
+                ],
+                'coffee' => [
+                    'main'      => 'coffeescript',
+                    'fallbacks' => []
+                ],
+                'less' => [
+                    'main'      => 'styles',
+                    'fallbacks' => []
+                ],
+                'sass' => [
+                    'main'      => 'styles',
+                    'fallbacks' => []
+                ],
+                'scss' => [
+                    'main'      => 'styles',
+                    'fallbacks' => []
+                ],
+                'css' => [
+                    'main'      => 'styles',
+                    'fallbacks' => []
+                ],
+                'img' => [
+                    'main'      => 'img',
+                    'fallbacks' => []
+                ]
             ]
-        ]
-    ];
+        ];
 
     function __construct()
     {
@@ -66,12 +73,9 @@ class AssetPipeline extends Controller implements interfaces\AssetPipelineInterf
             static::$_pipes[$type]->useFolders(static::$config['useFolders']);
 
             static::$_pipes[$type]->setAssetDirectory(
-                static::$_helper->path([static::$config['assetRootDirectory'], static::$config['assetDirectories'][$type]['main']]),
-
-                static::$_helper->prefix(isset(static::$config['assetDirectories'][$type]['fallbacks']) ?
-                                            static::$config['assetDirectories'][$type]['fallbacks'] :
-                                            [],
-                static::$config['assetRootDirectory'])
+                static::$config['assetDirectories'][$type]['main'],
+                static::$config['assetDirectories'][$type]['fallbacks'],
+                static::$config['assetRootDirectory']
             );
         }
     }
@@ -89,11 +93,22 @@ class AssetPipeline extends Controller implements interfaces\AssetPipelineInterf
         }
     }
 
-    public static function configure($config = [])
+    public static function configure()
     {
-        static::$config = array_replace_recursive(static::$defaults, $config);
+        static::$config = array_replace_recursive(
+            static::$defaults,
+            static::$_helper->asArray(LVCConfig::get()->assetpipeline)
+        );
 
         static::initialize();
+    }
+
+    public static function setRootDirectory($rootDirectory)
+    {
+        static::$config['assetRootDirectory'] = $rootDirectory;
+
+        #creates all the pipes (http://cdn.meme.li/instances/300x300/39438036.jpg)
+        static::_instantiatePipes();
     }
 
     public static function registerFlexOptions($options = [])
@@ -105,9 +120,6 @@ class AssetPipeline extends Controller implements interfaces\AssetPipelineInterf
     {
         #for any file locator set the stage
         util\FileLocator::setStage(static::$config['stage']);
-
-        #creates all the pipes (http://cdn.meme.li/instances/300x300/39438036.jpg)
-        static::_instantiatePipes();
     }
 
     public static function index($action)

@@ -10,7 +10,7 @@ use Scandio\lmvc\modules\assetpipeline\assetpipes;
 class Bootstrap extends \Scandio\lmvc\Bootstrap
 {
 
-    public static function configure($config = [])
+    private function _configure()
     {
         assetpipes\CssPipe::register(['css'], ['min']);
         assetpipes\SassPipe::register(['sass', 'scss'], ['min']);
@@ -24,7 +24,12 @@ class Bootstrap extends \Scandio\lmvc\Bootstrap
             LVC::get()->request->h => LVC::get()->request->h
         ]);
 
-        controllers\AssetPipeline::configure($config);
+        controllers\AssetPipeline::configure();
+    }
+
+    public static function setRootDirectory($setRootDirectory)
+    {
+        controllers\AssetPipeline::setRootDirectory($setRootDirectory);
     }
 
     /**
@@ -33,5 +38,7 @@ class Bootstrap extends \Scandio\lmvc\Bootstrap
     public function initialize()
     {
         LVC::registerControllerNamespace(new controllers\AssetPipeline());
+
+        $this->_configure();
     }
 }
