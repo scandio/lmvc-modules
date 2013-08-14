@@ -55,12 +55,14 @@ class AssetPipeline extends Controller implements interfaces\AssetPipelineInterf
         static::$_pipes[$type] = $pipe;
     }
 
-    public static function configure()
+    public static function configure($assetRootDirectory)
     {
         static::$config = array_replace_recursive(
             static::$_helper->asArray(json_decode( file_get_contents(dirname(dirname(__FILE__)) . '/config.json') )),
             static::$_helper->asArray(LVCConfig::get()->assetpipeline ?: [])
         );
+
+        static::$config['assetRootDirectory'] = $assetRootDirectory;
 
         static::initialize();
     }
@@ -68,14 +70,6 @@ class AssetPipeline extends Controller implements interfaces\AssetPipelineInterf
     public static function getConfig()
     {
         return static::$config;
-    }
-
-    public static function setRootDirectory($rootDirectory)
-    {
-        static::$config['assetRootDirectory'] = $rootDirectory;
-
-        #creates all the pipes (http://cdn.meme.li/instances/300x300/39438036.jpg)
-        static::_instantiatePipes();
     }
 
     public static function registerFlexOptions($options = [])
@@ -87,6 +81,9 @@ class AssetPipeline extends Controller implements interfaces\AssetPipelineInterf
     {
         #for any file locator set the stage
         util\FileLocator::setStage(static::$config['stage']);
+
+        #creates all the pipes (http://cdn.meme.li/instances/300x300/39438036.jpg)
+        static::_instantiatePipes();
     }
 
     public static function index($action)

@@ -3,20 +3,17 @@
 namespace Scandio\lmvc\modules\assetpipeline;
 
 use Scandio\lmvc\LVC;
-use Scandio\lmvc\modules\assetpipeline\controllers;
-use Scandio\lmvc\modules\assetpipeline;
-use Scandio\lmvc\modules\assetpipeline\assetpipes;
 
 class Bootstrap extends \Scandio\lmvc\Bootstrap
 {
-
-    private function _configure()
+    public static function configure($assetRootDirectory)
     {
         assetpipes\CssPipe::register('css', ['min']);
         assetpipes\SassPipe::register('scss', ['min']);
         assetpipes\LessPipe::register('less', ['min']);
         assetpipes\JsPipe::register('js', ['min']);
         assetpipes\CoffeescriptPipe::register('coffee', ['min']);
+
         assetpipes\ImagePipe::register('img', [LVC::get()->request->w, LVC::get()->request->h]);
 
         controllers\AssetPipeline::registerFlexOptions([
@@ -24,13 +21,7 @@ class Bootstrap extends \Scandio\lmvc\Bootstrap
             LVC::get()->request->h => LVC::get()->request->h
         ]);
 
-        controllers\AssetPipeline::configure();
-
-    }
-
-    public static function setRootDirectory($setRootDirectory)
-    {
-        controllers\AssetPipeline::setRootDirectory($setRootDirectory);
+        controllers\AssetPipeline::configure($assetRootDirectory);
     }
 
     /**
@@ -39,7 +30,5 @@ class Bootstrap extends \Scandio\lmvc\Bootstrap
     public function initialize()
     {
         LVC::registerControllerNamespace(new controllers\AssetPipeline());
-
-        $this->_configure();
     }
 }
