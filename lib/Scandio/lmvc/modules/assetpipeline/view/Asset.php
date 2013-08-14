@@ -15,11 +15,11 @@ class Asset
      *
      * @param array|array $assets containing asset(s) as in ['jquery.js', 'myplugin.js'] (will be concatenated)
      * @param string $path for asset(s) to be requested (same for all)
-     * @param array $options for asset pipeline as e.g. ['min'] for asset minification
+     * @param array $options for asset pipeline, defaults to ['min'] for asset minification
      *
      * @return string the URI to the requested asset(s)
      */
-    public static function assets($assets, $path = '', $options = array())
+    public static function assets($assets, $path = '', $options = array('min'))
     {
         # Determines pipe by last file's extension, different files in one request is madness
         $pipe = pathinfo($assets[count($assets) - 1], PATHINFO_EXTENSION);

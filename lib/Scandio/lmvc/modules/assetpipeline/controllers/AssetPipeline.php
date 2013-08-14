@@ -69,6 +69,11 @@ class AssetPipeline extends Controller implements interfaces\AssetPipelineInterf
         static::initialize();
     }
 
+    public static function getConfig()
+    {
+        return static::$config;
+    }
+
     public static function setRootDirectory($rootDirectory)
     {
         static::$config['assetRootDirectory'] = $rootDirectory;
