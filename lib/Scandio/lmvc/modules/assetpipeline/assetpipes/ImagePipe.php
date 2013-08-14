@@ -51,7 +51,7 @@ class ImagePipe extends AbstractAssetPipe
      */
     protected function _setHttpHeaders()
     {
-        header("Content-Type: " . pathinfo($asset, PATHINFO_EXTENSION));
+        header("Content-Type: " . static::$_contentType . pathinfo($asset, PATHINFO_EXTENSION));
     }
 
 }

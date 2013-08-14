@@ -31,5 +31,10 @@
             "main": "img",
             "fallbacks": []
         }
+    },
+    "mimeTypes": {
+        "jpg": "image/jpg",
+        "png": "image/png",
+        "gif": "image/gif"
     }
 }

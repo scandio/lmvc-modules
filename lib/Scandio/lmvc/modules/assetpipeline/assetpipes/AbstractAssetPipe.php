@@ -19,7 +19,8 @@ abstract class AbstractAssetPipe implements interfaces\AssetPipeInterface
 {
 
     protected
-        $_fileLocator;
+        $_fileLocator,
+        $_defaultMimeTypes;
 
     protected static
         $_contentType;
@@ -31,10 +32,31 @@ abstract class AbstractAssetPipe implements interfaces\AssetPipeInterface
     {
         #each pipe uses its own file locator
         $this->_fileLocator = new util\FileLocator();
+
+        $config = json_decode(dirname(dirname(__FILE__)) . '/config.json');
+        $this->_defaultMimeTypes = $config->mimeTypes;
     }
 
     /**
      * Sets the response content-type appropriately so that browsers display content correctly.
+     *
+     * @param string $asset  for which default mimeTypes is requested
+     *
+     * @return mixed false if no default mimeType is specified otherwise string indicating mime-type
+     */
+    protected function _defaultHttpHeader($asset)
+    {
+        $extension = pathinfo($asset, PATHINFO_EXTENSION);
+
+        if (isset($this->_defaultMimeTypes[$extension])) {
+            header("Content-Type: " . $this->_defaultMimeTypes[$extension]);
+        } else {
+            $this->_setHttpHeaders();
+        }
+    }
+
+    /**
+     * Sets a default mime-type if specified in config under mimeTypes directive per extension.
      */
     protected function _setHttpHeaders()
     {
@@ -76,7 +98,7 @@ abstract class AbstractAssetPipe implements interfaces\AssetPipeInterface
         }
 
         #sets correct content type on output after processing: gives pipe chance ot overwrite
-        $this->_setHttpHeaders();
+        $this->_defaultHttpHeader($assets[0]);
 
         return $servedContent;
     }
