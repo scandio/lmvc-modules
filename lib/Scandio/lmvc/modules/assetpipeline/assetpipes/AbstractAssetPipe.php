@@ -33,7 +33,8 @@ abstract class AbstractAssetPipe implements interfaces\AssetPipeInterface
         #each pipe uses its own file locator
         $this->_fileLocator = new util\FileLocator();
 
-        $config = json_decode(dirname(dirname(__FILE__)) . '/config.json');
+        $config = json_decode(file_get_contents(dirname(dirname(__FILE__)) . '/config.json'));
+
         $this->_defaultMimeTypes = $config->mimeTypes;
     }
 
@@ -48,8 +49,8 @@ abstract class AbstractAssetPipe implements interfaces\AssetPipeInterface
     {
         $extension = pathinfo($asset, PATHINFO_EXTENSION);
 
-        if (isset($this->_defaultMimeTypes[$extension])) {
-            header("Content-Type: " . $this->_defaultMimeTypes[$extension]);
+        if ($this->_defaultMimeTypes->$extension !== null) {
+            header("Content-Type: " . $this->_defaultMimeTypes->$extension);
         } else {
             $this->_setHttpHeaders();
         }
