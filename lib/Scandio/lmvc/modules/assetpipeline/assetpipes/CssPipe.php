@@ -27,8 +27,13 @@ class CssPipe extends AbstractAssetPipe
      */
     private function _min($asset)
     {
-        #that's why composer is awesome
-        return \CssMin::minify(file_get_contents($asset));
+        $extension = pathinfo($asset, PATHINFO_EXTENSION);
+
+        if ($this->_defaultMimeTypes->$extension == null) {
+            return \CssMin::minify(file_get_contents($asset));
+        } else {
+            return file_get_contents($asset);
+        }
     }
 
     /**

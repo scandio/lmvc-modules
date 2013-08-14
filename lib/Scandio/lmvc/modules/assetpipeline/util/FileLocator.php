@@ -69,7 +69,7 @@ class FileLocator
         $pathImploded       = ( count($paths) > 0 ) ? implode($delimiter, $paths) . "-" : "";
         $fileImploded       = implode($delimiter, $this->_helper->stripExtensions($assets, true));
 
-        $optionsIdentifier  = ( count($options) > 0 ) ? implode(".", $options) . "-" : "";
+        $optionsIdentifier  = implode(".", $options);
         $pathIdentifier     = substr($pathImploded, 0, 8);
         $fileIdentifier     = substr($fileImploded, -20);
         $hashIdentifier     = substr( sha1($pathImploded . $fileImploded . $optionsIdentifier), 0 , 7 ) . "-";

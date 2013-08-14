@@ -24,8 +24,10 @@ class Asset
         # Determines pipe by last file's extension, different files in one request is madness
         $pipe = pathinfo($assets[count($assets) - 1], PATHINFO_EXTENSION);
 
+        $assets = implode("+", $assets);
+
         # Return the url with its options
-        return LVC::get()->url('asset-pipeline::' . $pipe, array_merge($options, array($path), $assets));
+        return LVC::get()->url('asset-pipeline::' . $pipe, array_merge($options, array($path), array($assets)));
     }
 
     /**

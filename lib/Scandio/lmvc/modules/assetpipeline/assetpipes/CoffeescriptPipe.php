@@ -29,7 +29,13 @@ class CoffeescriptPipe extends AbstractAssetPipe
      */
     private function _min($js)
     {
-        return \JSMinPlus::minify($js);
+        $extension = pathinfo($asset, PATHINFO_EXTENSION);
+
+        if ($this->_defaultMimeTypes->$extension == null) {
+            return \JSMinPlus::minify($js);
+        } else {
+            return $js;
+        }
     }
 
     /**

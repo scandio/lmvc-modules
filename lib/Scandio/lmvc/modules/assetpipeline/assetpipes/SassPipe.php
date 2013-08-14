@@ -26,7 +26,13 @@ class SassPipe extends AbstractAssetPipe
 
     private function _min($asset)
     {
-        return \CssMin::minify(file_get_contents($asset));
+        $extension = pathinfo($asset, PATHINFO_EXTENSION);
+
+        if ($this->_defaultMimeTypes->$extension == null) {
+            return \CssMin::minify(file_get_contents($asset));
+        } else {
+            return file_get_contents($asset);
+        }
     }
 
     private function _compile($asset)
