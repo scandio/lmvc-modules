@@ -16,11 +16,11 @@ class SecureController extends AnonymousController
             return false;
         }
         if (!static::$currentUser->isAuthenticated()) {
-            Session::set('security.called_before_login', array(
-                'controller'    => LVC::get()->controller,
-                'action'        => LVC::get()->actionName,
-                'params'        => LVC::get()->params
-            ));
+            Session::set('security.called_before_login', [
+                'controller' => LVC::get()->controller,
+                'action'     => LVC::get()->actionName,
+                'params'     => LVC::get()->params
+            ]);
 
             static::redirect('Security::login');
             return false;
