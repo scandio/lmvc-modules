@@ -47,12 +47,28 @@ abstract class AbstractAssetPipe implements interfaces\AssetPipeInterface
      */
     protected function _defaultHttpHeader($asset)
     {
-        $extension = pathinfo($asset, PATHINFO_EXTENSION);
-
-        if ($this->_defaultMimeTypes->$extension !== null) {
+        if ($this->_hasDefaultMimeType($asset)) {
             header("Content-Type: " . $this->_defaultMimeTypes->$extension);
         } else {
             $this->_setHttpHeaders();
+        }
+    }
+
+    /**
+     * Indicates if a default MimeType is registered for the given asset's file extention.
+     *
+     * @param string $asset filename for which default MimeType is registered
+     *
+     * @return boolean indicating if default MimeType is registered
+     */
+    protected function _hasDefaultMimeType($asset)
+    {
+        $extension = pathinfo($asset, PATHINFO_EXTENSION);
+
+        if ($this->_defaultMimeTypes->$extension !== null) {
+            return true;
+        } else {
+            return false;
         }
     }
 

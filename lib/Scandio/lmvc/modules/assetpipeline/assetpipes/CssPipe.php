@@ -27,13 +27,7 @@ class CssPipe extends AbstractAssetPipe
      */
     private function _min($asset)
     {
-        $extension = pathinfo($asset, PATHINFO_EXTENSION);
-
-        if ($this->_defaultMimeTypes->$extension == null) {
-            return \CssMin::minify(file_get_contents($asset));
-        } else {
-            return file_get_contents($asset);
-        }
+        return \CssMin::minify(file_get_contents($asset));
     }
 
     /**
@@ -49,8 +43,7 @@ class CssPipe extends AbstractAssetPipe
         $css = null;
         $file = $this->_assetDirectory . DIRECTORY_SEPARATOR . $asset;
 
-        #needs no explanation?
-        if (in_array('min', $options)) {
+        if (in_array('min', $options) && !$this->_hasDefaultMimeType($asset)) {
             $css = $this->_min($file);
         } else {
             $css = file_get_contents($file);

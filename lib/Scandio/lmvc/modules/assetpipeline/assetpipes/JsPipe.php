@@ -21,13 +21,7 @@ class JsPipe extends AbstractAssetPipe
 
     private function _min($asset)
     {
-        $extension = pathinfo($asset, PATHINFO_EXTENSION);
-
-        if ($this->_defaultMimeTypes->$extension == null) {
-            return \JSMinPlus::minify(file_get_contents($asset));
-        } else {
-            return file_get_contents($asset);
-        }
+        return \JSMinPlus::minify(file_get_contents($asset));
     }
 
     /**
@@ -40,16 +34,16 @@ class JsPipe extends AbstractAssetPipe
      */
     public function process($asset, $options = [])
     {
-        $css = null;
-        $file = $this->_assetDirectory . DIRECTORY_SEPARATOR . $asset;
+        $js     = null;
+        $file   = $this->_assetDirectory . DIRECTORY_SEPARATOR . $asset;
 
         #needs no explanation?
-        if (in_array('min', $options)) {
-            $css = $this->_min($file);
+        if (in_array('min', $options) && !$this->_hasDefaultMimeType($asset)) {
+            $js = $this->_min($file);
         } else {
-            $css = file_get_contents($file);
+            $js = file_get_contents($file);
         }
 
-        return $css;
+        return $js;
     }
 }

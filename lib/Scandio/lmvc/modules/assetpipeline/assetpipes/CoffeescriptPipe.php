@@ -29,13 +29,7 @@ class CoffeescriptPipe extends AbstractAssetPipe
      */
     private function _min($js)
     {
-        $extension = pathinfo($asset, PATHINFO_EXTENSION);
-
-        if ($this->_defaultMimeTypes->$extension == null) {
-            return \JSMinPlus::minify($js);
-        } else {
-            return $js;
-        }
+        return \JSMinPlus::minify($js);
     }
 
     /**
@@ -51,21 +45,25 @@ class CoffeescriptPipe extends AbstractAssetPipe
         $file = $this->_assetDirectory . DIRECTORY_SEPARATOR . $asset;
         $js = null;
 
-        try
-        {
-            $coffee = file_get_contents($file);
+        if (!$this->_hasDefaultMimeType($asset)) {
+            try
+            {
+                $coffee = file_get_contents($file);
 
-            // See available options above.
-            $js = CoffeeScript\Compiler::compile($coffee, array('filename' => $file));
+                // See available options above.
+                $js = CoffeeScript\Compiler::compile($coffee, array('filename' => $file));
 
-            if(in_array('min', $options)) {
-                $js = $this->_min($js);
+                if(in_array('min', $options)) {
+                    $js = $this->_min($js);
+                }
             }
-        }
-        catch (Exception $e)
-        {
-            echo $e->getMessage();
-            $js = $e->getMessage();
+            catch (Exception $e)
+            {
+                echo $e->getMessage();
+                $js = $e->getMessage();
+            }
+        } else {
+            $js = file_get_contents($file);
         }
 
         return $js;

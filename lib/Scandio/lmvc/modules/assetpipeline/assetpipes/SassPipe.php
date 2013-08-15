@@ -26,9 +26,7 @@ class SassPipe extends AbstractAssetPipe
 
     private function _min($asset)
     {
-        $extension = pathinfo($asset, PATHINFO_EXTENSION);
-
-        if ($this->_defaultMimeTypes->$extension == null) {
+        if (!$this->_hasDefaultMimeType($asset)) {
             return \CssMin::minify(file_get_contents($asset));
         } else {
             return file_get_contents($asset);
@@ -53,10 +51,14 @@ class SassPipe extends AbstractAssetPipe
         $css = null;
         $file = $this->_assetDirectory . DIRECTORY_SEPARATOR . $asset;
 
-        $css = $this->_compile($file);
+        if (!$this->_hasDefaultMimeType($asset)) {
+            $css = $this->_compile($file);
 
-        if (in_array('min', $options)) {
-            $css = $this->_min($file);
+            if (in_array('min', $options)) {
+                $css = $this->_min($file);
+            }
+        } else {
+            $css = file_get_contents($file);
         }
 
         return $css;
