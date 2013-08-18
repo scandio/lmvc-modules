@@ -30,11 +30,19 @@
         "img": {
             "main": "img",
             "fallbacks": []
+        },
+        "font": {
+            "main": "fonts",
+            "fallbacks": []
         }
     },
     "mimeTypes": {
         "jpg": "image/jpg",
         "png": "image/png",
-        "gif": "image/gif"
+        "gif": "image/gif",
+        "eot": "application/vnd.ms-fontobject",
+        "ttf": "application/octet-stream",
+        "svg": "image/svg+xml",
+        "woff": "application/x-woff"
     }
 }
