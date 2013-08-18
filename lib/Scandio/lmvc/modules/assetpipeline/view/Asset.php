@@ -59,12 +59,13 @@ class Asset
      *
      * @return string the rendered html from markdown source (maybe cached)
      */
-    public static function markdown($file, $options = array())
+    public static function markdown($file, $options = array(), $content = false)
     {
         # Builds query string from options array
         $queryString = "?" . http_build_query($options);
 
-        # Return the url with its options
-        return LVC::get()->url('asset-pipeline::markdown', $file) . $queryString;
+        $url = LVC::get()->url('asset-pipeline::markdown', $file) . $queryString;
+
+        return $content ? file_get_contents($url) : $url;
     }
 }
