@@ -34,6 +34,10 @@
         "font": {
             "main": "fonts",
             "fallbacks": []
+        },
+        "markdown": {
+            "main": "markdown",
+            "fallbacks": []
         }
     },
     "mimeTypes": {

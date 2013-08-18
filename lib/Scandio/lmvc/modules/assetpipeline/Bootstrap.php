@@ -14,6 +14,7 @@ class Bootstrap extends \Scandio\lmvc\Bootstrap
         assetpipes\JsPipe::register('js', ['min']);
         assetpipes\CoffeescriptPipe::register('coffee', ['min']);
         assetpipes\FontPipe::register('font', ['']);
+        assetpipes\MarkdownPipe::register('markdown', ['']);
 
         assetpipes\ImagePipe::register('img', [LVC::get()->request->w, LVC::get()->request->h]);
 

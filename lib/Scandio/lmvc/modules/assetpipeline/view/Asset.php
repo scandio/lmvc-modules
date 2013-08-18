@@ -50,4 +50,21 @@ class Asset
         # Return the url with its options
         return LVC::get()->url('asset-pipeline::img', implode(DIRECTORY_SEPARATOR, $img)) . $queryString;
     }
+
+    /**
+     * Simple connection to the asset pipeline markdown module.
+     *
+     * @param array $file markdown file to be compiled
+     * @param array $options
+     *
+     * @return string the rendered html from markdown source (maybe cached)
+     */
+    public static function markdown($file, $options = array())
+    {
+        # Builds query string from options array
+        $queryString = "?" . http_build_query($options);
+
+        # Return the url with its options
+        return LVC::get()->url('asset-pipeline::markdown', $file) . $queryString;
+    }
 }
