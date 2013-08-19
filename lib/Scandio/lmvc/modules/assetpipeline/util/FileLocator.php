@@ -24,7 +24,8 @@ class FileLocator
         $_cachedFileName,
         $_cachedFilePath,
         $_cachedFileInfo,
-        $_requestedFiles = [];
+        $_requestedFiles = [],
+        $_unFoundAssets = [];
 
     private static
         $_stage;
@@ -69,7 +70,7 @@ class FileLocator
         $pathImploded       = ( count($paths) > 0 ) ? implode($delimiter, $paths) . "-" : "";
         $fileImploded       = implode($delimiter, $this->_helper->stripExtensions($assets, true));
 
-        $optionsIdentifier  = implode(".", $options);
+        $optionsIdentifier  = implode(".", $options) . ".";
         $pathIdentifier     = substr($pathImploded, 0, 8);
         $fileIdentifier     = substr($fileImploded, -20);
         $hashIdentifier     = substr( sha1($pathImploded . $fileImploded . $optionsIdentifier), 0 , 7 ) . "-";
@@ -198,6 +199,7 @@ class FileLocator
                 $this->_requestedFiles[] = new \SplFileObject($assetFilePath, "r");
             #or non-existent
             } else {
+                $this->_unFoundAssets[] = $asset;
                 return false;
             }
         }

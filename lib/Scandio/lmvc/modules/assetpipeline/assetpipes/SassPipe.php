@@ -24,13 +24,9 @@ class SassPipe extends AbstractAssetPipe
         parent::__construct();
     }
 
-    private function _min($asset)
+    private function _min($css)
     {
-        if (!$this->_hasDefaultMimeType($asset)) {
-            return \CssMin::minify(file_get_contents($asset));
-        } else {
-            return file_get_contents($asset);
-        }
+        return \CssMin::minify($css);
     }
 
     private function _compile($asset)
@@ -55,7 +51,7 @@ class SassPipe extends AbstractAssetPipe
             $css = $this->_compile($file);
 
             if (in_array('min', $options)) {
-                $css = $this->_min($file);
+                $css = $this->_min($css);
             }
         } else {
             $css = file_get_contents($file);

@@ -3,6 +3,7 @@
 namespace Scandio\lmvc\modules\assetpipeline\view;
 
 use Scandio\lmvc\LVC;
+use Scandio\lmvc\modules\assetpipeline\controllers\AssetPipeline;
 
 class Asset
 {
@@ -14,20 +15,23 @@ class Asset
      * Note: If the asset pipeline is inactive the call-routing can only handle a string!
      *
      * @param array|array $assets containing asset(s) as in ['jquery.js', 'myplugin.js'] (will be concatenated)
-     * @param array $path for asset(s) to be requested (same for all)
-     * @param array $options for asset pipeline, defaults to ['min'] for asset minification
+     * @param array $options for asset pipeline (path and other) defaults to ['min'] for asset minification and nulled path
      *
      * @return string the URI to the requested asset(s)
      */
-    public static function assets($assets, $path = [], $options = array('min'))
+    public static function assets($assets, $options = [])
     {
         # Determines pipe by last file's extension, different files in one request is madness
         $pipe = pathinfo($assets[count($assets) - 1], PATHINFO_EXTENSION);
 
         $assets = implode("+", $assets);
 
+        if (AssetPipeline::getConfig()['stage'] === 'prod') {
+            $options[] = 'min';
+        }
+
         # Return the url with its options
-        return LVC::get()->url('asset-pipeline::' . $pipe, array_merge($options, $path, array($assets)));
+        return LVC::get()->url('asset-pipeline::' . $pipe, array_merge($options, array($assets)));
     }
 
     /**
@@ -55,16 +59,13 @@ class Asset
      * Simple connection to the asset pipeline markdown module.
      *
      * @param array $file markdown file to be compiled
-     * @param array $options
+     * @param array $options containing path and other additionally desired options
      *
      * @return string the rendered html from markdown source (maybe cached)
      */
     public static function markdown($file, $options = array(), $content = false)
     {
-        # Builds query string from options array
-        $queryString = "?" . http_build_query($options);
-
-        $url = LVC::get()->url('asset-pipeline::markdown', $file) . $queryString;
+        $url = LVC::get()->url('asset-pipeline::markdown', array_merge($options, array($assets)));
 
         return $content ? file_get_contents($url) : $url;
     }
