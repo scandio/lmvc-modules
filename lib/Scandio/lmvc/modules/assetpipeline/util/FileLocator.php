@@ -172,7 +172,7 @@ class FileLocator
      * @param array $assets to be cached and which are requested.
      * @param array $options which are applied on assets.
      *
-     * @return bool indicating if cache was initialized correctly (e.g. all ordinary assets were found)
+     * @return array of assets which where loaded into cache
      */
     public function initializeCache($assets, $paths, $options = [])
     {
@@ -189,6 +189,7 @@ class FileLocator
             $assetFilePath = $this->_helper->path(
                 [$this->_assetDirectory, $paths, $asset]
             );
+
 
             #if it is return true
             if (file_exists($assetFilePath)) {
@@ -209,7 +210,7 @@ class FileLocator
             }
         }
 
-        return true;
+        return $assets;
     }
 
     /**

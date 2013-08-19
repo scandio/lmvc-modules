@@ -108,7 +108,7 @@ abstract class AbstractAssetPipe implements interfaces\AssetPipeInterface
         $servedContent = "";
 
         #only if cache has been initialized
-        if ($this->_fileLocator->initializeCache($assets, $paths, $options)) {
+        if ($assets = $this->_fileLocator->initializeCache($assets, $paths, $options)) {
             #the served content is either read from cache
             if ($this->_fileLocator->isCached()) {
                 $servedContent = $this->_fileLocator->fromCache();

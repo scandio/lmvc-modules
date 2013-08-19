@@ -133,9 +133,10 @@ class AssetPipelineHelper
      */
     public function getFiles($args)
     {
-        $files = implode(" ", $this->_filterArgs($args, true));
+        $files = $this->_filterArgs($args, true);
+        $files = ( count($files) > 0 ) ? $this->_implode_recursive(" ", $files) : $files;
 
-        return explode(" ", $files);
+        return ( count($files) > 0 ) ? explode(" ", $files) : $files;
     }
 
     /**
