@@ -199,12 +199,34 @@ class FileLocator
                 $this->_requestedFiles[] = new \SplFileObject($assetFilePath, "r");
             #or non-existent
             } else {
+                http_response_code(404);
+                # Needed for denying cache
+                $this->_requestedFiles[] = false;
+                # For error logging of unfound assets
                 $this->_unFoundAssets[] = $asset;
-                return false;
+                # Up to next asset
+                continue;
             }
         }
 
         return true;
+    }
+
+    /**
+     * Gets errors which occured during asset-file finding process
+     *
+     * @return string somehow describing errors
+     */
+    public function getErrors() {
+        $errors = '';
+
+        if (count($this->_unFoundAssets) > 0) {
+            $errors .=
+                "AssetPipeline Error - unfound assets in main and fallback directories:\n - " .
+                implode("\n - ", $this->_unFoundAssets);
+        }
+
+        return $errors;
     }
 
     /**
@@ -222,7 +244,7 @@ class FileLocator
         #if not do some work for every file
         foreach ($this->_requestedFiles as $requestedFile) {
             #but not cached if cached file non-existent or ordinary file has been after last cached version has been created
-            if (!$this->_cachedFileInfo->isFile() || ($requestedFile->getMTime() > $this->_cachedFileInfo->getMTime())) {
+            if ($requestedFile === false || !$this->_cachedFileInfo->isFile() || ($requestedFile->getMTime() > $this->_cachedFileInfo->getMTime())) {
                 return false;
             }
         }
@@ -254,7 +276,9 @@ class FileLocator
 
         #cache all the requested files into one
         foreach ($this->_requestedFiles as $requestedFile) {
-            $this->cache(file_get_contents($requestedFile->getPathname()), true);
+            if ($requestedFile !== false) {
+                $this->cache(file_get_contents($requestedFile->getPathname()), true);
+            }
         }
 
         #and return the file path

@@ -17,7 +17,10 @@ interface AssetPipeInterface
     public function setAssetDirectory($assetDirectory);
 
     #called whenever the pipe needs to process some data
-    public function process($asset, $options = []);
+    public function process($asset, $options = [], $errors = '');
+
+    #used to prepend comments to asset file (e.g. unfound assets)
+    public function comment($comment, $toAssetContent);
 
     #every pipe needs to register itself to the managing entity/controller
     public static function register($types, $options = []);

@@ -15,7 +15,7 @@ class Asset
      * Note: If the asset pipeline is inactive the call-routing can only handle a string!
      *
      * @param array|array $assets containing asset(s) as in ['jquery.js', 'myplugin.js'] (will be concatenated)
-     * @param array $options for asset pipeline (path and other) defaults to ['min'] for asset minification and nulled path
+     * @param array $options for asset pipeline (path and other) defaults to ['min'] for asset minification in prod-mode and nulled path
      *
      * @return string the URI to the requested asset(s)
      */

@@ -24,10 +24,11 @@ class FontPipe extends AbstractAssetPipe
      *
      * @param $asset which should be processed by this pipe
      * @param array $options to be applied on asset
+     * @param string describing errors during file location process
      *
      * @return string containing the processed file's content
      */
-    public function process($asset, $options = [])
+    public function process($asset, $options = [], $errors = '')
     {
         $css = null;
         $file = $this->_assetDirectory . DIRECTORY_SEPARATOR . $asset;
@@ -37,4 +38,17 @@ class FontPipe extends AbstractAssetPipe
         return $font;
     }
 
+    /**
+     * The abstract comment method to be called whenever a comment shall be prepended to file
+     *
+     * @param $comment string being comment to be prepended
+     * @param $toAssetContent string of processed file-content to which comment should be prepended
+     *
+     * @return $file-content with possible content prepended
+     */
+    public function comment($comment, $toAssetContent)
+    {
+        #Noop, comment prepending would break binary file
+        return;
+    }
 }

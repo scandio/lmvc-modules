@@ -29,10 +29,11 @@ class JsPipe extends AbstractAssetPipe
      *
      * @param $asset which should be processed by this pipe
      * @param array $options to be applied on asset (e.g. min)
+     * @param string describing errors during file location process
      *
      * @return string containing the processed file's content
      */
-    public function process($asset, $options = [])
+    public function process($asset, $options = [], $errors = '')
     {
         $js     = null;
         $file   = $this->_assetDirectory . DIRECTORY_SEPARATOR . $asset;
@@ -44,6 +45,27 @@ class JsPipe extends AbstractAssetPipe
             $js = file_get_contents($file);
         }
 
+        if (!$this->_hasDefaultMimeType($asset)) {
+            $js = $this->comment($errors, $js);
+        }
+
         return $js;
+    }
+
+    /**
+     * The abstract comment method to be called whenever a comment shall be prepended to file
+     *
+     * @param $comment string being comment to be prepended
+     * @param $toAssetContent string of processed file-content to which comment should be prepended
+     *
+     * @return $file-content with possible content prepended
+     */
+    public function comment($comment, $toAssetContent)
+    {
+        if (strlen($comment) > 0) {
+            return "/**\n $comment \n*/\n\n".$toAssetContent;
+        } else {
+            return $toAssetContent;
+        }
     }
 }
