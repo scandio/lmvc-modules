@@ -63,7 +63,7 @@ class JsPipe extends AbstractAssetPipe
     public function comment($comment, $toAssetContent)
     {
         if (strlen($comment) > 0) {
-            return "/**\n $comment \n*/\n\n".$toAssetContent;
+            return "/*\n $comment \n*/\n\n".$toAssetContent;
         } else {
             return $toAssetContent;
         }

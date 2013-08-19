@@ -15,7 +15,6 @@ class AssetPipeline extends Controller implements interfaces\AssetPipelineInterf
     private static
         $_pipes = [],
         $_flexOptions = [],
-        $_reservedUrlKeywords = [],
         $_helper;
 
     protected static
