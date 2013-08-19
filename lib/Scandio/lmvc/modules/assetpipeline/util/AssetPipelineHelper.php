@@ -119,7 +119,7 @@ class AssetPipelineHelper
      */
     public function getPaths($args)
     {
-        $withoutFiles = array_diff($args, $this->_filterArgs($args, true));
+        $withoutFiles   = array_diff($args, $this->_filterArgs($args, true));
         $withoutOptions = array_diff($withoutFiles, $this->_filterArgs($args, false));
 
         return $withoutOptions;
@@ -133,10 +133,10 @@ class AssetPipelineHelper
      */
     public function getFiles($args)
     {
-        $files = $this->_filterArgs($args, true);
-        $files = ( count($files) > 0 ) ? $this->_implode_recursive(" ", $files) : $files;
+        $filesArgs  = $this->_filterArgs($args, true);
+        $files      = (count($filesArgs) > 0) ? implode(" ", $filesArgs) : [];
 
-        return ( count($files) > 0 ) ? explode(" ", $files) : $files;
+        return (count($files) > 0) ? explode(" ", $files) : $files;
     }
 
     /**
