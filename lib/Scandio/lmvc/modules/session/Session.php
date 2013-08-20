@@ -46,9 +46,9 @@ class Session
     /**
      * Sets a value $value at $attr via dot-notation.
      *
-     * @param $attr in dot-notation to the session's value to be set
-     * @param $value value to be set at $attr
-     * @param $serialize boolean indicating if value should be serialized
+     * @param string $attr in dot-notation to the session's value to be set
+     * @param mixed $value value to be set at $attr
+     * @param bool $serialize boolean indicating if value should be serialized
      */
     public static function set($attr, $value, $serialize = false)
     {
@@ -63,7 +63,7 @@ class Session
      * Gets a value at $attr via dot-notation.
      *
      * @param string $attr in dot-notation to the session's value to be set
-     * @param mixed $default value to be set
+     * @param mixed $default value that will be returned if the stored value is null
      * @param bool $serialized boolean indicating if value was serialized
      *
      * @return mixed the value behind $attr or the $default value if nothing was set at $attr
@@ -77,6 +77,23 @@ class Session
         } else {
             return $serialized === false ? $ordinary : unserialize($ordinary);
         }
+    }
+
+    /**
+     * Backups a value at $attr via dot-notation:
+     * - if an empty value is passed, the backup is returned
+     * - otherwise the value is stored in the session and returned
+     * - if an empty value is passed and the backup is null, the default will be returned
+     *
+     * @param string $attr in dot-notation to the session's value to backup
+     * @param mixed $value value to backup
+     * @param mixed $default value that will be returned as default
+     * @param  bool $serialized boolean indication if value is stored serialized
+     * @return mixed determined value
+     */
+    public static function backup($attr, $value, $default = null, $serialized = false)
+    {
+        return (empty($value) ? static::get($attr, $default, $serialized) : static::set($attr, $value, $serialized));
     }
 
     /**
