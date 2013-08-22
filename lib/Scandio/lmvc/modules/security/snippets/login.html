@@ -28,7 +28,7 @@
 <script type="text/javascript">
     $(function () {
         $('#username').focus();
-        if (<?= ($ajax ? 'true' : 'false') ?>) {
+        <?php if ($ajax) : ?>
             $('#loginForm').submit(function () {
                 $.post("<?= $app->url("Security::ajaxLogin") ?>", $(this).serialize(), function (data) {
                     $(document).trigger('login', data);
@@ -37,6 +37,6 @@
                     });
                 return false;
             });
-        }
+        <?php endif ?>
     });
 </script>
