@@ -4,8 +4,9 @@ namespace Scandio\lmvc\modules\security\controllers;
 
 use Scandio\lmvc\LVCConfig;
 use Scandio\lmvc\LVC;
-use Scandio\lmvc\modules\security\AnonymousController;
 use Scandio\lmvc\modules\session\Session;
+use Scandio\lmvc\modules\snippets\Snippets;
+use Scandio\lmvc\modules\security\AnonymousController;
 use Scandio\lmvc\modules\security\Security as SecurityPrincipal;
 
 class Security extends AnonymousController
@@ -33,6 +34,29 @@ class Security extends AnonymousController
      */
     public static function postLogin()
     {
+        $auth = static::authenticate();
+        static::redirect($auth['controllerAction'], $auth['params']);
+        return $auth['success'];
+    }
+
+    /**
+     * @return bool
+     */
+    public static function ajaxLogin()
+    {
+        return static::renderHtml(Snippets::login('ajaxLogin'));
+    }
+
+    public static function postAjaxLogin() {
+        $auth = static::authenticate();
+        return static::renderJson($auth);
+    }
+
+    /**
+     * @return array
+     */
+    private static function authenticate()
+    {
         $principal = SecurityPrincipal::get();
         if ($principal->authenticate(static::request()->username, static::request()->password)) {
             Session::set('security.current_user', static::request()->username);
@@ -45,9 +69,16 @@ class Security extends AnonymousController
 
             Session::set('security.called_before_login', null);
 
-            return static::redirect($controllerAction, $params);
+            return [
+                'success' => true,
+                'controllerAction' => $controllerAction,
+                'params' => $params
+            ];
         } else {
-            return static::redirect('Security::login', 'failure');
+            return [
+                'success' => false,
+                'controllerAction' => 'Security::login',
+                'params' => ['failure']];
         }
     }
 

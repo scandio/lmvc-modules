@@ -1,39 +1,10 @@
+<?php
+use Scandio\lmvc\modules\snippets\Snippets;
+?>
 <?php if($failure): ?>
     <div class="alert alert-error">
         <strong>Warning!</strong> Login failed, please retry!
     </div>
 <?php endif; ?>
-<form method="POST" action="<?= $app->url('Security::login') ?>">
-    <fieldset>
-        <legend>Login</legend>
-        <div class="control-group">
-            <label class="control-label" for="username">Username</label>
-            <div class="controls">
-                <input type="text" name="username" id="username"/>
-            </div>
-        </div>
-        <div class="control-group">
-            <label class="control-label" for="password">Password</label>
-            <div class="controls">
-                <input type="password" name="password" id="password"/>
-            </div>
-        </div>
-        <div class="control-group">
-            <input class="btn btn-primary" type="submit" id="login" name="login" value="Login"/>
 
-            <a class="btn" href="<?= $app->url('Application::index') ?>">Cancel</a>
-        </div>
-    </fieldset>
-</form>
-
-<script type="text/javascript">
-    (function () {
-        var onload = window.onload;
-        window.onload = function () {
-            if (window.jQuery) {
-                $('#username').focus();
-            }
-            return onload();
-        }
-    })();
-</script>
+<?= Snippets::login() ?>
