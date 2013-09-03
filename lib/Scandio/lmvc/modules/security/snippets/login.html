@@ -1,0 +1,42 @@
+<?php
+    $ajax = (!empty($params[0]) ? $params[0] : false);
+?>
+
+<form method="POST" id="loginForm" action="<?= $app->url('Security::login') ?>">
+    <fieldset>
+        <legend>Login</legend>
+        <div class="control-group">
+            <label class="control-label" for="username">Username</label>
+            <div class="controls">
+                <input type="text" name="username" id="username"/>
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label" for="password">Password</label>
+            <div class="controls">
+                <input type="password" name="password" id="password"/>
+            </div>
+        </div>
+        <div class="control-group">
+            <input class="btn btn-primary" type="submit" id="login" name="login" value="Login"/>
+
+            <a class="btn" href="javascript: history.back()">Cancel</a>
+        </div>
+    </fieldset>
+</form>
+
+<script type="text/javascript">
+    $(function () {
+        $('#username').focus();
+        <?php if ($ajax) : ?>
+            $('#loginForm').submit(function () {
+                $.post("<?= $app->url("Security::ajaxLogin") ?>", $(this).serialize(), function (data) {
+                    $(document).trigger('login', data);
+                }, 'json').error(function () {
+                        alert("Serverfehler");
+                    });
+                return false;
+            });
+        <?php endif ?>
+    });
+</script>
