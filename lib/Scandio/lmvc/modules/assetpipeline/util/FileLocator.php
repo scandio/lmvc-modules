@@ -102,6 +102,7 @@ class FileLocator
                 if ($asset == $possibleFile->getFileName()) {
                     #break all the loops (http://cdn.meme.li/instances/300x300/39435708.jpg)
                     $fileLocation = $possibleFile->getPathname();
+
                     break 2;
                 }
             }

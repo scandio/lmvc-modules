@@ -65,7 +65,7 @@ class Asset
      */
     public static function markdown($file, $options = array(), $content = false)
     {
-        $url = LVC::get()->url('asset-pipeline::markdown', array_merge($options, array($assets)));
+        $url = LVC::get()->url('asset-pipeline::markdown', array_merge($options, array($file)));
 
         return $content ? file_get_contents($url) : $url;
     }
