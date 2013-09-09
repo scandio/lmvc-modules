@@ -67,6 +67,14 @@ class Asset
     {
         $url = LVC::get()->url('asset-pipeline::markdown', array_merge($options, array($file)));
 
-        return $content ? file_get_contents($url) : $url;
+        $response = false;
+
+        if ($content === true) {
+            $response = @file_get_contents($url);
+        } else {
+            $response = $url;
+        }
+
+        return $response;
     }
 }
