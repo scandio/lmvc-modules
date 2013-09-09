@@ -89,6 +89,9 @@ class FileLocator
      */
     private function _recursiveSearch($asset)
     {
+        # Prevents from fudgy input on fallback-directories
+        if (!is_array($this->_assetDirectoryFallbacks)) { return false; }
+
         $fileLocation = false;
         #Enter iterator madness: for every fallback given for pipeline
         foreach ($this->_assetDirectoryFallbacks as $assetDirectoryFallback) {
