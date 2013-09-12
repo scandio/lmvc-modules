@@ -4,7 +4,7 @@ This module allows a simple user registration within an application using the [L
 
 ## Installation
 
-First import the table-structure needed into your MySQL-Database. The current dump (which is also used by the security module) can be found [here](https://github.com/scandio/lmvc-modules/tree/master/lib/Scandio/lmvc/modules/security/docs/DatabasePrincipal.sql).
+First import the table-structure needed into your MySQL-Database. The current dump (which is also used by the security module) can be found [here](../security/docs/DatabasePrincipal.sql).
 
 Next setup your app's config.json to specify the intended registration mediator (in case the module gets extended and also offers LDAP and other mediators) as in:
 

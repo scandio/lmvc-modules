@@ -6,7 +6,7 @@ Authentification can be accomplished through various currently available princip
 
 ## Installation
 
-If you want to use the database principal, first import the table-structure needed into your MySQL-Database. The current dump (which is also used by the registration module) can be found [here](https://github.com/scandio/lmvc-modules/tree/master/lib/Scandio/lmvc/modules/security/docs/DatabasePrincipal.sql).
+If you want to use the database principal, first import the table-structure needed into your MySQL-Database. The current dump (which is also used by the registration module) can be found [here](docs/DatabasePrincipal.sql).
 
 Next setup your app's config.json to specify the intended registration mediator (in case the module gets extended and also offers LDAP and other mediators) as in:
 

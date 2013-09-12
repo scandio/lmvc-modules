@@ -157,6 +157,6 @@ Firstly, assets with a defaulted mime-type won't be minified by other pipes (css
 
 ## Contributing
 
-Writing your own asset pipe is fairly easy. Just checkout the [contributing.md](https://github.com/scandio/lmvc-modules/blob/master/lib/Scandio/lmvc/modules/assetpipeline/contributing.md).
+Writing your own asset pipe is fairly easy. Just checkout the [contributing.md](contributing.md).
 
 **Thanks for reading!**
