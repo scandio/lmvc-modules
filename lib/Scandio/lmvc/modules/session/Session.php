@@ -97,6 +97,25 @@ class Session
     }
 
     /**
+     * Backups a value at $attr via dot-notation:
+     * - if null or an unset value is passed, the backup is returned
+     * - otherwise the value is stored in the session and returned
+     * - if an unset value is passed and the backup is null, the default will be returned
+     *
+     * Needed for backing-up Numbers, as '0' is recognized as 'empty' (in Session::backup)
+     *
+     * @param string $attr in dot-notation to the session's value to backup
+     * @param mixed $value value to backup
+     * @param mixed $default value that will be returned as default
+     * @param  bool $serialized boolean indication if value is stored serialized
+     * @return mixed determined value
+     */
+    public static function backupNumber($attr, $value, $default = null, $serialized = false)
+    {
+        return (!isset($value) ? static::get($attr, $default, $serialized) : static::set($attr, $value, $serialized));
+    }
+
+    /**
      * Recursively replaces all values in session by key and value.
      *
      * @param array $array nested array containing values to be set in session.
