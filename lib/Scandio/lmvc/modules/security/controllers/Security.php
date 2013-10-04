@@ -55,24 +55,19 @@ class Security extends AnonymousController
     /**
      * @return array
      */
-    private static function authenticate()
+    protected static function authenticate()
     {
         $principal = SecurityPrincipal::get();
         if ($principal->authenticate(static::request()->username, static::request()->password)) {
             Session::set('security.current_user', static::request()->username);
             Session::set('security.authenticated', true);
 
-            $controllerAction = Session::get('security.called_before_login.controller') .
-                '::' . Session::get('security.called_before_login.action');
-
-            $params = Session::get('security.called_before_login.params');
-
+            $uri = Session::get('security.called_before_login');
             Session::set('security.called_before_login', null);
 
             return [
                 'success' => true,
-                'controllerAction' => $controllerAction,
-                'params' => $params
+                'controllerAction' => $uri
             ];
         } else {
             return [
