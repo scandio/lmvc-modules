@@ -75,9 +75,9 @@ The `rootDirectory` will be handled relatively from your app's root and can e.g.
 
 Assets can also reside in sub directories. Contrary to other pipelines the root directory *will not be recursively traversed* for the asset by file name. The path needs to be fully qualifying. Asset names therefore do not need to be unique in order to be found appropriately.
 
-Requesting an asset as in ´assetpipeline/coffee/backbone/models/user.coffee` will request the asset from the sub directory `backbone/models`. Therefore, whenever multiple assets are requested they all need to be contained in the same directory.
+Requesting an asset as in `assetpipeline/coffee/backbone/models/user.coffee` will request the asset from the sub directory `backbone/models`. Therefore, whenever multiple assets are requested they all need to be contained in the same directory.
 
-Lastly, *all assets within a directory* can be requested at once by just leaving the file name as in ´assetpipeline/coffee/min/backbone/models` will concatenate and minify all CoffeeScript files under models. Which is handy for requesting application state dependent assets as in ´assetpipeline/js/min/admin` without always needing to update the url whenever an asset gets added or removed.
+Lastly, *all assets within a directory* can be requested at once by just leaving the file name as in `assetpipeline/coffee/min/backbone/models` will concatenate and minify all CoffeeScript files under models. Which is handy for requesting application state dependent assets as in ´assetpipeline/js/min/admin` without always needing to update the url whenever an asset gets added or removed.
 
 ### Asset directory fallbacks
 
@@ -145,12 +145,16 @@ Html::img(['src' =>
 
 ## Additional tricks
 
-The following trick only works if the `useFolders`-flag is set to false. Otherwise the pipeline will assume that the hash/version-number is indeed a folder and fail locating the file.
+### Versioning
 
-Passing a hash in the url will force the cache to generate a uniquely cached file e.g. requesting Javascript by `/assetpipeline/js/min/6d1b5e3/jquery.js/bootstrap.js/main.js` will concat and minify all source and prepend the hash to the cached filename.
+The following trick only works if the `useFolders`-flag is set to false. Otherwise the pipeline will assume that the hash/version-number is indeed a folder and fail locating the file. Moreover, assets need to reside in one of the `fallback`-directories so that additional url-parts are not interpreted as sub-folders. One could even set the `main`-directory as a fallback which will only be processed whenever a search in the `main`-directory failed - no performance drawbacks here.
+
+Passing a hash in the url will force the cache to generate a uniquely cached file e.g. requesting JavaCcript by `/assetpipeline/js/min/6d1b5e3/jquery.js/bootstrap.js/main.js` will concat and minify all source and prepend the hash to the cached filename.
 After all, this trick mitigates some browser's rather eager caching mechanisms.
 
-Visioning between assets is hereby also fairly easy. For example by never clearly the cache-directory one can easily switch between versions by `/assetpipeline/js/min/v1/jquery.js/bootstrap.js/main.js` or `/assetpipeline/js/min/v2/jquery.js/bootstrap.js/main.js`.
+Visioning between assets is hereby also fairly easy. For example by artificially augmenting the path one can easily define and switch between versions by requesting `/assetpipeline/js/min/v1/jquery.js/bootstrap.js/main.js` or `/assetpipeline/js/min/v2/jquery.js/bootstrap.js/main.js`. The reason for this lies in the internal caching mechanism taking parts of the request's url into account.
+
+### Mimetypes and css-imports
 
 The `mimeType`-directive of the `config.json` solves a very specific problem. Whenever you request e.g. an image-resource from a css-file which is requested through the *css-pipe* via `../../img/image.png` the url gets out of the asset pipeline's scope as in `localhost/img` without the `asset-pipeline`. Having defaulted mime-types helps solving this.
 Firstly, assets with a defaulted mime-type won't be minified by other pipes (css on img e.g.) which could break their binary contents. Moreover, by setting the *image-path* and *font-path* as an fallback to the css-pipe you can easily require these files just by their name. After all, every pipe can decide how to handle defaulted mime-types or files with an extension which is not part of its favored types.
