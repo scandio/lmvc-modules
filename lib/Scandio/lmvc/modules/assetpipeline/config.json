@@ -1,6 +1,7 @@
 {
     "useFolders": true,
     "stage": "dev",
+    "304-caching": true,
     "cacheDirectory": "_cache",
     "assetDirectories": {
         "js": {

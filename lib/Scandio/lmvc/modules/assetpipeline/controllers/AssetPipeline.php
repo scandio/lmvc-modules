@@ -78,8 +78,11 @@ class AssetPipeline extends Controller implements interfaces\AssetPipelineInterf
 
     public static function initialize()
     {
-        #for any file locator set the stage
+        # For any file locator set the stage
         util\FileLocator::setStage(static::$config['stage']);
+
+        # Sets up more aggressive 304 caching on resources
+        util\FileLocator::set304Caching(static::$config['304-caching']);
 
         #creates all the pipes (http://cdn.meme.li/instances/300x300/39438036.jpg)
         static::_instantiatePipes();
