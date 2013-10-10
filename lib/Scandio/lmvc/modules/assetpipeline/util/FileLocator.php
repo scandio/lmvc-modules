@@ -367,16 +367,16 @@ class FileLocator
      */
     private function _setHttpCacheHeaders($fileObject)
     {
-        # Makes the browser respond with HTTP_IF_MODIFIED_SINCE and If-None-Match for E-Tag validation
-        header('Last-Modified: ' . gmdate("D, d M Y H:i:s", $fileModifiedTimestamp ) . " GMT");
-        header('ETag: "'.md5($fileModifiedTimestamp.$fileName).'"');
-        header('Cache-Control: public');
-
         # Collect some information about file requested and file in browser's cache
         $fileModifiedTimestamp      = $fileObject->getMTime();
         $fileName                   = $fileObject->getFileName();
         $browserModifiedTimestamp   = isset($_SERVER['HTTP_IF_MODIFIED_SINCE']) ?
                                         strtotime($_SERVER['HTTP_IF_MODIFIED_SINCE']) : null;
+
+        # Makes the browser respond with HTTP_IF_MODIFIED_SINCE and If-None-Match for E-Tag validation
+        header('Last-Modified: ' . gmdate("D, d M Y H:i:s", $fileModifiedTimestamp ) . " GMT");
+        header('ETag: "'.md5($fileModifiedTimestamp.$fileName).'"');
+        header('Cache-Control: public');
 
         # Now check if file content needs to be send
         if($browserModifiedTimestamp !== null && $fileModifiedTimestamp <= $browserModifiedTimestamp) {
