@@ -205,19 +205,16 @@ class FileLocator
                 [$this->_assetDirectory, $paths, $asset]
             );
 
-
             #if it is return true
             if (file_exists($assetFilePath)) {
                 $fileObject = new \SplFileObject($assetFilePath, "r");
                 $this->_requestedFiles[] = $fileObject;
 
-                if (static::$_aggressiveCaching === true) { $this->_setHttpCacheHeaders($fileObject); }
             #still it may be found only in fallback dirs
             } else if ($assetFilePath = $this->_recursiveSearch($asset)) {
                 $fileObject = new \SplFileObject($assetFilePath, "r");
                 $this->_requestedFiles[] = $fileObject;
 
-                if (static::$_aggressiveCaching === true) { $this->_setHttpCacheHeaders($fileObject); }
             #or non-existent
             } else {
                 http_response_code(404);
@@ -282,7 +279,9 @@ class FileLocator
      */
     public function fromCache()
     {
-        return file_get_contents($this->_cachedFileInfo->getPathname());
+        if (static::$_aggressiveCaching === true && !$this->_setHttpCacheHeaders( $this->_cachedFileInfo->openFile("r") )) {
+            return file_get_contents($this->_cachedFileInfo->getPathname());
+        }
     }
 
     /**
