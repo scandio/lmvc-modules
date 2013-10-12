@@ -279,7 +279,7 @@ class FileLocator
      */
     public function fromCache()
     {
-        if (static::$_aggressiveCaching === true && !$this->_setHttpCacheHeaders( $this->_cachedFileInfo->openFile("r") )) {
+        if (!$this->_setHttpCacheHeaders( $this->_cachedFileInfo->openFile("r") )) {
             return file_get_contents($this->_cachedFileInfo->getPathname());
         }
     }
@@ -366,6 +366,9 @@ class FileLocator
      */
     private function _setHttpCacheHeaders($fileObject)
     {
+        # Do not force 304 caching if disabled by config
+        if (static::$_aggressiveCaching !== true) { return false; }
+
         # Collect some information about file requested and file in browser's cache
         $fileModifiedTimestamp      = $fileObject->getMTime();
         $fileName                   = $fileObject->getFileName();
