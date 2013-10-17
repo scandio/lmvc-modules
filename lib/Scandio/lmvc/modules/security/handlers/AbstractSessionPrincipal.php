@@ -31,7 +31,7 @@ abstract class AbstractSessionPrincipal extends AbstractPrincipal
     public function currentUser()
     {
         return ( Session::get('security.current_user') ) ?
-            new $this->userClass(Session::get('security.current_user'), $this->getUser(Session::get('security.current_user'))) :
+            $this->getUser(Session::get('security.current_user')) :
             new $this->userClass('anonymous', new \StdClass());
     }
 
