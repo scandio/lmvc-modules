@@ -2,7 +2,7 @@
 
 namespace Scandio\lmvc\modules\security\tests;
 
-use Scandio\lmvc\LVCConfig;
+use Scandio\lmvc\Config;
 use Scandio\lmvc\modules\security\handlers\ldap;
 
 class LdapPrincipalTest extends \PHPUnit_Framework_TestCase {
@@ -13,7 +13,7 @@ class LdapPrincipalTest extends \PHPUnit_Framework_TestCase {
     protected $principal;
 
     public static function setUpBeforeClass() {
-        LVCConfig::initialize('configLdapPrincipalTest.json');
+        Config::initialize('configLdapPrincipalTest.json');
     }
 
     public function setUp() {
@@ -28,7 +28,7 @@ class LdapPrincipalTest extends \PHPUnit_Framework_TestCase {
      * @depends testConnection
      */
     public function testAuthenticate() {
-        $test = LVCConfig::get()->securityTest;
+        $test = Config::get()->securityTest;
         $this->assertEquals(false, $this->principal->authenticate($test->inexistent_user, $test->inexistent_user_pass));
         $this->assertEquals(true, $this->principal->authenticate($test->existent_user, $test->existent_user_pass));
     }
@@ -47,7 +47,7 @@ class LdapPrincipalTest extends \PHPUnit_Framework_TestCase {
      * @depends testGetUsers
      */
     public function testGetUser($users) {
-        $username = LVCConfig::get()->securityTest->existent_user;
+        $username = Config::get()->securityTest->existent_user;
         $user = $users[$username];
         $this->assertEquals($user, $this->principal->getUser($username));
         $this->assertInstanceOf('\\Scandio\\lmvc\\modules\\security\\user\\UserInterface', $user);
@@ -80,7 +80,7 @@ class LdapPrincipalTest extends \PHPUnit_Framework_TestCase {
      * @depends testGetGroups
      */
     public function testGetUserGroups() {
-        $test = LVCConfig::get()->securityTest;
+        $test = Config::get()->securityTest;
         $userGroups = $this->principal->getUserGroups('anonymous');
         $this->assertInternalType('array', $userGroups);
         $userGroups = $this->principal->getUserGroups($test->inexistent_user);

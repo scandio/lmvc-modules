@@ -2,7 +2,7 @@
 
 namespace Scandio\lmvc\modules\security\handlers;
 
-use Scandio\lmvc\LVCConfig;
+use Scandio\lmvc\Config;
 use Scandio\lmvc\modules\session\Session;
 
 /**
@@ -57,7 +57,7 @@ abstract class AbstractSessionPrincipal extends AbstractPrincipal
 
     public function getRoles()
     {
-        return LVCConfig::get()->security->roles;
+        return Config::get()->security->roles;
     }
 
     public function getGroup($group)

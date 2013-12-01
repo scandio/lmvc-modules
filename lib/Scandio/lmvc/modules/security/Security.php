@@ -2,7 +2,7 @@
 
 namespace Scandio\lmvc\modules\security;
 
-use Scandio\lmvc\LVCConfig;
+use Scandio\lmvc\Config;
 
 class Security
 {
@@ -18,10 +18,10 @@ class Security
     public static function get()
     {
         if (is_null(static::$principal)) {
-            $class = LVCConfig::get()->security->principal;
+            $class = Config::get()->security->principal;
             $userClass = null;
-            if (isset(LVCConfig::get()->security->principalUser)) {
-                $userClass = LVCConfig::get()->security->principalUser;
+            if (isset(Config::get()->security->principalUser)) {
+                $userClass = Config::get()->security->principalUser;
             }
             if (class_exists($class) && is_subclass_of($class, '\\Scandio\\lmvc\\modules\\security\\handlers\\PrincipalInterface')) {
                 static::$principal = new $class($userClass);

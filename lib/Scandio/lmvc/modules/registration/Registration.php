@@ -2,7 +2,7 @@
 
 namespace Scandio\lmvc\modules\registration;
 
-use Scandio\lmvc\LVCConfig;
+use Scandio\lmvc\Config;
 
 class Registration
 {
@@ -12,7 +12,7 @@ class Registration
     public static function get()
     {
         if (is_null(static::$mediator)) {
-            $class = LVCConfig::get()->registration->mediator;
+            $class = Config::get()->registration->mediator;
 
             if (class_exists($class) && is_subclass_of($class, '\\Scandio\\lmvc\\modules\\registration\\handlers\\MediatorInterface')) {
                 static::$mediator = new $class();

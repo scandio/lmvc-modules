@@ -2,7 +2,7 @@
 
 namespace Scandio\lmvc\modules\security\controllers;
 
-use Scandio\lmvc\LVCConfig;
+use Scandio\lmvc\Config;
 use Scandio\lmvc\LVC;
 use Scandio\lmvc\modules\session\Session;
 use Scandio\lmvc\modules\snippets\Snippets;
@@ -84,7 +84,7 @@ class Security extends AnonymousController
     {
         Session::stop();
 
-        $logoutAction = (isset(LVCConfig::get()->security->logoutAction)) ? LVCConfig::get()->security->logoutAction : 'Application::index';
+        $logoutAction = (isset(Config::get()->security->logoutAction)) ? Config::get()->security->logoutAction : 'Application::index';
         return static::redirect($logoutAction);
     }
 

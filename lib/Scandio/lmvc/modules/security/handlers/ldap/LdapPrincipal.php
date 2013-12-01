@@ -2,7 +2,7 @@
 
 namespace Scandio\lmvc\modules\security\handlers\ldap;
 
-use Scandio\lmvc\LVCConfig;
+use Scandio\lmvc\Config;
 use Scandio\lmvc\modules\security\handlers;
 use Scandio\lmvc\modules\session\Session;
 
@@ -14,7 +14,7 @@ class LdapPrincipal extends handlers\AbstractSessionPrincipal
     public function __construct($userClass = null)
     {
         parent::__construct($userClass);
-        $security = LVCConfig::get()->security;
+        $security = Config::get()->security;
         $this->conn = ldap_connect($security->host, $security->port) or die ("The LDAP server couldn't be reached!");
         $this->bind = ldap_bind($this->conn) or die ("Couldn't initialize the connection to the LDAP server!");
     }
@@ -26,7 +26,7 @@ class LdapPrincipal extends handlers\AbstractSessionPrincipal
      */
     public function authenticate($username, $password)
     {
-        $security = LVCConfig::get()->security;
+        $security = Config::get()->security;
         try {
             $info = $this->search($username);
             $dn = $info[0]["userprincipalname"][0];
@@ -44,7 +44,7 @@ class LdapPrincipal extends handlers\AbstractSessionPrincipal
     public function getUsers()
     {
         if (!Session::get('security.ldap_users')) {
-            $security = LVCConfig::get()->security;
+            $security = Config::get()->security;
             $list = ldap_search($this->conn, $security->user_base_dn, '(&(objectclass=user)(memberof=CN=DB-User,CN=Users,DC=scandio,DC=de))');
             $entries = ldap_get_entries($this->conn, $list);
             unset($entries['count']);
@@ -75,7 +75,7 @@ class LdapPrincipal extends handlers\AbstractSessionPrincipal
     public function getGroups()
     {
         if (!Session::get('security.ldap_groups')) {
-            $security = LVCConfig::get()->security;
+            $security = Config::get()->security;
             $list = ldap_search($this->conn, $security->user_base_dn, 'objectclass=group');
             $entries = ldap_get_entries($this->conn, $list);
             unset($entries['count']);
@@ -114,7 +114,7 @@ class LdapPrincipal extends handlers\AbstractSessionPrincipal
 
     protected function search($username)
     {
-        $security = LVCConfig::get()->security;
+        $security = Config::get()->security;
         $search = ldap_search($this->conn, $security->user_base_dn, $security->username_attribute . '=' . $username);
         $entries = ldap_get_entries($this->conn, $search);
         unset($entries['count']);
@@ -123,7 +123,7 @@ class LdapPrincipal extends handlers\AbstractSessionPrincipal
 
     protected function getGroupUsers($groupDn)
     {
-        $security = LVCConfig::get()->security;
+        $security = Config::get()->security;
         $search = ldap_search($this->conn, $security->user_base_dn, '(&(objectCategory=User)(memberOf=' . $groupDn . '))');
         $entries = ldap_get_entries($this->conn, $search);
         unset($entries['count']);

@@ -3,7 +3,7 @@
 namespace Scandio\lmvc\modules\assetpipeline\controllers;
 
 use Scandio\lmvc\LVC;
-use Scandio\lmvc\LVCConfig;
+use Scandio\lmvc\Config;
 use Scandio\lmvc\Controller;
 use Scandio\lmvc\modules\assetpipeline\interfaces;
 use Scandio\lmvc\modules\assetpipeline\assetpipes;
@@ -58,7 +58,7 @@ class AssetPipeline extends Controller implements interfaces\AssetPipelineInterf
     {
         static::$config = array_replace_recursive(
             static::$_helper->asArray(json_decode( file_get_contents(dirname(dirname(__FILE__)) . '/config.json') )),
-            static::$_helper->asArray(LVCConfig::get()->assetpipeline ?: [])
+            static::$_helper->asArray(Config::get()->assetpipeline ?: [])
         );
 
         static::$config['assetRootDirectory'] = $assetRootDirectory;

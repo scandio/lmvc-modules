@@ -2,7 +2,7 @@
 
 namespace Scandio\lmvc\modules\security\handlers\json;
 
-use Scandio\lmvc\LVCConfig;
+use Scandio\lmvc\Config;
 use Scandio\lmvc\modules\security\handlers;
 
 class JsonPrincipal extends handlers\AbstractSessionPrincipal
@@ -14,7 +14,7 @@ class JsonPrincipal extends handlers\AbstractSessionPrincipal
      */
     public function authenticate($username, $password)
     {
-        $users = LVCConfig::get()->security->users;
+        $users = Config::get()->security->users;
         return (isset($users->{$username}) && ($users->{$username}->password == $password));
     }
 
@@ -33,7 +33,7 @@ class JsonPrincipal extends handlers\AbstractSessionPrincipal
     public function getUsers()
     {
         $result = array();
-        foreach (LVCConfig::get()->security->users as $username => $user) {
+        foreach (Config::get()->security->users as $username => $user) {
             $result[$username] = new $this->userClass($username, $user);
         }
         return $result;
@@ -53,7 +53,7 @@ class JsonPrincipal extends handlers\AbstractSessionPrincipal
      */
     public function getRoles()
     {
-        return LVCConfig::get()->security->roles;
+        return Config::get()->security->roles;
     }
 
     /**
@@ -70,7 +70,7 @@ class JsonPrincipal extends handlers\AbstractSessionPrincipal
      */
     public function getGroups()
     {
-        return LVCConfig::get()->security->groups;
+        return Config::get()->security->groups;
     }
 
     /**
