@@ -3,7 +3,7 @@
         "principal": "\\Scandio\\lmvc\\modules\\security\\LdapPrincipal",
         "logoutAction": "Security::login",
 
-        "host":"scandio-ads.scandio.de",
+        "host":"scandio-ads.example.de",
         "port":389,
         "user_base_dn": "CN=Users,DC=scandio,DC=de",
         "username_attribute": "samaccountname",
@@ -11,7 +11,7 @@
     },
     "securityTest": {
         "existent_user": "webservice",
-        "existent_user_pass": "didgpsa0",
+        "existent_user_pass": "password",
         "inexistent_user": "testuser",
         "inexistent_user_pass": "pass"
     }
