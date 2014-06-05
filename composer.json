@@ -21,7 +21,7 @@
         "mustache/mustache": "v2.1.0",
         "leafo/scssphp": "v0.0.7",
         "nitra/php-min": "dev-master",
-        "intervention/image": "dev-master",
+        "intervention/image": "2.0.2",
         "coffeescript/coffeescript": "dev-master",
         "scandio/troba": "dev-master",
         "atelierspierrot/markdown-extended": "dev-master"
