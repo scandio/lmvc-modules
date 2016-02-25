@@ -3,7 +3,6 @@
 namespace Scandio\lmvc\modules\assetpipeline\assetpipes;
 
 use Scandio\lmvc\LVC;
-use Intervention\Image\Image;
 
 /**
  * Class ImagePipe
@@ -35,7 +34,7 @@ class ImagePipe extends AbstractAssetPipe
     {
         $file = $this->_assetDirectory . DIRECTORY_SEPARATOR . $asset;
 
-        $img = Image::make($asset);
+        $img = \Intervention\Image\Image::make($asset);
 
         if (isset($options[0]) && isset($options[1])) {
             $img->resize($options[0], $options[1], true);
