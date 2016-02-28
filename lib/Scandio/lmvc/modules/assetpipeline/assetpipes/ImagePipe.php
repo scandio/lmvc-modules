@@ -3,6 +3,7 @@
 namespace Scandio\lmvc\modules\assetpipeline\assetpipes;
 
 use Scandio\lmvc\LVC;
+use Intervention\Image\ImageManagerStatic as Image;
 
 /**
  * Class ImagePipe
@@ -19,6 +20,8 @@ class ImagePipe extends AbstractAssetPipe
     function __construct()
     {
         parent::__construct();
+
+        //Image::configure(array('driver' => 'imagick'));
     }
 
     /**
@@ -32,12 +35,12 @@ class ImagePipe extends AbstractAssetPipe
      */
     public function process($asset, $options = [], $errors = '')
     {
-        $file = $this->_assetDirectory . DIRECTORY_SEPARATOR . $asset;
-
-        $img = \Intervention\Image\Image::make($asset);
+        $img = Image::make($asset);
 
         if (isset($options[0]) && isset($options[1])) {
-            $img->resize($options[0], $options[1], true);
+          $img->resize($options[0], $options[1], function($constraint) {
+            $constraint->aspectRatio();
+          });
         }
 
         $img->save($asset);

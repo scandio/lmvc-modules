@@ -30,15 +30,12 @@ class MarkdownPipe extends AbstractAssetPipe
      */
     public function process($asset, $options = [], $errors = '')
     {
-        $html = null;
         $file = $this->_assetDirectory . DIRECTORY_SEPARATOR . $asset;
+        $parser = new \MarkdownExtended\Parser();
 
-        $html = \MarkdownExtended\MarkdownExtended::create()
-           ->get('Parser', array())
-           ->parse( new \MarkdownExtended\Content(null, $file) )
-           ->getContent();
+        $content = $parser->transformSource($file);
 
-        return $html->getBody();
+        return $content->getBody();
     }
 
     /**
